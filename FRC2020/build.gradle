@@ -47,6 +47,11 @@ repositories {
 dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
+
+    compile files('lib/Pathfinder-Java-1.8(1).jar')
+
+    //compile files('lib/RobotPathfinder-2.2.0-all.jar')
+
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
