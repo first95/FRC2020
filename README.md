@@ -1,11 +1,11 @@
-# FRC2019
-The code base for our 2019 robot
+# FRC2020
+The code base for our 2020 robot
 
 To open the main robot code, open Visual Studio Code, click "Open Folder", and open the `FRC2019` folder.
 
 ## Vision coprocessor
 
-This repository also contains our Vision Coprocessor code.  This application runs on a Raspberry Pi, analyzes video from a camera, and publishes information about the targets it sees.  To open this project, click "open folder" in VSCode and open the `VisionCoprocessor` folder.
+This repository also contains our Vision Coprocessor code left over from 2019.  This application runs on a Raspberry Pi, analyzes video from a camera, and publishes information about the targets it sees.  To open this project, click "open folder" in VSCode and open the `VisionCoprocessor` folder.
 
 To build and run the vision coprocessor:
 1. Right click build.gradle, click "Build Robot Code", click "Java".  This should generate a file at `VisionCoprocessor/build/libs/VisionCoprocessor-all.jar`.
