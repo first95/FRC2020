@@ -9,6 +9,7 @@ public class Constants
 		
 		// Properties of the robot design 
 		public static final double ROBOT_WHEELBASE_WIDTH_INCHES = 23.0; // Distance between the centers of the wheels
+		public static final double WHEEL_DIAMETER = 5; // In inches
 		public static final double ROBOT_TOP_SPEED_LOW_GEAR_FPS = 7; 
 		public static final double ROBOT_TOP_SPEED_HIGH_GEAR_FPS = 17; 
 		

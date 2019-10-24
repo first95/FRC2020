@@ -8,11 +8,11 @@
 package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class PathFinderCommand extends Command {
-  public PathFinderCommand() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public PathFinderCommand(double a) {
+    requires(Robot.pathfinder);
   }
 
   // Called just before this Command runs the first time

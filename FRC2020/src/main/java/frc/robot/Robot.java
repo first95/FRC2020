@@ -12,9 +12,11 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ClimberHabLevelTwo;
 import frc.robot.subsystems.HatchGroundLoader;
 import frc.robot.subsystems.HatchScorer;
+import frc.robot.subsystems.PathFinderSystem;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.subsystems.Brakes;
 import frc.robot.subsystems.DriveBase.GearShiftMode;
+//import jaci.pathfinder.Pathfinder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,7 +39,8 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionCoprocessor vision;
-    public static Brakes brakes;
+	public static Brakes brakes;
+	public static PathFinderSystem pathfinder;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -57,6 +60,7 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor();
 		vision = new VisionCoprocessor();
 		brakes = new Brakes(true);
+		pathfinder = new PathFinderSystem(true);
         oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
