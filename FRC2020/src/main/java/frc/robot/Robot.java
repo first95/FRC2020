@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor();
 		vision = new VisionCoprocessor();
 		brakes = new Brakes(true);
-		pathfinder = new PathFinderSystem(true);
+		pathfinder = new PathFinderSystem(true, false, 0);
         oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
