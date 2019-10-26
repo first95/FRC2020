@@ -4,7 +4,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot.StartPosition;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.compound.AutosteerThenRumble;
 import frc.robot.commands.drivebase.DriveToVT;
@@ -16,6 +19,7 @@ import frc.robot.commands.hgroundloader.SetWristAngle;
 import frc.robot.commands.hgroundloader.WaitForHatchDetected;
 import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.JoystickPovButton;
+import frc.robot.oi.MutableSendableChooser;
 import frc.robot.oi.XBox360Controller;
 import frc.robot.subsystems.Elevator;
 
@@ -78,6 +82,32 @@ public class OI {
 		WEAPONS, // Weapons operator
 	}
 
+	
+	SendableChooser<StartPosition> robotStartingPosition = new SendableChooser<>();
+
+	// All of these commands assume we are scoring a hatch.
+	MutableSendableChooser<Command> attackFL1Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front on the first level.
+	MutableSendableChooser<Command> attackFL2Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front on the second level.
+	MutableSendableChooser<Command> attackFL3Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front on the third level.
+	MutableSendableChooser<Command> attackFR1Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front on the first level.
+	MutableSendableChooser<Command> attackFR2Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front on the second level.
+	MutableSendableChooser<Command> attackFR3Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front on the third level.
+	MutableSendableChooser<Command> attackBL1Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back on the first level.
+	MutableSendableChooser<Command> attackBL2Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back on the second level.
+	MutableSendableChooser<Command> attackBL3Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back on the third level.
+	MutableSendableChooser<Command> attackBR1Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back on the first level.
+	MutableSendableChooser<Command> attackBR2Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back on the second level.
+	MutableSendableChooser<Command> attackBR3Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back on the thrid level.
+	MutableSendableChooser<Command> attackFLCargoship = new MutableSendableChooser<>(); // Scores on the front left side of the cargoship.
+	MutableSendableChooser<Command> attackFRCargoship = new MutableSendableChooser<>(); // Scores on the front right side of the cargoship.
+	MutableSendableChooser<Command> attackL1Cargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship closest to the front.
+	MutableSendableChooser<Command> attackL2Cargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship second from the front.
+	MutableSendableChooser<Command> attackL3Cargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship furthest from the front.
+	MutableSendableChooser<Command> attackR1Cargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship closest to the front.
+	MutableSendableChooser<Command> attackR2Cargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship second from the front.
+	MutableSendableChooser<Command> attackR3Cargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship furthest from the front.
+	StartPosition lastSelectedPosition = null;
+
 	// System timestamps after which we want each rumbler to be turned off
 	private double driverLeftRumbleStopTime = 0;
 	private double driverRightRumbleStopTime = 0;
@@ -99,6 +129,13 @@ public class OI {
         lineFollowButton.whileHeld(new AutosteerThenRumble());
 		lineFollowButton.close();
 
+		robotStartingPosition.addObject("Hab 1 Left", StartPosition.HAB_1_LEFT);
+		robotStartingPosition.addObject("Hab 1 Center", StartPosition.HAB_1_CENTER);
+		robotStartingPosition.addObject("Hab 1 Right", StartPosition.HAB_1_RIGHT);
+		robotStartingPosition.addObject("Hab 1 Left", StartPosition.HAB_2_LEFT);
+		robotStartingPosition.addObject("Hab 2 Right", StartPosition.HAB_2_RIGHT);
+		robotStartingPosition.addObject("Hab 3", StartPosition.HAB_3);
+
 		// // For testing 
         // JoystickAxisButton testRumble = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
         // testRumble.whenPressed(new RumbleCommand(Controller.DRIVER, RumbleType.kLeftRumble ,1.0 , 1.0, false));
@@ -114,6 +151,8 @@ public class OI {
 
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {
+
+		updateSmartChoosers();
 
 		// Cancel joystick rumble if necessary
 		if(Timer.getFPGATimestamp() > driverLeftRumbleStopTime) {
@@ -315,6 +354,19 @@ public class OI {
 	 */
 	public boolean getLowGear() {
 		return driverController.getRawButton(BUTTON_FORCE_LOW_GEAR);
+	}
+
+	public StartPosition getRobotStartPosition()
+	{
+		return robotStartingPosition.getSelected();
+	}
+
+	public void updateSmartChoosers() {
+		StartPosition curPos = robotStartingPosition.getSelected();
+
+		if (curPos != lastSelectedPosition) {
+			System.out.println("Updating auto move choices list");
+		}
 	}
 
 	/**
