@@ -1,7 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,7 @@ import frc.robot.subsystems.HatchGroundLoader;
 import frc.robot.subsystems.HatchScorer;
 import frc.robot.subsystems.PathFinderSystem;
 import frc.robot.subsystems.VisionCoprocessor;
+import frc.robot.SelectedStrategy;
 import frc.robot.subsystems.Brakes;
 import frc.robot.subsystems.DriveBase.GearShiftMode;
 //import jaci.pathfinder.Pathfinder;
@@ -44,7 +47,7 @@ public class Robot extends TimedRobot {
 	}
 
 	private StartPosition robotStartSide; // The location where the robot began
-
+	private String gameData;
 	Command autonomousCommand;
 
 	// Components of the robot
@@ -96,8 +99,29 @@ public class Robot extends TimedRobot {
 	}
 
 	@Override
-	public void autonomousInit() {
+	public void autonomousInit()
+	{
+		int maxTime_sec = 8;
+		double startTime_sec = Timer.getFPGATimestamp();
+		double elapTime_sec = Timer.getFPGATimestamp() - startTime_sec;
+		gameData = "";
+		while ((gameData.length() < 3) & (elapTime_sec < maxTime_sec)) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+			elapTime_sec = Timer.getFPGATimestamp() - startTime_sec;
+		}
+		if (gameData == "") {
+			gameData = "UUU";
+		} else {
+			System.out.println("Time to get game data was "+elapTime_sec+" seconds.");
+		}
+		System.out.println("Plate assignments are " + gameData);
 
+		robotStartSide = oi.getRobotStartPosition();
+		System.out.println("Robot start side: " + robotStartSide);
+		System.out.println("Strategy #"  + getWhichStratIsSelected() + " has been selected.");
+		
+		autonomousCommand = oi.getSelectedCommand(getWhichStratIsSelected());
+		autonomousCommand.start();
     }
 
 	/**
@@ -179,5 +203,10 @@ public class Robot extends TimedRobot {
 
 	public Robot.StartPosition getRobotStartSide() {
 		return robotStartSide;
+	}
+
+	public SelectedStrategy getWhichStratIsSelected()
+	{
+		return sideFromChar(gameData.charAt(0));
 	}
 }
