@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot.StartPosition;
+import frc.robot.components.StartPosition;
 import frc.robot.commands.Nothing;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.SelectedStrategy.selectedStrategy;
 import frc.robot.commands.compound.AutosteerThenRumble;
+import frc.robot.commands.compound.ForwardTenFeet;
 import frc.robot.commands.drivebase.DriveToVT;
 import frc.robot.commands.drivebase.Pivot;
 import frc.robot.commands.vision.ToggleCameraMode;
@@ -27,7 +28,7 @@ import frc.robot.subsystems.Elevator;
 
 /**
  * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * interface to the commands and command groups that allow control of the 
  * One can use SmartDashboard with a controller plugged in to see which values corrospond
  * to which controls.
  */
@@ -77,7 +78,7 @@ public class OI {
 	private static final double ELEVATOR_UPDOWN_DEADBAND = 0.18;
 	private static final double CARGO_INTAKE_DEADBAND = 0.1;
 
-	StartPosition habStartPos;
+	StartPosition ststartPosition;
 
 
 	/** Describes which of the controlleres you're referring to */
@@ -382,35 +383,28 @@ public class OI {
 		lastSelectedPosition = curPos;
 	}
 
-	public Command getSelectedCommand(selectedStrategy whichStratIsSelected)
+	public Command getSelectedCommand(StartPosition startPosition)
 	{
-		if (whichStratIsSelected == selectedStrategy.STRAT1)
+		if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
+			|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
 		{
-			if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-				|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
-			{
-				return attackFLRocket.getSelected();
-			}
-			else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-				|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
-			{
-				return attackFRRocket.getSelected();
-			}
-			else
-			{
-				return new Nothing();
-			}
-			
+			return attackFLRocket.getSelected();
 		}
+		else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
+			|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
+		{
+			return attackFRRocket.getSelected();
+		}
+
 		// else if (whichStratIsSelected == 2)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackFL2Rocket.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackFR2Rocket.getSelected();
 		// 	}
@@ -422,13 +416,13 @@ public class OI {
 		// }
 		// else if (whichStratIsSelected == 3)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackFL3Rocket.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackFR3Rocket.getSelected();
 		// 	}
@@ -438,33 +432,27 @@ public class OI {
 		// 	}
 			
 		// }
-		else if (whichStratIsSelected == selectedStrategy.STRAT2)
-		{
-			if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-				|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+
+			if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
+				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackBLRocket.getSelected();
 			}
-			else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-				|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
+				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackBRRocket.getSelected();
 			}
-			else
-			{
-				return new Nothing();
-			}
 			
-		}
 		// else if (whichStratIsSelected == 5)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackBL2Rocket.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackBR2Rocket.getSelected();
 		// 	}
@@ -476,13 +464,13 @@ public class OI {
 		// }
 		// else if (whichStratIsSelected == 6)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackBL3Rocket.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackBR3Rocket.getSelected();
 		// 	}
@@ -492,33 +480,24 @@ public class OI {
 		// 	}
 			
 		// }
-		else if (whichStratIsSelected == selectedStrategy.STRAT3)
-		{
-			if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-				|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+
+			else if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
+				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackFLCargoship.getSelected();
 			}
-			else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-				|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
+				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackFRCargoship.getSelected();
 			}
-			else
-			{
-				return new Nothing();
-			}
-			
-		}
-		else if (whichStratIsSelected == selectedStrategy.STRAT4)
-		{
-			if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-				|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+			if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
+				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackLCargoship.getSelected();
 			}
-			else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-				|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
+				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
 			{
 				return attackRCargoship.getSelected();
 			}
@@ -527,16 +506,15 @@ public class OI {
 				return new Nothing();
 			}
 			
-		}
 		// else if (whichStratIsSelected == 9)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackL2Cargoship.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackR2Cargoship.getSelected();
 		// 	}
@@ -548,21 +526,16 @@ public class OI {
 		// }
 		// else if (whichStratIsSelected == 10)
 		// {
-		// 	if ((habStartPos == Robot.StartPosition.HAB_1_LEFT) || (habStartPos == Robot.StartPosition.HAB_2_LEFT)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_1_CENTER) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
+		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackL3Cargoship.getSelected();
 		// 	}
-		// 	else if ((habStartPos == Robot.StartPosition.HAB_1_RIGHT) || (habStartPos == Robot.StartPosition.HAB_1_CENTER)
-		// 		|| (habStartPos == Robot.StartPosition.HAB_2_RIGHT) || (habStartPos == Robot.StartPosition.HAB_3))
+		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
+		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
 		// 	{
 		// 		return attackR3Cargoship.getSelected();
 		// 	}
-		else
-		{
-			return new Nothing();
-		}
-			
 	}
 
 	// AUTO MOVE CHOOSERS
@@ -576,16 +549,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -601,16 +580,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -626,16 +611,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -651,16 +642,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -676,16 +673,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -701,16 +704,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -726,16 +735,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;
@@ -751,16 +766,22 @@ public class OI {
 
 		switch (robotStartPosition) {
 		case HAB_1_LEFT:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_CENTER:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_1_RIGHT:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_LEFT:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_2_RIGHT:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		case HAB_3:
+			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
 		default:
 			break;

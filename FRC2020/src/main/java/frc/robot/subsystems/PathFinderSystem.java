@@ -25,18 +25,20 @@ public class PathFinderSystem extends Subsystem
   public static boolean lOrR;
   public static boolean whatGearAreWeIn;
   public static double Left_To_Right_Distance;
+  public static int whatPath;
 
-  public PathFinderSystem(boolean lOrR2, boolean whatGearAreWeIn2, double Left_To_Right_Distance2) {
+  public PathFinderSystem(boolean lOrR2, boolean whatGearAreWeIn2, double Left_To_Right_Distance2, int whatPath) {
     super();
     this.lOrR = lOrR2;
     this.whatGearAreWeIn = whatGearAreWeIn2;
     this.Left_To_Right_Distance = Left_To_Right_Distance2;
+    this.whatPath = whatPath;
   }
 
 
   @Override
   protected void initDefaultCommand()
   {
-    setDefaultCommand(new PathFinderCommand(lOrR, whatGearAreWeIn, Left_To_Right_Distance));
+    setDefaultCommand(new PathFinderCommand(lOrR, whatGearAreWeIn, Left_To_Right_Distance, whatPath));
   }
 }

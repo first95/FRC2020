@@ -17,6 +17,7 @@ import frc.robot.subsystems.HatchScorer;
 import frc.robot.subsystems.PathFinderSystem;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.SelectedStrategy;
+import frc.robot.components.StartPosition;
 import frc.robot.subsystems.Brakes;
 import frc.robot.subsystems.DriveBase.GearShiftMode;
 //import jaci.pathfinder.Pathfinder;
@@ -30,21 +31,6 @@ import frc.robot.subsystems.DriveBase.GearShiftMode;
  */
 
 public class Robot extends TimedRobot {
-
-	/**
-	 * Robot position at match start.
-	 * Robot is assumed to have its bumper flush against the alliance wall
-	 * or against the wall of the higher hab level in all these cases.
-	 */
-	public enum StartPosition
-	{
-		HAB_1_LEFT,      // Robot is on hab level 1 on the left edge.
-		HAB_1_CENTER,    // Robot is approxiamtely in the center on hab level 1.
-		HAB_1_RIGHT,     // Robot is on hab level 1 on the right edge.
-		HAB_2_LEFT,      // Robot is on the left hab level 2.
-		HAB_2_RIGHT,     // Robot is on the right hab level 2.
-		HAB_3,           // Robot is in the center of hab level 3.
-	}
 
 	private StartPosition robotStartSide; // The location where the robot began
 	private String gameData;
@@ -63,6 +49,7 @@ public class Robot extends TimedRobot {
 	public static VisionCoprocessor vision;
 	public static Brakes brakes;
 	public static PathFinderSystem pathfinder;
+	public static StartPosition startPosition;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -82,7 +69,7 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor();
 		vision = new VisionCoprocessor();
 		brakes = new Brakes(true);
-		pathfinder = new PathFinderSystem(true, false, 0);
+		pathfinder = new PathFinderSystem(true, false, 0, 1);
         oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
@@ -129,7 +116,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-
+		robotPeriodic();
 	}
 
 	/**
@@ -143,6 +130,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledPeriodic() {
+		robotPeriodic();
 	}
 
 	@Override
@@ -174,7 +162,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
+		robotPeriodic();
 	}
 
 	/**
@@ -201,11 +189,30 @@ public class Robot extends TimedRobot {
 		// oi.log();
 	}
 
-	public Robot.StartPosition getRobotStartSide() {
+	public StartPosition getRobotStartSide() {
 		return robotStartSide;
 	}
 
-	public SelectedStrategy getWhichStratIsSelected()
+	private StartPosition sideFromChar(char side)
+	{
+		if(side == 'A') {
+			return StartPosition.HAB_1_LEFT;
+		} else if(side == 'B') {
+			return StartPosition.HAB_1_CENTER;
+		} else if(side == 'C') {
+			return StartPosition.HAB_1_RIGHT;
+		} else if(side == 'D') {
+			return StartPosition.HAB_2_LEFT;
+		} else if(side == 'E') {
+			return StartPosition.HAB_2_RIGHT;
+		} else if(side == 'F') {
+			return StartPosition.HAB_3;
+		} else {
+			return StartPosition.UNKNOWN;
+		}
+	}
+
+	public StartPosition getWhichStratIsSelected()
 	{
 		return sideFromChar(gameData.charAt(0));
 	}

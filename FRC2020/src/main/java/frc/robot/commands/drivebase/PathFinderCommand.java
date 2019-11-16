@@ -25,27 +25,39 @@ public class PathFinderCommand extends Command {
   public int Left_Encoder_Pos = 0;
   private double wheel_diameter = Constants.WHEEL_DIAMETER*0.0254;
   public static double outputLeft, outputRight;
+  public static int whatPath;
+
+  // All of these are the possible path values
+  public static int ForwardTenFeet = 1;
+
   private static boolean LeftOrRight;
   private static boolean WhatGearAreWeIn;
 
   public static EncoderFollower leftEncFollower;
   public static EncoderFollower rightEncFollower;
 
-  public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a) {
+  public static Waypoint[] points;
+
+  public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a, int whatPath) {
     requires(Robot.pathfinder);
     this.LeftOrRight = RightOrLeft;
     this.WhatGearAreWeIn = WhichGearAreWeIn;
     this.Left_To_Right_Offset_Inches = a;
+    this.whatPath = whatPath;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Waypoint[] points = new Waypoint[] {
-      new Waypoint(-4, -1, Pathfinder.d2r(-45)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-      new Waypoint(-2, -2, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
-      new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
-    };
+
+    if (whatPath == ForwardTenFeet)
+    {
+      points = new Waypoint[] {
+        new Waypoint(0, 0, 0),
+        new Waypoint(10, 0, 0)
+      };
+    }
+   
 
     Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
     Trajectory trajectory = Pathfinder.generate(points, config);
