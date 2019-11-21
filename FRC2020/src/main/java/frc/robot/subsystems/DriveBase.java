@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
+import frc.robot.commands.drivebase.PathFinderCommand;
 import frc.robot.components.DrivePod;
 
 /**
@@ -83,7 +84,7 @@ public class DriveBase extends Subsystem {
 	 */
 	@Override
 	public void initDefaultCommand() {
-		setDefaultCommand(new ManuallyControlDrivebase());
+		setDefaultCommand(new PathFinderCommand(true, false, 20, 1));
 	}
 
 	/**

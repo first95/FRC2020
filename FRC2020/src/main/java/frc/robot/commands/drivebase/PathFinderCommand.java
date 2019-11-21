@@ -40,7 +40,9 @@ public class PathFinderCommand extends Command {
   public static Waypoint[] points;
 
   public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a, int whatPath) {
+    requires(Robot.drivebase);
     requires(Robot.pathfinder);
+    this.setInterruptible(false);
     System.out.println("we are in the constructor");
     this.LeftOrRight = RightOrLeft;
     this.WhatGearAreWeIn = WhichGearAreWeIn;
@@ -117,17 +119,20 @@ public class PathFinderCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    System.out.println("are we finished?");
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("have we ended?");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    System.out.println("are we interrupted?");
   }
 }
