@@ -78,7 +78,7 @@ public class OI {
 	private static final double ELEVATOR_UPDOWN_DEADBAND = 0.18;
 	private static final double CARGO_INTAKE_DEADBAND = 0.1;
 
-	StartPosition ststartPosition;
+	StartPosition startPosition;
 
 
 	/** Describes which of the controlleres you're referring to */
@@ -157,7 +157,7 @@ public class OI {
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {
 
-		updateSmartChoosers();
+		//updateSmartChoosers();
 
 		// Cancel joystick rumble if necessary
 		if(Timer.getFPGATimestamp() > driverLeftRumbleStopTime) {
@@ -385,7 +385,11 @@ public class OI {
 
 	public Command getSelectedCommand(StartPosition startPosition)
 	{
-		if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
+		if (startPosition == StartPosition.UNKNOWN)
+		{
+			return attackFLRocket.getSelected();
+		}
+		else if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
 			|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
 		{
 			return attackFLRocket.getSelected();
@@ -566,6 +570,8 @@ public class OI {
 		case HAB_3:
 			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 			break;
+		case UNKNOWN:
+			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
 		default:
 			break;
 		}

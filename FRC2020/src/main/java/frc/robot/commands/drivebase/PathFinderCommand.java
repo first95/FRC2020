@@ -26,6 +26,7 @@ public class PathFinderCommand extends Command {
   private double wheel_diameter = Constants.WHEEL_DIAMETER*0.0254;
   public static double outputLeft, outputRight;
   public static int whatPath;
+  public static int spin = 0;
 
   // All of these are the possible path values
   public static int ForwardTenFeet = 1;
@@ -40,6 +41,7 @@ public class PathFinderCommand extends Command {
 
   public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a, int whatPath) {
     requires(Robot.pathfinder);
+    System.out.println("we are in the constructor");
     this.LeftOrRight = RightOrLeft;
     this.WhatGearAreWeIn = WhichGearAreWeIn;
     this.Left_To_Right_Offset_Inches = a;
@@ -49,6 +51,7 @@ public class PathFinderCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("we are in initialize");
 
     if (whatPath == ForwardTenFeet)
     {
@@ -106,6 +109,9 @@ public class PathFinderCommand extends Command {
   protected void execute() {
     outputLeft = leftEncFollower.calculate(Left_Encoder_Pos);
     outputRight = rightEncFollower.calculate(Right_Encoder_Pos);
+
+    System.out.println("we are in execute");
+    Robot.drivebase.arcade(outputLeft, spin);
   }
 
   // Make this return true when this Command no longer needs to run execute()

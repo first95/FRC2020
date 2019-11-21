@@ -15,12 +15,15 @@ import frc.robot.subsystems.ClimberHabLevelTwo;
 import frc.robot.subsystems.HatchGroundLoader;
 import frc.robot.subsystems.HatchScorer;
 import frc.robot.subsystems.PathFinderSystem;
+import frc.robot.commands.drivebase.PathFinderCommand;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.SelectedStrategy;
 import frc.robot.components.StartPosition;
 import frc.robot.subsystems.Brakes;
 import frc.robot.subsystems.DriveBase.GearShiftMode;
+import frc.robot.commands.compound.ForwardTenFeet;
 //import jaci.pathfinder.Pathfinder;
+import frc.robot.commands.drivebase.PathFinderCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -88,26 +91,28 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit()
 	{
+		System.out.println("made it");
 		int maxTime_sec = 8;
 		double startTime_sec = Timer.getFPGATimestamp();
 		double elapTime_sec = Timer.getFPGATimestamp() - startTime_sec;
 		gameData = "";
-		while ((gameData.length() < 3) & (elapTime_sec < maxTime_sec)) {
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
-			elapTime_sec = Timer.getFPGATimestamp() - startTime_sec;
-		}
+		// while ((gameData.length() < 3) & (elapTime_sec < maxTime_sec)) {
+		// 	gameData = DriverStation.getInstance().getGameSpecificMessage();
+		// 	elapTime_sec = Timer.getFPGATimestamp() - startTime_sec;
+		// }
 		if (gameData == "") {
+			
 			gameData = "UUU";
 		} else {
 			System.out.println("Time to get game data was "+elapTime_sec+" seconds.");
 		}
-		System.out.println("Plate assignments are " + gameData);
+		//System.out.println("Plate assignments are " + gameData);
 
 		robotStartSide = oi.getRobotStartPosition();
 		System.out.println("Robot start side: " + robotStartSide);
 		System.out.println("Strategy #"  + getWhichStratIsSelected() + " has been selected.");
 		
-		autonomousCommand = oi.getSelectedCommand(getWhichStratIsSelected());
+		autonomousCommand = new PathFinderCommand(true, false, 20, 1);
 		autonomousCommand.start();
     }
 
@@ -136,15 +141,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		Scheduler.getInstance().run(); // Runs all active commands
-		elevator.checkAndApplyHomingSwitch();
-		drivebase.pullPidConstantsFromSmartDash();
-		oi.visit();
-		drivebase.visit();
+		// elevator.checkAndApplyHomingSwitch();
+		// drivebase.pullPidConstantsFromSmartDash();
+		// oi.visit();
+		// drivebase.visit();
 
-		// Depending if you want all output or just limited
-		// use either debugLog() or just log()
-		// debugLog();
-		log();
+		// // Depending if you want all output or just limited
+		// // use either debugLog() or just log()
+		// // debugLog();
+		// log();
 	}
 
 	@Override
