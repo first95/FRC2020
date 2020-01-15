@@ -353,9 +353,11 @@ public class DrivePod {
 	}
 
 	public static void applyCurrentLimitSettings(IMotorControllerEnhanced mc) {
-		mc.configContinuousCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_CONTINUAL_AMPS, Constants.CAN_TIMEOUT_MS);
-		mc.configPeakCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_PEAK_AMPS, Constants.CAN_TIMEOUT_MS);
-		mc.configPeakCurrentDuration(Constants.DRIVEPOD_MAX_CURRENT_PEAK_DURATION_MS, Constants.CAN_TIMEOUT_MS);
+		// TODO: determine if we still want this capability, and if so, what non-deprecated methods
+		// we can use to do it
+		// mc.configContinuousCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_CONTINUAL_AMPS, Constants.CAN_TIMEOUT_MS);
+		// mc.configPeakCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_PEAK_AMPS, Constants.CAN_TIMEOUT_MS);
+		// mc.configPeakCurrentDuration(Constants.DRIVEPOD_MAX_CURRENT_PEAK_DURATION_MS, Constants.CAN_TIMEOUT_MS);
 	}
 
 }
