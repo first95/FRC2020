@@ -7,6 +7,7 @@ public class ManuallyControlDrivebase extends Command {
 	
 
 	public ManuallyControlDrivebase() {
+		System.out.println("We are in ManuallyControlDrivebase");
 		requires(Robot.drivebase);
 	}
 

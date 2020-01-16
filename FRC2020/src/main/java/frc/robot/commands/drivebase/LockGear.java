@@ -11,6 +11,7 @@ public class LockGear extends Command {
 	public LockGear(boolean lockHighGear) {
 		requires(Robot.drivebase);
 		m_lockGear = lockHighGear;
+		System.out.println("We are in LockGear");
 	}
 
 	@Override

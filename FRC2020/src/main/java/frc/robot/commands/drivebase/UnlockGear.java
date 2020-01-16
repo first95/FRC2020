@@ -10,6 +10,7 @@ public class UnlockGear extends Command{
 	protected void initialize() {
 		super.initialize();
 		Robot.drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
+		System.out.println("We are in UnlockGear");
 	}
 	
 	@Override

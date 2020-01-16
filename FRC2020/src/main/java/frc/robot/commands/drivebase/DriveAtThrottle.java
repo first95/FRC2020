@@ -16,6 +16,7 @@ public class DriveAtThrottle extends Command {
 	
 	public DriveAtThrottle(double throttleFwd) {
 		requires(Robot.drivebase);
+		System.out.println("We are in DriveAtThrottle");
 		
 		// Not sure why this is reversed
 		this.throttleFwd = -throttleFwd;

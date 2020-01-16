@@ -70,9 +70,9 @@ public class Robot extends TimedRobot {
 		climber = new Climber(false);
 		climber2 = new ClimberHabLevelTwo(false);
 		compressor = new Compressor();
-		vision = new VisionCoprocessor();
+		//vision = new VisionCoprocessor();
 		brakes = new Brakes(true);
-		pathfinder = new PathFinderSystem(true, false, 0, 1);
+		//pathfinder = new PathFinderSystem(true, false, 0, 1);
         oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard

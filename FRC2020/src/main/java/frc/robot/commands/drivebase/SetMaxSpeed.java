@@ -10,7 +10,7 @@ public class SetMaxSpeed extends Command {
 	
 	public SetMaxSpeed(double maxSpeed) {
 		m_maxSpeed = maxSpeed;
-		
+		System.out.println("We are in SetMaxSpeed");
 	}
 	
 	@Override

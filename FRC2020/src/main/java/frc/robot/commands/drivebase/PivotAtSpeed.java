@@ -20,7 +20,7 @@ public class PivotAtSpeed extends Command {
 	
 	public PivotAtSpeed(double inchesPerSecond, double degreesCw) {
 		requires(Robot.drivebase);
-		
+		System.out.println("We are in PivotAtSpeed");
 		this.inchesPerSecond = inchesPerSecond;
 		this.degreesCw = degreesCw;
 	}

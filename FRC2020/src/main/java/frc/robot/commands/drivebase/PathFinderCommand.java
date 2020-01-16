@@ -41,9 +41,10 @@ public class PathFinderCommand extends Command {
 
   public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a, int whatPath) {
     requires(Robot.drivebase);
-    requires(Robot.pathfinder);
+    //requires(Robot.pathfinder);
+    System.out.println("We are in PathfinderCommand");
     this.setInterruptible(false);
-    System.out.println("we are in the constructor");
+    //System.out.println("we are in the constructor");
     this.LeftOrRight = RightOrLeft;
     this.WhatGearAreWeIn = WhichGearAreWeIn;
     this.Left_To_Right_Offset_Inches = a;

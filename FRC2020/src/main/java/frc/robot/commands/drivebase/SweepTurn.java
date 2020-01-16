@@ -20,7 +20,7 @@ public class SweepTurn extends Command {
 	
 	public SweepTurn(double degreesCw, double turnRadiusInches) {
 		requires(Robot.drivebase);
-		
+		System.out.println("We are in SweepTurn");
 		this.degreesCw = degreesCw;
 		this.turnRadiusInches = turnRadiusInches;
 	}

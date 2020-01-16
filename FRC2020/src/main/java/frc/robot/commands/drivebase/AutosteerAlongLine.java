@@ -19,7 +19,8 @@ public class AutosteerAlongLine extends Command {
     public static final double MAX_FWD_RATE = 0.5;
     
 	public AutosteerAlongLine() {
-		requires(Robot.drivebase);
+        //requires(Robot.drivebase);
+        System.out.println("We are in AutosteerAlongLine");
 	}
 
 	// Called repeatedly when this Command is scheduled to run

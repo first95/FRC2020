@@ -37,8 +37,9 @@ public class DriveToVT extends Command {
 	private final double K3 = 1/60; // if 60 degrees or more off in beraing angle, go at full rotational speed
 	
 	public DriveToVT() {
-		requires(Robot.drivebase);
-		requires(Robot.vision);
+		//requires(Robot.drivebase);
+		//requires(Robot.vision);
+		System.out.println("We are in DriveToVT");
 	}
 
 	// Called every time the command starts

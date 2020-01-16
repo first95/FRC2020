@@ -18,7 +18,7 @@ public class DriveStraightAtSpeed extends Command {
 	
 	public DriveStraightAtSpeed(double inchesPerSecond, double inches) {
 		requires(Robot.drivebase);
-		
+		System.out.println("We are in DriveStraightAtSpeed");
 		// Not sure why this is reversed
 		this.distanceInches = -inches;
 		this.velocityInchesPerSecond = -inchesPerSecond;

@@ -35,7 +35,7 @@ public class Pivot extends Command {
 		degreesCw *= -1;
 		
 		requires(Robot.drivebase);
-		
+		System.out.println("We are in Pivot");
 		clp = new PIDController(K_P, K_I, K_D, new PIDSource() {
 			
 			@Override
