@@ -127,7 +127,7 @@ public class OI {
 		cameraViewSwitcher.close(); // Don't need this one anymore?
 		
 		JoystickButton hglAutoCollect = new JoystickButton(weaponsController, HGL_AUTO_COLLECT);
-		hglAutoCollect.whileHeld(new AutoAcquire(true));
+		//hglAutoCollect.whileHeld(new AutoAcquire(true));
         hglAutoCollect.close(); // Don't need this one anymore?		
 
         JoystickButton lineFollowButton = new JoystickButton(driverController, BUTTON_FORCE_HIGH_GEAR);

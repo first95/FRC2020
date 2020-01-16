@@ -12,7 +12,7 @@ public class GrabIt extends TimedCommand {
 	
 	public GrabIt(boolean grab, double durationS) {
         super(durationS);
-        requires(Robot.hScorer);
+        //requires(Robot.hScorer);
         this.grab = grab;
 	}
 
@@ -22,7 +22,7 @@ public class GrabIt extends TimedCommand {
 
 	@Override
 	public void execute() {
-		super.execute();
-		Robot.hScorer.openHS(!grab);
+		//super.execute();
+		//Robot.hScorer.openHS(!grab);
 	}
 }

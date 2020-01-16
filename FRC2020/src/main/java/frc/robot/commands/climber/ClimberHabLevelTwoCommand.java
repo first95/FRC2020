@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ClimberHabLevelTwoCommand extends Command {
-  public ClimberHabLevelTwoCommand() {
-    requires(Robot.climber2);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+  // public ClimberHabLevelTwoCommand() {
+  //   requires(Robot.climber2);
+  //   // Use requires() here to declare subsystem dependencies
+  //   // eg. requires(chassis);
+  // }
 
   // Called just before this Command runs the first time
   @Override
@@ -25,19 +25,19 @@ public class ClimberHabLevelTwoCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.oi.isDeployFrontClimberToggled()) {
-      Robot.climber2.toggleFrontClimber();
-    }
+    // if(Robot.oi.isDeployFrontClimberToggled()) {
+    //   Robot.climber2.toggleFrontClimber();
+    // }
     
-    if(Robot.oi.isDeployRearClimberToggled()) {
-      Robot.climber2.toggleRearClimber();
-    }
+    // if(Robot.oi.isDeployRearClimberToggled()) {
+    //   Robot.climber2.toggleRearClimber();
+    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

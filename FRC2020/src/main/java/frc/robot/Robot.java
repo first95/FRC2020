@@ -37,19 +37,19 @@ public class Robot extends TimedRobot {
 
 	private StartPosition robotStartSide; // The location where the robot began
 	private String gameData;
-	Command autonomousCommand;
+	//Command autonomousCommand;
 
 	// Components of the robot
 	public static DriveBase drivebase;
-	public static Elevator elevator;
-	public static HatchScorer hScorer;
-	public static HatchGroundLoader hGroundLoader;
-	public static CargoHandler cargoHandler;
-	public static Climber climber;
-	public static ClimberHabLevelTwo climber2;
-	public static Compressor compressor;
+	//public static Elevator elevator;
+	//public static HatchScorer hScorer;
+	//public static HatchGroundLoader hGroundLoader;
+	//public static CargoHandler cargoHandler;
+	//public static Climber climber;
+	//public static ClimberHabLevelTwo climber2;
+	//public static Compressor compressor;
 	public static OI oi;
-	public static VisionCoprocessor vision;
+	//public static VisionCoprocessor vision;
 	public static Brakes brakes;
 	public static PathFinderSystem pathfinder;
 	public static StartPosition startPosition;
@@ -63,13 +63,13 @@ public class Robot extends TimedRobot {
 
 		// Initialize all subsystems
 		drivebase = new DriveBase(true);
-		elevator = new Elevator(true);
-		hScorer = new HatchScorer(true);
-		hGroundLoader = new HatchGroundLoader(true);
-		cargoHandler = new CargoHandler(true);
-		climber = new Climber(false);
-		climber2 = new ClimberHabLevelTwo(false);
-		compressor = new Compressor();
+		//elevator = new Elevator(true);
+		// hScorer = new HatchScorer(true);
+		// hGroundLoader = new HatchGroundLoader(true);
+		// cargoHandler = new CargoHandler(true);
+		// climber = new Climber(false);
+		// climber2 = new ClimberHabLevelTwo(false);
+		// compressor = new Compressor();
 		//vision = new VisionCoprocessor();
 		brakes = new Brakes(true);
 		//pathfinder = new PathFinderSystem(true, false, 0, 1);
@@ -77,14 +77,14 @@ public class Robot extends TimedRobot {
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);
-		SmartDashboard.putData(elevator);
-		SmartDashboard.putData(hGroundLoader);
-		SmartDashboard.putData(climber);
+		//SmartDashboard.putData(elevator);
+		// SmartDashboard.putData(hGroundLoader);
+		// SmartDashboard.putData(climber);
 
 		// Disable brakes on talons to make it
 		// easier to push
 		drivebase.brake(false);
-		elevator.brake(false);
+		//elevator.brake(false);
 
 	}
 
@@ -112,8 +112,8 @@ public class Robot extends TimedRobot {
 		System.out.println("Robot start side: " + robotStartSide);
 		System.out.println("Strategy #"  + getWhichStratIsSelected() + " has been selected.");
 		
-		autonomousCommand = new PathFinderCommand(true, false, 20, 1);
-		autonomousCommand.start();
+		// autonomousCommand = new PathFinderCommand(true, false, 20, 1);
+		// autonomousCommand.start();
     }
 
 	/**
@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void disabledInit() {
 		drivebase.brake(false);
-		elevator.brake(false);
+		//elevator.brake(false);
 	}
 
 	public void disabledPeriodic() {
@@ -159,7 +159,7 @@ public class Robot extends TimedRobot {
 		drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
 
 		drivebase.brake(true);
-		elevator.brake(true);
+		//elevator.brake(true);
 	}
 
 	/**
@@ -188,9 +188,9 @@ public class Robot extends TimedRobot {
 	private void debugLog() {
 		drivebase.log();
 		//brakes.log();
-		elevator.log();
+		//elevator.log();
 		//cargoHandler.log();
-		hGroundLoader.log();
+		//hGroundLoader.log();
 		// oi.log();
 	}
 

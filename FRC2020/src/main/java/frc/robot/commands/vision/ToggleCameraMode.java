@@ -18,14 +18,14 @@ public class ToggleCameraMode extends Command {
     /**
      * Command the camera to enter whatever mode it is not in
      */
-    public ToggleCameraMode() {
-        requires(Robot.vision);
-    }
+    // public ToggleCameraMode() {
+    //     requires(Robot.vision);
+    // }
 
     @Override
     public synchronized void start() {
-        super.start();
-        Robot.vision.setCameraIsHumanVisible(!Robot.vision.isCameraHumanVision());
+        // super.start();
+        // Robot.vision.setCameraIsHumanVisible(!Robot.vision.isCameraHumanVision());
     }
 
     // Make this return true when this Command no longer needs to run execute()

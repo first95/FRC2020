@@ -13,15 +13,15 @@ import frc.robot.subsystems.Elevator.ElevatorHoldPoint;
  * it lifts up the loader and hands it off to the elevator.
  */
 public class PickupAndHandoffGroundHatch extends CommandGroup {
-    public static final double RUMBLE_TIME_S = 0.5;
-    public PickupAndHandoffGroundHatch() {
-        // Move the elevator to handoff position
-        addSequential(new SetElevatorHeight(ElevatorHoldPoint.HATCH_HANDOFF));
-        // Perform HGL auto acquire sequence
-        addSequential(new AutoAcquire(false));
-        // Buzz it after the HGL wrist lifts
-        addParallel(new RumbleCommand(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, RUMBLE_TIME_S));
-        // Move the elevator to scoring position
-        addSequential(new SetElevatorHeight(ElevatorHoldPoint.HATCH_COVER_LOW));
-    }
+    // public static final double RUMBLE_TIME_S = 0.5;
+    // public PickupAndHandoffGroundHatch() {
+    //     // Move the elevator to handoff position
+    //     addSequential(new SetElevatorHeight(ElevatorHoldPoint.HATCH_HANDOFF));
+    //     // Perform HGL auto acquire sequence
+    //     addSequential(new AutoAcquire(false));
+    //     // Buzz it after the HGL wrist lifts
+    //     addParallel(new RumbleCommand(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, RUMBLE_TIME_S));
+    //     // Move the elevator to scoring position
+    //     addSequential(new SetElevatorHeight(ElevatorHoldPoint.HATCH_COVER_LOW));
+    // }
 }

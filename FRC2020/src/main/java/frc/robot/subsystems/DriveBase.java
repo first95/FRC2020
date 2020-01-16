@@ -315,16 +315,16 @@ public class DriveBase extends Subsystem {
 		leftSpeed = Math.abs(Robot.drivebase.getLeftSpeed());
 		rightSpeed = Math.abs(Robot.drivebase.getRightSpeed());
 
-		double elevatorHeight = Robot.elevator.getElevatorHeightFeet();
-		final double ELEVATOR_HEIGHT_SPEED_LIMIT_FT = ((Elevator.ElevatorHoldPoint.HATCH_COVER_MID.heightInches) + 2)/12;
+		//double elevatorHeight = Robot.elevator.getElevatorHeightFeet();
+		//final double ELEVATOR_HEIGHT_SPEED_LIMIT_FT = ((Elevator.ElevatorHoldPoint.HATCH_COVER_MID.heightInches) + 2)/12;
 		//System.out.println(elevatorHeight + " is how high the elevator is");
-		boolean elevatorIsTooHighToShift;
-		if (elevatorHeight <= ELEVATOR_HEIGHT_SPEED_LIMIT_FT) {
-			elevatorIsTooHighToShift = false;
-		}
-		else {
-			elevatorIsTooHighToShift = true;
-		}
+		//boolean elevatorIsTooHighToShift;
+		//if (elevatorHeight <= ELEVATOR_HEIGHT_SPEED_LIMIT_FT) {
+			//elevatorIsTooHighToShift = false;
+		//}
+		//else {
+			//elevatorIsTooHighToShift = true;
+		//}
 
 		// Autoshift framework based off speed
 		if (allowShift) {
@@ -338,7 +338,7 @@ public class DriveBase extends Subsystem {
 				}
 
 			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
-				if (elevatorIsTooHighToShift == false) {
+				//if (elevatorIsTooHighToShift == false) {
 					if (allowDeshift) {
 						shiftTimer.reset();
 						shiftTimer.start();
@@ -346,7 +346,7 @@ public class DriveBase extends Subsystem {
 						setGear(true);
 						//System.out.println(elevatorIsTooHighToShift + " case 2");
 					}
-				}
+				//}
 				
 			}
 		} else if (shiftTimer.get() > 1.0) {
