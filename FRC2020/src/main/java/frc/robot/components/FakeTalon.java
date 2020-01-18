@@ -507,28 +507,34 @@ public class FakeTalon implements IMotorControllerEnhanced {
     }
 
     @Override
-    public ErrorCode configPeakCurrentLimit(int amps, int timeoutMs) {
-		return null;
-	}
+    public ErrorCode configMotionSCurveStrength(int curveStrength, int timeoutMs) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public ErrorCode configPeakCurrentDuration(int milliseconds, int timeoutMs) {
-		return null;
-	}
+    // @Override
+    // public ErrorCode configPeakCurrentLimit(int amps, int timeoutMs) {
+	// 	return null;
+	// }
 
-	@Override
-	public ErrorCode configContinuousCurrentLimit(int amps, int timeoutMs) {
-		return null;
-	}
+	// @Override
+	// public ErrorCode configPeakCurrentDuration(int milliseconds, int timeoutMs) {
+	// 	return null;
+	// }
 
-	@Override
-	public void enableCurrentLimit(boolean enable) {
+	// @Override
+	// public ErrorCode configContinuousCurrentLimit(int amps, int timeoutMs) {
+	// 	return null;
+	// }
+
+	// @Override
+	// public void enableCurrentLimit(boolean enable) {
 		
-	}
+	// }
 
-	@Override
-	public SensorCollection getSensorCollection() {
-		return null;
-	}
+	// @Override
+	// public SensorCollection getSensorCollection() {
+	// 	return null;
+	// }
     
 }
