@@ -16,6 +16,6 @@ public class ForwardTenFeet extends CommandGroup {
    */
   public ForwardTenFeet()
   {
-    addSequential(new PathFinderCommand(true, false, 20, 1));
+    //addSequential(new PathFinderCommand(true, false, 20, 1));
   }
 }

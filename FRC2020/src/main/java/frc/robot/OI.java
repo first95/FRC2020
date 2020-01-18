@@ -92,7 +92,7 @@ public class OI {
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
 		
 		JoystickButton hglAutoCollect = new JoystickButton(weaponsController, HGL_AUTO_COLLECT);
-		hglAutoCollect.whileHeld(new AutoAcquire(true));
+		// hglAutoCollect.whileHeld(new AutoAcquire(true));
         // hglAutoCollect.close(); // Don't need this one anymore?		
 
         JoystickButton lineFollowButton = new JoystickButton(driverController, BUTTON_FORCE_HIGH_GEAR);
@@ -258,28 +258,28 @@ public class OI {
 		return -elevatorSpeed * 1.0;
 	}
 
-	public Elevator.ElevatorHoldPoint getCommandedHoldPoint() {
-		// Prioritize lower setpoints if the user holds more than one button
-		if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOAD)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOAD;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOW)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOW;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_MID)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_MID;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_MID;
-			}
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_HIGH)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_HIGH;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_HIGH;
-			}
-		} else {
-			return Elevator.ElevatorHoldPoint.NONE;
-		}
-	}
+	// public Elevator.ElevatorHoldPoint getCommandedHoldPoint() {
+	// 	// Prioritize lower setpoints if the user holds more than one button
+	// 	if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOAD)) {
+	// 		return Elevator.ElevatorHoldPoint.HATCH_COVER_LOAD;
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOW)) {
+	// 		return Elevator.ElevatorHoldPoint.HATCH_COVER_LOW;
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_MID)) {
+	// 		if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
+	// 			return Elevator.ElevatorHoldPoint.CARGO_MID;
+	// 		} else {
+	// 			return Elevator.ElevatorHoldPoint.HATCH_COVER_MID;
+	// 		}
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_HIGH)) {
+	// 		if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
+	// 			return Elevator.ElevatorHoldPoint.CARGO_HIGH;
+	// 		} else {
+	// 			return Elevator.ElevatorHoldPoint.HATCH_COVER_HIGH;
+	// 		}
+	// 	} else {
+	// 		return Elevator.ElevatorHoldPoint.NONE;
+	// 	}
+	// }
 
 	public boolean getElevatorHomeButtonPressed() {
 		return weaponsController.getRawButton(ELEV_YOU_ARE_HOME);

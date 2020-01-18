@@ -52,6 +52,8 @@ import frc.robot.commands.drivebase.PathFinderCommand;
 
 public class Robot extends TimedRobot {
 
+	private IMotorControllerEnhanced leader;
+
 	// private StartPosition robotStartSide; // The location where the robot began
 	// private String gameData;
 	//Command autonomousCommand;
@@ -106,8 +108,8 @@ public class Robot extends TimedRobot {
 	}
 
 
-	private double Encoder_Pos = DrivePod.getPositionInches();
-  	private double Left_To_Right_Offset_Inches;
+	//private int Encoder_Pos = 0;
+  	private int Left_To_Right_Offset_Inches;
   	private double Top_Speed;
   	public int Right_Encoder_Pos = 0;
   	public int Left_Encoder_Pos = 0;
@@ -131,54 +133,54 @@ public class Robot extends TimedRobot {
 	public void autonomousInit()
 	{
 		if (whatPath == ForwardTenFeet)
-    {
-      points = new Waypoint[] {
-        new Waypoint(0, 0, 0),
-        new Waypoint(10, 0, 0)
-      };
-    }
+    	{
+      		points = new Waypoint[] {
+        		new Waypoint(0, 0, 0),
+        		new Waypoint(10, 0, 0)
+      		};
+    	}
    
 
-    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
-    Trajectory trajectory = Pathfinder.generate(points, config);
+	    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+    	Trajectory trajectory = Pathfinder.generate(points, config);
 
-    // Wheelbase Width = 0.5m
-    TankModifier modifier = new TankModifier(trajectory).modify(0.5);
+    	// Wheelbase Width = 0.5m
+    	TankModifier modifier = new TankModifier(trajectory).modify(0.5);
 
-    // Do something with the new Trajectories...
-    //Trajectory left = modifier.getLeftTrajectory();
-    //Trajectory right = modifier.getRightTrajectory();
+    	// Do something with the new Trajectories...
+    	//Trajectory left = modifier.getLeftTrajectory();
+    	//Trajectory right = modifier.getRightTrajectory();
 
-    leftEncFollower = new EncoderFollower(modifier.getLeftTrajectory());
-    rightEncFollower = new EncoderFollower(modifier.getRightTrajectory());
+	    leftEncFollower = new EncoderFollower(modifier.getLeftTrajectory());
+    	rightEncFollower = new EncoderFollower(modifier.getRightTrajectory());
 
-    // Determine whether the encoder position is the left or right encoder position.
-    if(LeftOrRight)
-    {
-      Left_Encoder_Pos = (int) (Math.round(Encoder_Pos) + Left_To_Right_Offset_Inches);
-      Right_Encoder_Pos = (int) (Math.round(Encoder_Pos));
-    }
-    else
-    {
-      Left_Encoder_Pos = (int) (Math.round(Encoder_Pos));
-      Right_Encoder_Pos = (int) (Math.round(Encoder_Pos) + Left_To_Right_Offset_Inches);
-    }
+    	// Determine whether the encoder position is the left or right encoder position.
+    	if(LeftOrRight)
+    	{
+      		Left_Encoder_Pos = (int) (Math.round(leftPod.getQuadEncPos() + Left_To_Right_Offset_Inches));
+      		Right_Encoder_Pos = (int) (Math.round(rightPod.getQuadEncPos()));
+    	}
+    	else
+    	{
+			Left_Encoder_Pos = (int) (Math.round(leftPod.getQuadEncPos()));
+			Right_Encoder_Pos = (int) (Math.round(rightPod.getQuadEncPos() + Left_To_Right_Offset_Inches));
+    	}
 
-    leftEncFollower.configureEncoder(Left_Encoder_Pos, 1000, wheel_diameter);
-    rightEncFollower.configureEncoder(Right_Encoder_Pos, 1000, wheel_diameter);
+    	leftEncFollower.configureEncoder(0, 1000, wheel_diameter);
+    	rightEncFollower.configureEncoder(0, 1000, wheel_diameter);
 
-    // Determine what gear we are in, then make the top speed here equal to the top speed for the gear.
-    if(WhatGearAreWeIn)
-    {
-      Top_Speed = Constants.ROBOT_TOP_SPEED_HIGH_GEAR_FPS;
-    }
-    else
-    {
-      Top_Speed = Constants.ROBOT_TOP_SPEED_LOW_GEAR_FPS;
-    }
+    	// Determine what gear we are in, then make the top speed here equal to the top speed for the gear.
+    	if(WhatGearAreWeIn)
+    	{
+    	  Top_Speed = Constants.ROBOT_TOP_SPEED_HIGH_GEAR_FPS;
+    	}
+    	else
+    	{
+    	  Top_Speed = Constants.ROBOT_TOP_SPEED_LOW_GEAR_FPS;
+    	}
 
-    leftEncFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Top_Speed, 0);
-    rightEncFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Top_Speed, 0);
+    	leftEncFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Top_Speed, 0);
+    	rightEncFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Top_Speed, 0);
 		// System.out.println("made it");
 		// int maxTime_sec = 8;
 		// double startTime_sec = Timer.getFPGATimestamp();
