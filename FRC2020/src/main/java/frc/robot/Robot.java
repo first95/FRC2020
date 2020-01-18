@@ -214,7 +214,7 @@ public class Robot extends TimedRobot {
 		// robotPeriodic();
 		outputLeft = leftEncFollower.calculate(Left_Encoder_Pos);
 		outputRight = rightEncFollower.calculate(Right_Encoder_Pos);
-		arcade(outputLeft, outputLeft);
+		tank(outputLeft, outputRight);
 	}
 
 
