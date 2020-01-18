@@ -40,7 +40,7 @@ public class PathFinderCommand extends Command {
   public static Waypoint[] points;
 
   public PathFinderCommand(boolean RightOrLeft, boolean WhichGearAreWeIn, double a, int whatPath) {
-    requires(Robot.drivebase);
+    //requires(Robot.drivebase);
     //requires(Robot.pathfinder);
     System.out.println("We are in PathfinderCommand");
     this.setInterruptible(false);
@@ -114,7 +114,7 @@ public class PathFinderCommand extends Command {
     outputRight = rightEncFollower.calculate(Right_Encoder_Pos);
 
     System.out.println("we are in execute");
-    Robot.drivebase.arcade(outputLeft, spin);
+    // Robot.drivebase.arcade(outputLeft, spin);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -40,7 +40,7 @@ public class RumbleCommand extends TimedCommand {
      * This is the actual action, must be executed exactly once
      */
     private void doRumble() {
-        Robot.oi.Rumble(controller, side, severity, duration); 
+        //Robot.oi.Rumble(controller, side, severity, duration); 
     }
 
     @Override

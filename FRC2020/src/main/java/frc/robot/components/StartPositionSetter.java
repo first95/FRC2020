@@ -15,16 +15,16 @@ import frc.robot.components.StartPosition;
  */
 public class StartPositionSetter
 {
-    boolean setPosition = true;
+    // boolean setPosition = true;
 
-    public void StartPositionSetter()
-    {
-        if(setPosition)
-        {
-            Robot.startPosition = StartPosition.HAB_1_LEFT;
-        }
-        else {
-            Robot.startPosition = StartPosition.UNKNOWN;
-        }
-    }
+    // public void StartPositionSetter()
+    // {
+    //     if(setPosition)
+    //     {
+    //         Robot.startPosition = StartPosition.HAB_1_LEFT;
+    //     }
+    //     else {
+    //         Robot.startPosition = StartPosition.UNKNOWN;
+    //     }
+    // }
 }

@@ -19,7 +19,7 @@ public class SweepTurn extends Command {
 	double turnRadiusInches;
 	
 	public SweepTurn(double degreesCw, double turnRadiusInches) {
-		requires(Robot.drivebase);
+		// requires(Robot.drivebase);
 		System.out.println("We are in SweepTurn");
 		this.degreesCw = degreesCw;
 		this.turnRadiusInches = turnRadiusInches;
@@ -31,19 +31,20 @@ public class SweepTurn extends Command {
 		System.out.println("Starting SweepTurn (" + degreesCw + " degrees at " + turnRadiusInches + " inches radius)");
 
 		// Command the movement
-		Robot.drivebase.travelSweepingTurnForward(degreesCw, turnRadiusInches);
+		// Robot.drivebase.travelSweepingTurnForward(degreesCw, turnRadiusInches);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.drivebase.onTarget();
+		// return Robot.drivebase.onTarget();
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		System.out.println("Ending SweepTurn (" + degreesCw + " degrees at " + turnRadiusInches + " inches radius)");
-		Robot.drivebase.stop();
+		// Robot.drivebase.stop();
 	}
 }

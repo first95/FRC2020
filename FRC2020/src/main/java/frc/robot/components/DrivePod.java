@@ -167,7 +167,7 @@ public class DrivePod {
 	 * @param inches - the target position in inches from current position
 	 */
 	public void setCLPosition(double inches) {
-		if (Robot.drivebase.getGear()) {
+		if (Robot.getGear()) {
 			applyHighGearPositionPidConsts();
 			System.out.println("IN HIGH GEAR");
 		} else {

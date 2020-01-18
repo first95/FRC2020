@@ -17,7 +17,7 @@ public class SetMaxSpeed extends Command {
 	protected void initialize() {
 		super.initialize();
 	
-		Robot.drivebase.setMaxSpeed(m_maxSpeed);
+		//Robot.drivebase.setMaxSpeed(m_maxSpeed);
 	}
 
 	@Override

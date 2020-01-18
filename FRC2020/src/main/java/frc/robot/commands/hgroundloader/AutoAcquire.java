@@ -10,7 +10,7 @@ import frc.robot.commands.elevator.SetElevatorHeight;
 import frc.robot.commands.hscorer.GrabIt;
 import frc.robot.commands.hscorer.PushIt;
 import frc.robot.subsystems.HatchGroundLoader;
-import frc.robot.subsystems.Elevator.ElevatorHoldPoint;
+//import frc.robot.subsystems.Elevator.ElevatorHoldPoint;
 
 public class AutoAcquire extends CommandGroup {
     // public static final double AUTO_ACQUIRE_INTAKE_THROTTLE = 1.0;

@@ -19,7 +19,7 @@ public class PivotAtSpeed extends Command {
 	double degreesCw;
 	
 	public PivotAtSpeed(double inchesPerSecond, double degreesCw) {
-		requires(Robot.drivebase);
+		// requires(Robot.drivebase);
 		System.out.println("We are in PivotAtSpeed");
 		this.inchesPerSecond = inchesPerSecond;
 		this.degreesCw = degreesCw;
@@ -31,19 +31,20 @@ public class PivotAtSpeed extends Command {
 		System.out.println("Starting Pivot At Speed (" + degreesCw + " degrees)");
 
 		// Command the movement
-		Robot.drivebase.pivotDegreesClockwise(inchesPerSecond,degreesCw);
+		// Robot.drivebase.pivotDegreesClockwise(inchesPerSecond,degreesCw);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.drivebase.onTarget();
+		// return Robot.drivebase.onTarget();
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		System.out.println("Ending Pivot (" + degreesCw + " degrees)");
-		Robot.drivebase.stop();
+		// Robot.drivebase.stop();
 	}
 }

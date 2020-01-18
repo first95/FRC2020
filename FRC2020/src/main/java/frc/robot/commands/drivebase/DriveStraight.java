@@ -16,7 +16,7 @@ public class DriveStraight extends Command {
 	double distanceInches;
 	
 	public DriveStraight(double inches) {
-		requires(Robot.drivebase);
+		// requires(Robot.drivebase);
 		System.out.println("We are in DriveStraight");
 		// Not sure why this is reversed
 		this.distanceInches = -inches;
@@ -29,20 +29,21 @@ public class DriveStraight extends Command {
 		System.out.println("Starting DriveStraight (" + distanceInches + " inches)");
 		
 		// Command the movement
-		Robot.drivebase.travelStraight(distanceInches);
+		// Robot.drivebase.travelStraight(distanceInches);
 		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.drivebase.onTarget();
+		// return Robot.drivebase.onTarget();
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		System.out.println("Ending DriveStraight (" + distanceInches + " inches)");
-		Robot.drivebase.stop();
+		// Robot.drivebase.stop();
 	}
 }

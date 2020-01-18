@@ -34,7 +34,7 @@ public class Pivot extends Command {
 		// We have to do this to make it turn the right way : John says "Cheese Warning"
 		degreesCw *= -1;
 		
-		requires(Robot.drivebase);
+		//requires(Robot.drivebase);
 		System.out.println("We are in Pivot");
 		clp = new PIDController(K_P, K_I, K_D, new PIDSource() {
 			
@@ -45,7 +45,8 @@ public class Pivot extends Command {
 			
 			@Override
 			public double pidGet() {
-				return Robot.drivebase.getRobotHeadingDegrees();
+				// return Robot.drivebase.getRobotHeadingDegrees();
+				return 0;
 			}
 			
 			@Override
@@ -56,7 +57,7 @@ public class Pivot extends Command {
 			
 			@Override
 			public void pidWrite(double output) {
-				Robot.drivebase.setPivotRate(-output);
+				// Robot.drivebase.setPivotRate(-output);
 			}
 		}, 0.01);
 		
@@ -82,7 +83,7 @@ public class Pivot extends Command {
 	@Override
 	public void initialize() {
 		System.out.println("Starting Pivot (" + degreesCw + " degrees)");
-		robotHeadingAtStartOfMove = Robot.drivebase.getRobotHeadingDegrees();
+		// robotHeadingAtStartOfMove = Robot.drivebase.getRobotHeadingDegrees();
 		
 		// Command the movement
 		clp.enable();
@@ -119,6 +120,6 @@ public class Pivot extends Command {
 	protected void end() {
 		clp.disable();
 		System.out.println("Ending Pivot (" + degreesCw + " degrees)");
-		Robot.drivebase.stop();
+		// Robot.drivebase.stop();
 	}
 }
