@@ -124,15 +124,15 @@ public class OI {
 		// // Create some buttons
 		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
         cameraViewSwitcher.whenPressed(new ToggleCameraMode());
-		cameraViewSwitcher.close(); // Don't need this one anymore?
+		// cameraViewSwitcher.close(); // Don't need this one anymore?
 		
 		JoystickButton hglAutoCollect = new JoystickButton(weaponsController, HGL_AUTO_COLLECT);
 		hglAutoCollect.whileHeld(new AutoAcquire(true));
-        hglAutoCollect.close(); // Don't need this one anymore?		
+        // hglAutoCollect.close(); // Don't need this one anymore?		
 
         JoystickButton lineFollowButton = new JoystickButton(driverController, BUTTON_FORCE_HIGH_GEAR);
         lineFollowButton.whileHeld(new AutosteerThenRumble());
-		lineFollowButton.close();
+		// lineFollowButton.close();
 
 		robotStartingPosition.addObject("Hab 1 Left", StartPosition.HAB_1_LEFT);
 		robotStartingPosition.addObject("Hab 1 Center", StartPosition.HAB_1_CENTER);
