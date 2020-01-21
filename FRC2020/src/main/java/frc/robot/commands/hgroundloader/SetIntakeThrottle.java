@@ -4,34 +4,35 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetIntakeThrottle extends Command {
-	private double intakeSpeed;
+	// private double intakeSpeed;
 	
-	public SetIntakeThrottle (double speed) {
-        requires(Robot.hGroundLoader);
-        intakeSpeed = speed;
-    }
+	// public SetIntakeThrottle (double speed) {
+    //     requires(Robot.hGroundLoader);
+    //     intakeSpeed = speed;
+    // }
     
     @Override
     public synchronized void start() {
-        System.out.println("SetIntakeThrottle.start()");
-        super.start();
+        // System.out.println("SetIntakeThrottle.start()");
+        // super.start();
     }
 
 	@Override
 	protected void execute() {
-		Robot.hGroundLoader.setIntakeSpeed(intakeSpeed);
+		// Robot.hGroundLoader.setIntakeSpeed(intakeSpeed);
 	}
 
     @Override
     protected boolean isFinished() {
-        boolean fin = true;
-        System.out.println("SetIntakeThrottle.isFinished() - " + fin);
-        return fin;
+        // boolean fin = true;
+        // System.out.println("SetIntakeThrottle.isFinished() - " + fin);
+        // return fin;
+        return true;
     }
 
     @Override
     protected void end() {
-        System.out.println("SetIntakeThrottle.end()");
-        super.end();
+        // System.out.println("SetIntakeThrottle.end()");
+        // super.end();
     }
 }

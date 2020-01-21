@@ -5,5 +5,6 @@ public class AnyForward extends DriveStraight {
 
 	public AnyForward() {
 		super(INCHES_TO_AUTO_LINE);
+		System.out.println("We are in AnyForward");
 	}
 }

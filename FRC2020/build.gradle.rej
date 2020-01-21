@@ -1,0 +1,9 @@
+diff a/FRC2020/build.gradle b/FRC2020/build.gradle	(rejected hunks)
+@@ -67,6 +67,7 @@
+      from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+      manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+  }
+++<<<<<<< HEAD
+ +plugins {
+ +    id "java"
+ +    id "edu.wpi.first.GradleRIO" version "2020.1.2"

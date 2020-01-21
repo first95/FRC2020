@@ -16,27 +16,27 @@ import frc.robot.commands.Pause;
  * and then retract the scorer so it's out of the way
  */
 public class LoadHatch extends Command {
-	private double pauseDur = 1;
+	// private double pauseDur = 1;
 	
-	public LoadHatch() {
-		requires(Robot.hScorer);
-	}
+	// public LoadHatch() {
+	// 	requires(Robot.hScorer);
+	// }
 
-	// Called every time the command starts
+	// // Called every time the command starts
 	@Override
 	public void initialize() {
-		System.out.println("Starting LoadHatch");
+		// System.out.println("Starting LoadHatch");
 		
-		// Push scorer
-		Robot.hScorer.pushHS(true);
-		// Pause for 1 second
-		Scheduler.getInstance().add(new Pause(this.pauseDur));
-		// Open scorer
-		Robot.hScorer.openHS(true);
-		// Pause for 1 second
-		Scheduler.getInstance().add(new Pause(this.pauseDur));
-		// Retract scorer
-		Robot.hScorer.pushHS(false);
+		// // Push scorer
+		// Robot.hScorer.pushHS(true);
+		// // Pause for 1 second
+		// Scheduler.getInstance().add(new Pause(this.pauseDur));
+		// // Open scorer
+		// Robot.hScorer.openHS(true);
+		// // Pause for 1 second
+		// Scheduler.getInstance().add(new Pause(this.pauseDur));
+		// // Retract scorer
+		// Robot.hScorer.pushHS(false);
 
 	}
 
@@ -56,6 +56,6 @@ public class LoadHatch extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		System.out.println("Ending LoadHatch");
+		//System.out.println("Ending LoadHatch");
 	}
 }

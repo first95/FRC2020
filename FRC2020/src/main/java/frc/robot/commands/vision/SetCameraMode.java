@@ -14,28 +14,28 @@ import frc.robot.Robot;
  * Command to set the main camera into one of its modes
  */
 public class SetCameraMode extends Command {
-    private boolean camShouldBeHumanVisible = false;
+    // private boolean camShouldBeHumanVisible = false;
 
-    /**
-     * Command the camera to enter a mode
-     * @param isHumanVisible true if the camera should be configured for human use, 
-     * or false to configure the camera for machine vision.
-     */
-    public SetCameraMode(boolean isHumanVisible) {
-        camShouldBeHumanVisible = isHumanVisible;
-        requires(Robot.vision);
-    }
-    /**
-     * Command the coprocessor to configure the camera for machine vision.
-     */
-    public SetCameraMode() {
-        this(true);
-    }
+    // /**
+    //  * Command the camera to enter a mode
+    //  * @param isHumanVisible true if the camera should be configured for human use, 
+    //  * or false to configure the camera for machine vision.
+    //  */
+    // public SetCameraMode(boolean isHumanVisible) {
+    //     camShouldBeHumanVisible = isHumanVisible;
+    //     requires(Robot.vision);
+    // }
+    // /**
+    //  * Command the coprocessor to configure the camera for machine vision.
+    //  */
+    // public SetCameraMode() {
+    //     this(true);
+    // }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.vision.setCameraIsHumanVisible(camShouldBeHumanVisible);
+        // Robot.vision.setCameraIsHumanVisible(camShouldBeHumanVisible);
     }
 
     // Make this return true when this Command no longer needs to run execute()

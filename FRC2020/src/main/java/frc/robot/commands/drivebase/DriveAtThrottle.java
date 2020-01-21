@@ -15,7 +15,8 @@ public class DriveAtThrottle extends Command {
 	double throttleFwd;
 	
 	public DriveAtThrottle(double throttleFwd) {
-		requires(Robot.drivebase);
+		// requires(Robot.drivebase);
+		System.out.println("We are in DriveAtThrottle");
 		
 		// Not sure why this is reversed
 		this.throttleFwd = -throttleFwd;
@@ -28,7 +29,7 @@ public class DriveAtThrottle extends Command {
 		System.out.println("Starting DriveAtThrottle (" + throttleFwd + ")");
 		
 		// Command the movement
-		Robot.drivebase.arcade(throttleFwd, 0);
+		// Robot.drivebase.arcade(throttleFwd, 0);
 		
 	}
 
@@ -42,6 +43,6 @@ public class DriveAtThrottle extends Command {
 	@Override
 	protected void end() {
 		System.out.println("Ending DriveAtThrottle (" + throttleFwd + ")");
-		Robot.drivebase.stop();
+		// Robot.drivebase.stop();
 	}
 }

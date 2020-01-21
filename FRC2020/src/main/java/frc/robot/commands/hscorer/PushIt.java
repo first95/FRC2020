@@ -12,7 +12,7 @@ public class PushIt extends TimedCommand {
 
     public PushIt(boolean push, double durationS) {
         super(durationS);
-        requires(Robot.hScorer);
+        //requires(Robot.hScorer);
         this.push = push;
     }
 
@@ -22,7 +22,7 @@ public class PushIt extends TimedCommand {
 
     @Override
     public void execute() {
-        super.execute();
-        Robot.hScorer.pushHS(push);
+        // super.execute();
+        // Robot.hScorer.pushHS(push);
     }
 }

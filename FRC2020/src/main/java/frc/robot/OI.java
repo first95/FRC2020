@@ -4,15 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.components.StartPosition;
-import frc.robot.commands.Nothing;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.SelectedStrategy.selectedStrategy;
 import frc.robot.commands.compound.AutosteerThenRumble;
-import frc.robot.commands.compound.ForwardTenFeet;
 import frc.robot.commands.drivebase.DriveToVT;
 import frc.robot.commands.drivebase.Pivot;
 import frc.robot.commands.vision.ToggleCameraMode;
@@ -22,13 +16,12 @@ import frc.robot.commands.hgroundloader.SetWristAngle;
 import frc.robot.commands.hgroundloader.WaitForHatchDetected;
 import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.JoystickPovButton;
-import frc.robot.oi.MutableSendableChooser;
 import frc.robot.oi.XBox360Controller;
 import frc.robot.subsystems.Elevator;
 
 /**
  * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the 
+ * interface to the commands and command groups that allow control of the robot.
  * One can use SmartDashboard with a controller plugged in to see which values corrospond
  * to which controls.
  */
@@ -78,40 +71,12 @@ public class OI {
 	private static final double ELEVATOR_UPDOWN_DEADBAND = 0.18;
 	private static final double CARGO_INTAKE_DEADBAND = 0.1;
 
-	StartPosition ststartPosition;
-
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
 		DRIVER,
 		WEAPONS, // Weapons operator
 	}
-
-	
-	SendableChooser<StartPosition> robotStartingPosition = new SendableChooser<>();
-
-	// All of these commands assume we are scoring a hatch.
-	MutableSendableChooser<Command> attackFLRocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front.
-	//MutableSendableChooser<Command> attackFL2Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front on the second level.
-	//MutableSendableChooser<Command> attackFL3Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the front on the third level.
-	MutableSendableChooser<Command> attackFRRocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front.
-	//MutableSendableChooser<Command> attackFR2Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front on the second level.
-	//MutableSendableChooser<Command> attackFR3Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the front on the third level.
-	MutableSendableChooser<Command> attackBLRocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back.
-	//MutableSendableChooser<Command> attackBL2Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back on the second level.
-	//MutableSendableChooser<Command> attackBL3Rocket = new MutableSendableChooser<>(); // Scores on the left rocket in the back on the third level.
-	MutableSendableChooser<Command> attackBRRocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back.
-	//MutableSendableChooser<Command> attackBR2Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back on the second level.
-	//MutableSendableChooser<Command> attackBR3Rocket = new MutableSendableChooser<>(); // Scores on the right rocket in the back on the thrid level.
-	MutableSendableChooser<Command> attackFLCargoship = new MutableSendableChooser<>(); // Scores on the front left side of the cargoship.
-	MutableSendableChooser<Command> attackFRCargoship = new MutableSendableChooser<>(); // Scores on the front right side of the cargoship.
-	MutableSendableChooser<Command> attackLCargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship.
-	//MutableSendableChooser<Command> attackL2Cargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship second from the front.
-	//MutableSendableChooser<Command> attackL3Cargoship = new MutableSendableChooser<>(); // Scores on the left side of the cargoship furthest from the front.
-	MutableSendableChooser<Command> attackRCargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship.
-	//MutableSendableChooser<Command> attackR2Cargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship second from the front.
-	//MutableSendableChooser<Command> attackR3Cargoship = new MutableSendableChooser<>(); // Scores on the right side of the cargoship furthest from the front.
-	StartPosition lastSelectedPosition = null;
 
 	// System timestamps after which we want each rumbler to be turned off
 	private double driverLeftRumbleStopTime = 0;
@@ -127,19 +92,12 @@ public class OI {
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
 		
 		JoystickButton hglAutoCollect = new JoystickButton(weaponsController, HGL_AUTO_COLLECT);
-		hglAutoCollect.whileHeld(new AutoAcquire(true));
+		// hglAutoCollect.whileHeld(new AutoAcquire(true));
         // hglAutoCollect.close(); // Don't need this one anymore?		
 
         JoystickButton lineFollowButton = new JoystickButton(driverController, BUTTON_FORCE_HIGH_GEAR);
         lineFollowButton.whileHeld(new AutosteerThenRumble());
 		// lineFollowButton.close();
-
-		robotStartingPosition.addObject("Hab 1 Left", StartPosition.HAB_1_LEFT);
-		robotStartingPosition.addObject("Hab 1 Center", StartPosition.HAB_1_CENTER);
-		robotStartingPosition.addObject("Hab 1 Right", StartPosition.HAB_1_RIGHT);
-		robotStartingPosition.addObject("Hab 1 Left", StartPosition.HAB_2_LEFT);
-		robotStartingPosition.addObject("Hab 2 Right", StartPosition.HAB_2_RIGHT);
-		robotStartingPosition.addObject("Hab 3", StartPosition.HAB_3);
 
 		// // For testing 
         // JoystickAxisButton testRumble = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
@@ -156,8 +114,6 @@ public class OI {
 
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {
-
-		updateSmartChoosers();
 
 		// Cancel joystick rumble if necessary
 		if(Timer.getFPGATimestamp() > driverLeftRumbleStopTime) {
@@ -302,28 +258,28 @@ public class OI {
 		return -elevatorSpeed * 1.0;
 	}
 
-	public Elevator.ElevatorHoldPoint getCommandedHoldPoint() {
-		// Prioritize lower setpoints if the user holds more than one button
-		if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOAD)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOAD;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOW)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOW;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_MID)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_MID;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_MID;
-			}
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_HIGH)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_HIGH;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_HIGH;
-			}
-		} else {
-			return Elevator.ElevatorHoldPoint.NONE;
-		}
-	}
+	// public Elevator.ElevatorHoldPoint getCommandedHoldPoint() {
+	// 	// Prioritize lower setpoints if the user holds more than one button
+	// 	if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOAD)) {
+	// 		return Elevator.ElevatorHoldPoint.HATCH_COVER_LOAD;
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOW)) {
+	// 		return Elevator.ElevatorHoldPoint.HATCH_COVER_LOW;
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_MID)) {
+	// 		if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
+	// 			return Elevator.ElevatorHoldPoint.CARGO_MID;
+	// 		} else {
+	// 			return Elevator.ElevatorHoldPoint.HATCH_COVER_MID;
+	// 		}
+	// 	} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_HIGH)) {
+	// 		if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
+	// 			return Elevator.ElevatorHoldPoint.CARGO_HIGH;
+	// 		} else {
+	// 			return Elevator.ElevatorHoldPoint.HATCH_COVER_HIGH;
+	// 		}
+	// 	} else {
+	// 		return Elevator.ElevatorHoldPoint.NONE;
+	// 	}
+	// }
 
 	public boolean getElevatorHomeButtonPressed() {
 		return weaponsController.getRawButton(ELEV_YOU_ARE_HOME);
@@ -359,433 +315,6 @@ public class OI {
 	 */
 	public boolean getLowGear() {
 		return driverController.getRawButton(BUTTON_FORCE_LOW_GEAR);
-	}
-
-	public StartPosition getRobotStartPosition()
-	{
-		return robotStartingPosition.getSelected();
-	}
-
-	public void updateSmartChoosers() {
-		StartPosition curPos = robotStartingPosition.getSelected();
-
-		if (curPos != lastSelectedPosition) {
-			System.out.println("Updating auto move choices list");
-			updateAttackFLRocket(curPos);
-			updateAttackFRRocket(curPos);
-			updateAttackBLRocket(curPos);
-			updateAttackBRRocket(curPos);
-			updateAttackFLCargoship(curPos);
-			updateAttackFRCargoship(curPos);
-			updateAttackLCargoship(curPos);
-			updateAttackRCargoship(curPos);
-		}
-		lastSelectedPosition = curPos;
-	}
-
-	public Command getSelectedCommand(StartPosition startPosition)
-	{
-		if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
-			|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
-		{
-			return attackFLRocket.getSelected();
-		}
-		else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
-			|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
-		{
-			return attackFRRocket.getSelected();
-		}
-
-		// else if (whichStratIsSelected == 2)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackFL2Rocket.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackFR2Rocket.getSelected();
-		// 	}
-		// 	else
-		// 	{
-		// 		return new Nothing();
-		// 	}
-			
-		// }
-		// else if (whichStratIsSelected == 3)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackFL3Rocket.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackFR3Rocket.getSelected();
-		// 	}
-		// 	else
-		// 	{
-		// 		return new Nothing();
-		// 	}
-			
-		// }
-
-			if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
-				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackBLRocket.getSelected();
-			}
-			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
-				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackBRRocket.getSelected();
-			}
-			
-		// else if (whichStratIsSelected == 5)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackBL2Rocket.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackBR2Rocket.getSelected();
-		// 	}
-		// 	else
-		// 	{
-		// 		return new Nothing();
-		// 	}
-			
-		// }
-		// else if (whichStratIsSelected == 6)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackBL3Rocket.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackBR3Rocket.getSelected();
-		// 	}
-		// 	else
-		// 	{
-		// 		return new Nothing();
-		// 	}
-			
-		// }
-
-			else if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
-				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackFLCargoship.getSelected();
-			}
-			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
-				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackFRCargoship.getSelected();
-			}
-			if ((startPosition == StartPosition.HAB_1_LEFT) || (startPosition == StartPosition.HAB_2_LEFT)
-				|| (startPosition == StartPosition.HAB_1_CENTER) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackLCargoship.getSelected();
-			}
-			else if ((startPosition == StartPosition.HAB_1_RIGHT) || (startPosition == StartPosition.HAB_1_CENTER)
-				|| (startPosition == StartPosition.HAB_2_RIGHT) || (startPosition == StartPosition.HAB_3))
-			{
-				return attackRCargoship.getSelected();
-			}
-			else
-			{
-				return new Nothing();
-			}
-			
-		// else if (whichStratIsSelected == 9)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackL2Cargoship.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackR2Cargoship.getSelected();
-		// 	}
-		// 	else
-		// 	{
-		// 		return new Nothing();
-		// 	}
-			
-		// }
-		// else if (whichStratIsSelected == 10)
-		// {
-		// 	if (startPosition == StartPosition.HAB_1_LEFT) || startPosition == StartPosition.HAB_2_LEFT)
-		// 		|| startPosition == StartPosition.HAB_1_CENTER) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackL3Cargoship.getSelected();
-		// 	}
-		// 	else if (startPosition == StartPosition.HAB_1_RIGHT) || startPosition == StartPosition.HAB_1_CENTER)
-		// 		|| startPosition == StartPosition.HAB_2_RIGHT) || startPosition == StartPosition.HAB_3))
-		// 	{
-		// 		return attackR3Cargoship.getSelected();
-		// 	}
-	}
-
-	// AUTO MOVE CHOOSERS
-
-	private void updateAttackFLRocket(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack FL Rocket: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackFLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackFRRocket(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack FR Rocket: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackFRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackBLRocket(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack BL Rocket: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackBLRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackBRRocket(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack BR Rocket: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackBRRocket.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackFLCargoship(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack FL Cargoship: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackFRCargoship(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack FR Cargoship: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackFLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackLCargoship(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack L Cargoship: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackLCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateAttackRCargoship(StartPosition robotStartPosition) {
-		// Clear chooser before updating
-		attackFLRocket.clear();
-
-		// Default move || The closest thing we have to a label
-		attackFLRocket.addDefault("Attack R Cargoship: Nothing", new Nothing());
-
-		switch (robotStartPosition) {
-		case HAB_1_LEFT:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_CENTER:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_1_RIGHT:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_LEFT:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_2_RIGHT:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		case HAB_3:
-			attackRCargoship.addObject("Forward 10 Feet", new ForwardTenFeet());
-			break;
-		default:
-			break;
-		}
 	}
 
 	/**

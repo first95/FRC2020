@@ -19,29 +19,30 @@ public class AutosteerAlongLine extends Command {
     public static final double MAX_FWD_RATE = 0.5;
     
 	public AutosteerAlongLine() {
-		requires(Robot.drivebase);
+        //requires(Robot.drivebase);
+        System.out.println("We are in AutosteerAlongLine");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        Robot.drivebase.setMaxSpeed(1);
-        double turn;
-        double fwd;
-        if(Robot.drivebase.doesAnySensorSeeTheLine()) {
-            System.out.println("Some sensor sees a line!");
-            double[] newSpeeds = getLineFollowSpeeds();
-            turn = newSpeeds[0];
-            fwd = newSpeeds[1];
-        } else {
-            // Exponential response
-            System.out.println("No sensor sees a line.");
-            turn = Math.pow(Robot.oi.getTurnAxis(), 3);
-            fwd  = Math.pow(Robot.oi.getForwardAxis(), 3);
-        }
+        // Robot.drivebase.setMaxSpeed(1);
+        // double turn;
+        // double fwd;
+        // if(Robot.drivebase.doesAnySensorSeeTheLine()) {
+        //     System.out.println("Some sensor sees a line!");
+        //     double[] newSpeeds = getLineFollowSpeeds();
+        //     turn = newSpeeds[0];
+        //     fwd = newSpeeds[1];
+        // } else {
+        //     // Exponential response
+        //     System.out.println("No sensor sees a line.");
+        //     turn = Math.pow(Robot.oi.getTurnAxis(), 3);
+        //     fwd  = Math.pow(Robot.oi.getForwardAxis(), 3);
+        // }
 
-        // Put it into action
-		Robot.drivebase.arcade(fwd, turn);
+        // // Put it into action
+		// Robot.drivebase.arcade(fwd, turn);
     }
     
     /**
@@ -51,17 +52,17 @@ public class AutosteerAlongLine extends Command {
 	private double[] getLineFollowSpeeds() {
         double turnRateAccum = 0;
         double fwdRateAccum = 0;
-        int numSensors = Robot.drivebase.getLineSensorCount();
+        //int numSensors = Robot.drivebase.getLineSensorCount();
         int numSensorsTripped = 0;
 
         // Accumulation part of the average
-        for(int sensor = 0; sensor < numSensors; sensor++) {
-            if(Robot.drivebase.doesSensorSeeLine(sensor)) {
-                turnRateAccum += getTurnRateForSingleSensor(sensor);
-                fwdRateAccum += getFwdRateForSingleSensor(sensor);
-                numSensorsTripped++;
-            }
-        }
+        // for(int sensor = 0; sensor < numSensors; sensor++) {
+        //     if(Robot.drivebase.doesSensorSeeLine(sensor)) {
+        //         turnRateAccum += getTurnRateForSingleSensor(sensor);
+        //         fwdRateAccum += getFwdRateForSingleSensor(sensor);
+        //         numSensorsTripped++;
+        //     }
+        // }
 
         // Actually perform the average
         return new double[] {turnRateAccum/numSensorsTripped,fwdRateAccum/numSensorsTripped};
@@ -73,8 +74,8 @@ public class AutosteerAlongLine extends Command {
      */
     private double getTurnRateForSingleSensor(int sensor) {
         // Index of the sensor in the center.  This is also the count of sensors to the right or left of center.
-        int centerSensorIndex = Robot.drivebase.getCenterSensorIndex();
-        return (((double)(sensor - centerSensorIndex)) / centerSensorIndex) * MAX_TURN_RATE;
+        //int centerSensorIndex = Robot.drivebase.getCenterSensorIndex();
+        return 0;//(((double)(sensor - centerSensorIndex)) / centerSensorIndex) * MAX_TURN_RATE;
     }
 
     /**
@@ -83,19 +84,19 @@ public class AutosteerAlongLine extends Command {
      */
     private double getFwdRateForSingleSensor(int sensor) {
         // Index of the sensor in the center.  This is also the count of sensors to the right or left of center.
-        int centerSensorIndex = Robot.drivebase.getCenterSensorIndex();
-        return ((double)(Math.abs(sensor - centerSensorIndex)-centerSensorIndex) / centerSensorIndex) * MAX_TURN_RATE;
+        //int centerSensorIndex = Robot.drivebase.getCenterSensorIndex();
+        return 0; //((double)(Math.abs(sensor - centerSensorIndex)-centerSensorIndex) / centerSensorIndex) * MAX_TURN_RATE;
     }
 
     // Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
         //System.out.println("We " + (Robot.drivebase.doAllForwardSensorsSeeWall()? "see":"do not see") + " see the wall.");
-        if (Robot.drivebase.doAllForwardSensorsSeeWall()){
+        // if (Robot.drivebase.doAllForwardSensorsSeeWall()){
             return true;
-        } else {
-            return false; // This command runs until interrupted
-        }
+        // } else {
+            // return false; // This command runs until interrupted
+        // }
 	}
 
 }

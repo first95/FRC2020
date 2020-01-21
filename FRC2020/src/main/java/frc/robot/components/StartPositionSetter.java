@@ -5,17 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.compound;
+package frc.robot.components;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.drivebase.PathFinderCommand;
+import frc.robot.Robot;
+import frc.robot.components.StartPosition;
 
-public class ForwardTenFeet extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public ForwardTenFeet()
-  {
-    //addSequential(new PathFinderCommand(true, false, 20, 1));
-  }
+/**
+ * Add your docs here.
+ */
+public class StartPositionSetter
+{
+    // boolean setPosition = true;
+
+    // public void StartPositionSetter()
+    // {
+    //     if(setPosition)
+    //     {
+    //         Robot.startPosition = StartPosition.HAB_1_LEFT;
+    //     }
+    //     else {
+    //         Robot.startPosition = StartPosition.UNKNOWN;
+    //     }
+    // }
 }

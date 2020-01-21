@@ -10,14 +10,14 @@ public class SetMaxSpeed extends Command {
 	
 	public SetMaxSpeed(double maxSpeed) {
 		m_maxSpeed = maxSpeed;
-		
+		System.out.println("We are in SetMaxSpeed");
 	}
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
 	
-		Robot.drivebase.setMaxSpeed(m_maxSpeed);
+		//Robot.drivebase.setMaxSpeed(m_maxSpeed);
 	}
 
 	@Override

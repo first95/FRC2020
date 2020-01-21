@@ -6,18 +6,18 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BrakesCommand extends Command {
 	
 	public BrakesCommand() {
-		requires(Robot.brakes);
+		// requires(Robot.brakes);
 	}
 
 	@Override
 	protected void execute() {
-		if (Robot.oi.isBrakesButtonHeld()) {
-			Robot.brakes.setBrakes(true);
-		}
-		else
-		{
-			Robot.brakes.setBrakes(false);
-		}
+		// if (Robot.oi.isBrakesButtonHeld()) {
+		// 	Robot.brakes.setBrakes(true);
+		// }
+		// else
+		// {
+		// 	Robot.brakes.setBrakes(false);
+		// }
 	}
 
 	@Override

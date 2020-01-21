@@ -4,17 +4,17 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetWristAngle extends Command {
-	private Double targetDegrees = 0.0;
+	//private Double targetDegrees = 0.0;
 
-	public SetWristAngle(double targetDegrees) {
-		// This method is run once during robot startup
-		requires(Robot.cargoHandler);
-		this.targetDegrees = targetDegrees;
-	}
+	// public SetWristAngle(double targetDegrees) {
+	// 	// This method is run once during robot startup
+	// 	requires(Robot.cargoHandler);
+	// 	this.targetDegrees = targetDegrees;
+	// }
 
 	@Override
 	public synchronized void initialize() {
-		Robot.cargoHandler.setWristAngleDeg(targetDegrees);
+		//Robot.cargoHandler.setWristAngleDeg(targetDegrees);
 	}
 	
 	@Override
@@ -26,7 +26,8 @@ public class SetWristAngle extends Command {
 	
 	@Override
 	protected boolean isFinished() {
-		return Robot.cargoHandler.isOnTarget();
+		//return Robot.cargoHandler.isOnTarget();
+		return true;
 	}
 	
 }

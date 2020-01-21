@@ -49,7 +49,7 @@ public class DrivePod {
 	private String pLabel = "DrivePod P";
 	private String iLabel = "DrivePod I";
 	private String dLabel = "DrivePod D";
-	private static IMotorControllerEnhanced leader, follower1, follower2;
+	private IMotorControllerEnhanced leader, follower1, follower2;
 	private String name;
 	private double twiddle = 1.0; // This value is used to force SmartDashboard line graphs to update by slightly changing the value
 	private double targetDistanceAtSpeed; // When commanded both a distance and a speed, this object needs to remember the target distance
@@ -167,7 +167,7 @@ public class DrivePod {
 	 * @param inches - the target position in inches from current position
 	 */
 	public void setCLPosition(double inches) {
-		if (Robot.drivebase.getGear()) {
+		if (Robot.getGear()) {
 			applyHighGearPositionPidConsts();
 			System.out.println("IN HIGH GEAR");
 		} else {
@@ -236,7 +236,7 @@ public class DrivePod {
 		setCLSpeed(inchesPerSecond, false);
 	}
 
-	public static double getPositionInches() {
+	public double getPositionInches() {
 		return leader.getSelectedSensorPosition(Constants.PID_IDX) / ENCODER_TICKS_PER_INCH;
 	}
 
