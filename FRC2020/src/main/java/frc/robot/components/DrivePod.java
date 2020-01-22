@@ -61,32 +61,20 @@ public class DrivePod {
 	// (This is to account for the way the drive pods are mounted in a rotationally
 	// symmetric way.)
 	// Name is for feedback on the SmartDashboard - likely "left" or "right"
-	public DrivePod(String name, int leaderCanNum, int follower1CanNum, int follower2CanNum, boolean reverse,
-			boolean realHardware) {
+	public DrivePod(String name, int leaderCanNum, int follower1CanNum, int follower2CanNum, boolean reverse) {
 		this.name = name;
 
-		if (realHardware) {
-			this.leader = new AdjustedTalon(leaderCanNum);
-			this.follower1 = new TalonSRX(follower1CanNum);
-			this.follower2 = new TalonSRX(follower2CanNum);
-		} else {
-			this.leader = new FakeTalon();
-			this.follower1 = new FakeTalon();
-			this.follower2 = new FakeTalon();
-		}
+		this.leader = new TalonSRX(leaderCanNum);
+		this.follower1 = new TalonSRX(follower1CanNum);
+		this.follower2 = new TalonSRX(follower2CanNum);
+		
 		// Tell the followers to follow the leader
 		follower1.set(ControlMode.Follower, leaderCanNum);
 		follower2.set(ControlMode.Follower, leaderCanNum);
 
-		// Only set the leader to backwards.
 		leader.setInverted(reverse);
 		follower1.setInverted(reverse);
 		follower2.setInverted(reverse);
-
-		// Apply current limit settings to each AdjustedTalon
-		applyCurrentLimitSettings(leader);
-		applyCurrentLimitSettings(follower1);
-		applyCurrentLimitSettings(follower2);
 
 		init();
 	}
@@ -348,16 +336,5 @@ public class DrivePod {
 		return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
 	}
 
-	public double getLeadCurrent() {
-		return leader.getOutputCurrent();
-	}
-
-	public static void applyCurrentLimitSettings(IMotorControllerEnhanced mc) {
-		// TODO: determine if we still want this capability, and if so, what non-deprecated methods
-		// we can use to do it
-		// mc.configContinuousCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_CONTINUAL_AMPS, Constants.CAN_TIMEOUT_MS);
-		// mc.configPeakCurrentLimit(Constants.DRIVEPOD_MAX_CURRENT_PEAK_AMPS, Constants.CAN_TIMEOUT_MS);
-		// mc.configPeakCurrentDuration(Constants.DRIVEPOD_MAX_CURRENT_PEAK_DURATION_MS, Constants.CAN_TIMEOUT_MS);
-	}
 
 }

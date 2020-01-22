@@ -1,7 +1,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -32,11 +31,7 @@ public class DriveBase extends Subsystem {
 
 	private double leftSpeed;
 	private double rightSpeed;
-	
-	// private Pigeon imu;
-	private DigitalInput[] lineSensor;
-    private DigitalInput[] forwardFacingSensor;
-	
+		
 	// Mode for the gearshift, as set by the auto moves
 	public enum GearShiftMode {
 		LOCK_HIGH_GEAR ,
@@ -50,31 +45,14 @@ public class DriveBase extends Subsystem {
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
 	
-	public DriveBase(boolean realHardware) {
+	public DriveBase() {
 		super();
 
 		// Note that one pod must be inverted, since the gearbox assemblies are rotationally symmetrical
-		leftPod = new DrivePod("Left", Constants.LEFT_LEAD, Constants.LEFT_F1, Constants.LEFT_F2, false, realHardware);
-        rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true, realHardware);
-        if(realHardware) {
-            shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
-        } else {
-            shifter = null;
-        }
+		leftPod = new DrivePod("Left", Constants.LEFT_LEAD, Constants.LEFT_F1, Constants.LEFT_F2, false);
+        rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true);
+		shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
 		
-        // imu = new PigeonWrapper(Constants.PIGEON_NUM);
-
-        // Initialize sensors
-        lineSensor = new DigitalInput[Constants.LINE_SENSOR_DIO_NUM.length];
-        int i = 0;
-        for (int dioNum : Constants.LINE_SENSOR_DIO_NUM) {
-            lineSensor[i++] = new DigitalInput(dioNum);
-        }
-        forwardFacingSensor = new DigitalInput[Constants.FORWARD_FACING_SENSOR_DIO_NUM.length];
-        i = 0;
-        for (int dioNum : Constants.FORWARD_FACING_SENSOR_DIO_NUM) {
-            forwardFacingSensor[i++] = new DigitalInput(dioNum);
-        }
 	}
 
 	/**
@@ -95,29 +73,9 @@ public class DriveBase extends Subsystem {
 
 		SmartDashboard.putNumber("leftDriveEncoder Value:", leftPod.getQuadEncPos());
 		SmartDashboard.putNumber("rightDriveEncoder Value:", rightPod.getQuadEncPos());
-		SmartDashboard.putNumber("leftDriveCurrent:", leftPod.getLeadCurrent());
-		SmartDashboard.putNumber("RightDriveCurrent:", rightPod.getLeadCurrent());
-		// SmartDashboard.putNumber("IMU Yaw",   imu.getYawPitchRoll()[0]);
-		// SmartDashboard.putNumber("IMU Pitch", imu.getYawPitchRoll()[1]);
-		// SmartDashboard.putNumber("IMU Roll",  imu.getYawPitchRoll()[2]);
-		// SmartDashboard.putNumber("IMU Fused heading", imu.getFusedHeading());
 		SmartDashboard.putBoolean("In High Gear", getGear());
-		// SmartDashboard.putBoolean("Sensor 0 Tripped", forwardFacingSensor[0].get());
-		// SmartDashboard.putBoolean("Sensor 1 Tripped", forwardFacingSensor[1].get());
-        // int i = 0;
-        // for (DigitalInput ls : lineSensor) {
-        //     SmartDashboard.putBoolean("Line Sensor " + i, !ls.get());
-        //     i++;
-        // }
 	}
 
-	/**
-	 * @return The robots heading in degrees.
-	 */
-	public double getHeading() {
-		// return gyro.getAngle();
-		return 0;
-	}
 
 	public boolean onTarget() {
 		return leftPod.isOnTarget() && rightPod.isOnTarget();
@@ -314,17 +272,6 @@ public class DriveBase extends Subsystem {
 		leftSpeed = Math.abs(Robot.drivebase.getLeftSpeed());
 		rightSpeed = Math.abs(Robot.drivebase.getRightSpeed());
 
-		double elevatorHeight = Robot.elevator.getElevatorHeightFeet();
-		final double ELEVATOR_HEIGHT_SPEED_LIMIT_FT = ((Elevator.ElevatorHoldPoint.HATCH_COVER_MID.heightInches) + 2)/12;
-		//System.out.println(elevatorHeight + " is how high the elevator is");
-		boolean elevatorIsTooHighToShift;
-		if (elevatorHeight <= ELEVATOR_HEIGHT_SPEED_LIMIT_FT) {
-			elevatorIsTooHighToShift = false;
-		}
-		else {
-			elevatorIsTooHighToShift = true;
-		}
-
 		// Autoshift framework based off speed
 		if (allowShift) {
 			if (((leftSpeed < Constants.SPEED_TO_SHIFT_DOWN) && (rightSpeed < Constants.SPEED_TO_SHIFT_DOWN))) {
@@ -337,7 +284,6 @@ public class DriveBase extends Subsystem {
 				}
 
 			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
-				if (elevatorIsTooHighToShift == false) {
 					if (allowDeshift) {
 						shiftTimer.reset();
 						shiftTimer.start();
@@ -345,8 +291,6 @@ public class DriveBase extends Subsystem {
 						setGear(true);
 						//System.out.println(elevatorIsTooHighToShift + " case 2");
 					}
-				}
-				
 			}
 		} else if (shiftTimer.get() > 1.0) {
 			allowShift = true;
@@ -405,64 +349,5 @@ public class DriveBase extends Subsystem {
 		//rightPod.pullPidConstantsFromSmartDash();
     }
     
-    /**
-     * @return the count of line sensors
-     */
-    public int getLineSensorCount() {
-        return lineSensor.length;
-    }
 
-    /**
-     * 
-     * @return The index of the center sensor
-     */
-    public int getCenterSensorIndex() {
-        return  (int)Math.floor(getLineSensorCount() / 2.0);
-    }
-
-    /**
-     * Query a line sensor.
-     * @param i sensor index.  0 is the leftmost, getLineSensorCount()-1 is the rightmost.
-     * @return true if sensor i sees the line.
-     */
-    public boolean doesSensorSeeLine(int i) {
-        return !lineSensor[i].get();
-    }
-
-    /**
-     * Check if the line is detected at all
-     * @return true if any sensor sees the line
-     */
-    public boolean doesAnySensorSeeTheLine() {
-        for (int i = 0; i < getLineSensorCount(); ++i) {
-            if(doesSensorSeeLine(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return true if all forward-facing sensors indicate the presence of a wall
-     */
-    public boolean doAllForwardSensorsSeeWall() {
-		for (int dio = 0; dio < forwardFacingSensor.length; dio++)
-		{
-			if(dio == 0)
-			{
-				if(forwardFacingSensor[dio].get())
-				{
-					return false;
-				}
-			}
-			else
-			{
-				if(!forwardFacingSensor[dio].get())
-				{
-					return false;
-				}
-			}
-		}
-        return true;
-    }
 }

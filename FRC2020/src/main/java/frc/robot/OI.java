@@ -1,23 +1,11 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.compound.AutosteerThenRumble;
-import frc.robot.commands.drivebase.DriveToVT;
-import frc.robot.commands.drivebase.Pivot;
 import frc.robot.commands.vision.ToggleCameraMode;
-import frc.robot.commands.hgroundloader.AutoAcquire;
-import frc.robot.commands.hgroundloader.SetIntakeThrottle;
-import frc.robot.commands.hgroundloader.SetWristAngle;
-import frc.robot.commands.hgroundloader.WaitForHatchDetected;
-import frc.robot.oi.JoystickAxisButton;
-import frc.robot.oi.JoystickPovButton;
 import frc.robot.oi.XBox360Controller;
-import frc.robot.subsystems.Elevator;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -68,8 +56,6 @@ public class OI {
 	public static final int CARGO_HANDLER_WRIST_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int ELEVATOR_AXIS = XBox360Controller.Axis.RIGHT_STICK_Y.Number();
 
-	private static final double ELEVATOR_UPDOWN_DEADBAND = 0.18;
-	private static final double CARGO_INTAKE_DEADBAND = 0.1;
 
 
 	/** Describes which of the controlleres you're referring to */
@@ -90,25 +76,6 @@ public class OI {
 		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
         cameraViewSwitcher.whenPressed(new ToggleCameraMode());
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
-		
-		JoystickButton hglAutoCollect = new JoystickButton(weaponsController, HGL_AUTO_COLLECT);
-		hglAutoCollect.whileHeld(new AutoAcquire(true));
-        // hglAutoCollect.close(); // Don't need this one anymore?		
-
-        JoystickButton lineFollowButton = new JoystickButton(driverController, BUTTON_FORCE_HIGH_GEAR);
-        lineFollowButton.whileHeld(new AutosteerThenRumble());
-		// lineFollowButton.close();
-
-		// // For testing 
-        // JoystickAxisButton testRumble = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-        // testRumble.whenPressed(new RumbleCommand(Controller.DRIVER, RumbleType.kLeftRumble ,1.0 , 1.0, false));
-        // testRumble.close();
-
-		// Sendable Chooser for single commands
-		// These are only for testing Purposes
-		// Rotations
-		SmartDashboard.putData("Drive to vision target", new DriveToVT());
-		// SmartDashboard.putData("Pivot 90 degrees CW", new Pivot(90));
 		
 	}
 
@@ -241,49 +208,6 @@ public class OI {
 		return driverController.getRawButton(BRAKES_DEPLOY);
 	}
 
-	// Elevator controls
-	public double getElevatorSpeed() {
-
-		double elevatorCtrl = weaponsController.getRawAxis(ELEVATOR_AXIS);
-		double elevatorSpeed = 0;
-
-		if ((elevatorCtrl > ELEVATOR_UPDOWN_DEADBAND)
-				|| (elevatorCtrl < -ELEVATOR_UPDOWN_DEADBAND)) {
-			elevatorSpeed = elevatorCtrl;
-		}
-
-		// The Y axis on thet controller is reversed, so that positive is down
-		SmartDashboard.putNumber("Elevator axis value",elevatorCtrl);
-		SmartDashboard.putNumber("Elevator speed throttle",-elevatorSpeed);
-		return -elevatorSpeed * 1.0;
-	}
-
-	public Elevator.ElevatorHoldPoint getCommandedHoldPoint() {
-		// Prioritize lower setpoints if the user holds more than one button
-		if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOAD)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOAD;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_LOW)) {
-			return Elevator.ElevatorHoldPoint.HATCH_COVER_LOW;
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_MID)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_MID;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_MID;
-			}
-		} else if(weaponsController.getRawButton(ELEV_PRESET_HATCH_HIGH)) {
-			if(this.getCargoHandlerIntakeSpeed()>CARGO_INTAKE_DEADBAND) {
-				return Elevator.ElevatorHoldPoint.CARGO_HIGH;
-			} else {
-				return Elevator.ElevatorHoldPoint.HATCH_COVER_HIGH;
-			}
-		} else {
-			return Elevator.ElevatorHoldPoint.NONE;
-		}
-	}
-
-	public boolean getElevatorHomeButtonPressed() {
-		return weaponsController.getRawButton(ELEV_YOU_ARE_HOME);
-	}
 
     /**
      * Get the forward travel rate commanded by the driver
