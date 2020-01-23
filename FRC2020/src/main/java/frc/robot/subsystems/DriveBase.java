@@ -21,28 +21,28 @@ public class DriveBase extends Subsystem {
 
 	private double leftSpeed;
 	private double rightSpeed;
-		
+
 	// Mode for the gearshift, as set by the auto moves
 	public enum GearShiftMode {
-		LOCK_HIGH_GEAR ,
-		LOCK_LOW_GEAR, 
-		AUTOSHIFT  ,
+		LOCK_HIGH_GEAR, LOCK_LOW_GEAR, AUTOSHIFT,
 	}
+
 	private GearShiftMode gearShiftMode = GearShiftMode.AUTOSHIFT;
 
 	private Timer shiftTimer = new Timer();
 	private boolean allowShift = true;
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
-	
+
 	public DriveBase() {
 		super();
 
-		// Note that one pod must be inverted, since the gearbox assemblies are rotationally symmetrical
+		// Note that one pod must be inverted, since the gearbox assemblies are
+		// rotationally symmetrical
 		leftPod = new DrivePod("Left", Constants.LEFT_LEAD, Constants.LEFT_F1, Constants.LEFT_F2, false);
-        rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true);
+		rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true);
 		shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
-		
+
 	}
 
 	/**
@@ -55,21 +55,8 @@ public class DriveBase extends Subsystem {
 	}
 
 	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
-	public void log() {
-		leftPod.log();
-		rightPod.log();
-
-		SmartDashboard.putNumber("leftDriveEncoder Value:", leftPod.getQuadEncPos());
-		SmartDashboard.putNumber("rightDriveEncoder Value:", rightPod.getQuadEncPos());
-		SmartDashboard.putBoolean("In High Gear", getGear());
-	}
-
-
-
-	/**
 	 * Turn dynamic braking on or off
+	 * 
 	 * @param isEnabled true to brake, false to freewheel
 	 */
 	public void brake(boolean isEnabled) {
@@ -79,7 +66,8 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Drive at the commanded throttle values
-	 * @param leftThrottle between -1 and +1
+	 * 
+	 * @param leftThrottle  between -1 and +1
 	 * @param rightThrottle between -1 and +1
 	 */
 	public void driveWithTankControls(double leftThrottle, double rightThrottle) {
@@ -89,12 +77,15 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Drive with the given forward and turn values
+	 * 
 	 * @param forward between -1 and +1
-	 * @param spin between -1 and +1, where -1 is full leftward (CCW when viewed from above)
+	 * @param spin    between -1 and +1, where -1 is full leftward (CCW when viewed
+	 *                from above)
 	 */
 	public void driveWithForwardAndSpin(double forward, double spin) {
 		driveWithTankControls(forward - spin, forward + spin);
 	}
+
 	/**
 	 * Drive with the forward and turn values from the joysticks
 	 */
@@ -103,14 +94,15 @@ public class DriveBase extends Subsystem {
 		double y = Robot.oi.getForwardAxis();
 		double x = Robot.oi.getTurnAxis();
 
-		/* "Exponential" drive, where the movements are more sensitive during
-		 * slow movement, permitting easier fine control
+		/*
+		 * "Exponential" drive, where the movements are more sensitive during slow
+		 * movement, permitting easier fine control
 		 */
 		x = Math.pow(x, 3);
 		y = Math.pow(y, 3);
 		driveWithForwardAndSpin(y, x);
 	}
-	
+
 	public void setMaxSpeed(double maxSpeed) {
 		leftPod.setMaxSpeed(maxSpeed);
 		rightPod.setMaxSpeed(maxSpeed);
@@ -118,6 +110,7 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Get the instantaneous speed of the left side drive pod, in feet per second
+	 * 
 	 * @return instantaneous speed of the left side drive pod, in feet per second
 	 */
 	public double getLeftSpeed() {
@@ -126,6 +119,7 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Get the instantaneous speed of the right side drive pod, in feet per second
+	 * 
 	 * @return instantaneous speed of the right side drive pod, in feet per second
 	 */
 	public double getRightSpeed() {
@@ -134,6 +128,7 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Get the driven distance of the left drive pod in ticks
+	 * 
 	 * @return driven distance of the left drive pod in ticks
 	 */
 	public double getLeftEncoderPos() {
@@ -142,40 +137,42 @@ public class DriveBase extends Subsystem {
 
 	/**
 	 * Get the driven distance of the right drive pod in ticks
+	 * 
 	 * @return driven distance of the right drive pod in ticks
 	 */
 	public double getRightEncoderPos() {
 		return rightPod.getQuadEncPos();
 	}
-	
+
 	/**
 	 * Apply the appropriate gear decided by the auto/manual shifting logic
+	 * 
 	 * @param isHighGear true for high gear, false for low gear
 	 */
 	private void setGear(boolean isHighGear) {
-        //System.out.println("Shifting to " + (isHighGear? "high":"low") + " gear");
-        if(shifter != null) {
-            shifter.set(isHighGear);
-        }
+		// System.out.println("Shifting to " + (isHighGear? "high":"low") + " gear");
+		if (shifter != null) {
+			shifter.set(isHighGear);
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @return true for high gear, false for low gear
 	 */
 	public boolean getGear() {
 		// True in high gear
-        // False in low gear
-        if(shifter != null) {
-            return shifter.get();
-        } else {
-            return false;
-        }
+		// False in low gear
+		if (shifter != null) {
+			return shifter.get();
+		} else {
+			return false;
+		}
 	}
 
 	/**
-	 * Apply the correct gear for the speed of the drivebase right now.
-	 * Should only be called when the gear shift mode permits auto shifting.
+	 * Apply the correct gear for the speed of the drivebase right now. Should only
+	 * be called when the gear shift mode permits auto shifting.
 	 */
 	private void autoShift() {
 		leftSpeed = Math.abs(Robot.drivebase.getLeftSpeed());
@@ -185,7 +182,7 @@ public class DriveBase extends Subsystem {
 		if (allowShift) {
 			if (((leftSpeed < Constants.SPEED_TO_SHIFT_DOWN) && (rightSpeed < Constants.SPEED_TO_SHIFT_DOWN))) {
 				setGear(false);
-				//System.out.println(elevatorIsTooHighToShift + " case 1");
+				// System.out.println(elevatorIsTooHighToShift + " case 1");
 
 				if (hasAlreadyShifted) {
 					allowDeshift = true;
@@ -193,13 +190,13 @@ public class DriveBase extends Subsystem {
 				}
 
 			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
-					if (allowDeshift) {
-						shiftTimer.reset();
-						shiftTimer.start();
-						allowShift = false;
-						setGear(true);
-						//System.out.println(elevatorIsTooHighToShift + " case 2");
-					}
+				if (allowDeshift) {
+					shiftTimer.reset();
+					shiftTimer.start();
+					allowShift = false;
+					setGear(true);
+					// System.out.println(elevatorIsTooHighToShift + " case 2");
+				}
 			}
 		} else if (shiftTimer.get() > 1.0) {
 			allowShift = true;
@@ -209,21 +206,20 @@ public class DriveBase extends Subsystem {
 			hasAlreadyShifted = true;
 		}
 	}
-	
 
 	/**
-	 * Ask if an autonomous move has asked the robot to
-	 * remain in a particular gear
+	 * Ask if an autonomous move has asked the robot to remain in a particular gear
 	 */
 	public GearShiftMode getShiftMode() {
-		return gearShiftMode;	
+		return gearShiftMode;
 	}
-	
+
 	/**
-	 * To be called by an auto mode, to keep the drivebase in a certain
-	 * gear or let it run free.
+	 * To be called by an auto mode, to keep the drivebase in a certain gear or let
+	 * it run free.
 	 * 
 	 * Can be overridden by the driver via the OI.
+	 * 
 	 * @param shiftMode
 	 */
 	public void setShiftMode(GearShiftMode shiftMode) {
@@ -233,31 +229,31 @@ public class DriveBase extends Subsystem {
 	public void visit() {
 		handleGear();
 	}
-	
+
 	/**
 	 * Enact whichever shift mode is appropriate
 	 */
 	private void handleGear() {
 		// Driver commanded override?
-		if(Robot.oi.getHighGear()) {
+		if (Robot.oi.getHighGear()) {
 			setGear(true);
 		} else if (Robot.oi.getLowGear()) {
 			setGear(false);
 		} else {
-			// No override from driver.  Auto move commanded override?
-			switch(gearShiftMode) {
-				case LOCK_HIGH_GEAR: setGear(true); break;
-				case LOCK_LOW_GEAR: setGear(false); break;
-				// No override commanded; handle automatic gear shifting.
-				case AUTOSHIFT: autoShift(); break;
+			// No override from driver. Auto move commanded override?
+			switch (gearShiftMode) {
+			case LOCK_HIGH_GEAR:
+				setGear(true);
+				break;
+			case LOCK_LOW_GEAR:
+				setGear(false);
+				break;
+			// No override commanded; handle automatic gear shifting.
+			case AUTOSHIFT:
+				autoShift();
+				break;
 			}
 		}
 	}
-	
-	public void pullPidConstantsFromSmartDash() {
-		//leftPod.pullPidConstantsFromSmartDash();
-		//rightPod.pullPidConstantsFromSmartDash();
-    }
-    
 
 }

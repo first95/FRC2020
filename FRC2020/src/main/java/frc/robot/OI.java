@@ -83,12 +83,6 @@ public class OI {
 		}
 	}
 
-	// If anything needs to be posted to the SmartDashboard, place it here
-	public void log() {
-		
-	}
-
-
     /**
      * Get the forward travel rate commanded by the driver
      * @return -1 for full speed backward, +1 for full speed forward
@@ -125,7 +119,7 @@ public class OI {
 	 * Rumble a controller.
 	 * Note that you may have overlapping low- and high-pitched rumbles
 	 * @param controller which controller to rumble
-	 * @param side right of left side
+	 * @param side right of left side.  Note that the left side has a lower RPM and what feels like a heavier weight compared to the right.
 	 * @param severity how strongly to rumble, between 0.0 and 1.0
 	 * @param duration how long, in seconds, the rumble should last
 	 */
