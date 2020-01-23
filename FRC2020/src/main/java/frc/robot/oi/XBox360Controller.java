@@ -1,5 +1,8 @@
 package frc.robot.oi;
 
+/**
+ * Enumerations with the axis/button numbers mapped from an XBox 360 controller
+ */
 public class XBox360Controller {
     public enum Axis {
         LEFT_STICK_X(0), // rest=0.0, left = -1.0, right=1.0
