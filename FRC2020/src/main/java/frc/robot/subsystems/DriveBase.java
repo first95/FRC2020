@@ -246,11 +246,10 @@ public class DriveBase extends Subsystem {
 		return rightPod.getQuadEncPos();
 	}
 	
-	public double getRobotHeadingDegrees() {
-		// return imu.getYawPitchRoll()[0];
-		return 0;
-	}
-
+	/**
+	 * Apply the appropriate gear decided by the auto/manual shifting logic
+	 * @param isHighGear true for high gear, false for low gear
+	 */
 	private void setGear(boolean isHighGear) {
         //System.out.println("Shifting to " + (isHighGear? "high":"low") + " gear");
         if(shifter != null) {
@@ -258,6 +257,10 @@ public class DriveBase extends Subsystem {
         }
 	}
 	
+	/**
+	 * 
+	 * @return true for high gear, false for low gear
+	 */
 	public boolean getGear() {
 		// True in high gear
         // False in low gear
@@ -268,6 +271,10 @@ public class DriveBase extends Subsystem {
         }
 	}
 
+	/**
+	 * Apply the correct gear for the speed of the drivebase right now.
+	 * Should only be called when the gear shift mode permits auto shifting.
+	 */
 	private void autoShift() {
 		leftSpeed = Math.abs(Robot.drivebase.getLeftSpeed());
 		rightSpeed = Math.abs(Robot.drivebase.getRightSpeed());
@@ -298,26 +305,25 @@ public class DriveBase extends Subsystem {
 			shiftTimer.reset();
 			allowDeshift = false;
 			hasAlreadyShifted = true;
-			//System.out.println(elevatorIsTooHighToShift + " case 3");
 		}
-
-		// System.out.println("rightSpeed: " + rightSpeed + ", allowShift: " + allowShift);
-		// System.out.println("leftSpeed: " + leftSpeed + ", allowShift: " + allowShift);
-		// SmartDashboard.putBoolean("Allow Shift:", allowShift);
-		// SmartDashboard.putBoolean("Allow Deshift:", allowDeshift);
-		// SmartDashboard.putBoolean("Has Already Shifted:", hasAlreadyShifted);
 	}
 	
 
 	/**
 	 * Ask if an autonomous move has asked the robot to
 	 * remain in a particular gear
-	 * @return 0 for "choose gear automatically", -1 for low gear, 1 for high gear.
 	 */
 	public GearShiftMode getShiftMode() {
 		return gearShiftMode;	
 	}
 	
+	/**
+	 * To be called by an auto mode, to keep the drivebase in a certain
+	 * gear or let it run free.
+	 * 
+	 * Can be overridden by the driver via the OI.
+	 * @param shiftMode
+	 */
 	public void setShiftMode(GearShiftMode shiftMode) {
 		gearShiftMode = shiftMode;
 	}
@@ -326,7 +332,9 @@ public class DriveBase extends Subsystem {
 		handleGear();
 	}
 	
-	// If true it locks into high gear, if false locks into low gear
+	/**
+	 * Enact whichever shift mode is appropriate
+	 */
 	private void handleGear() {
 		// Driver commanded override?
 		if(Robot.oi.getHighGear()) {
