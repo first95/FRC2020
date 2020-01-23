@@ -82,7 +82,7 @@ public class DriveBase extends Subsystem {
 	 * @param leftThrottle between -1 and +1
 	 * @param rightThrottle between -1 and +1
 	 */
-	public void tank(double leftThrottle, double rightThrottle) {
+	public void driveWithTankControls(double leftThrottle, double rightThrottle) {
 		leftPod.setThrottle(leftThrottle);
 		rightPod.setThrottle(rightThrottle);
 	}
@@ -92,13 +92,13 @@ public class DriveBase extends Subsystem {
 	 * @param forward between -1 and +1
 	 * @param spin between -1 and +1, where -1 is full leftward (CCW when viewed from above)
 	 */
-	public void arcade(double forward, double spin) {
-		tank(forward - spin, forward + spin);
+	public void driveWithForwardAndSpin(double forward, double spin) {
+		driveWithTankControls(forward - spin, forward + spin);
 	}
 	/**
 	 * Drive with the forward and turn values from the joysticks
 	 */
-	public void arcade() {
+	public void driveWithJoysticks() {
 		setMaxSpeed(1);
 		double y = Robot.oi.getForwardAxis();
 		double x = Robot.oi.getTurnAxis();
@@ -108,7 +108,7 @@ public class DriveBase extends Subsystem {
 		 */
 		x = Math.pow(x, 3);
 		y = Math.pow(y, 3);
-		arcade(y, x);
+		driveWithForwardAndSpin(y, x);
 	}
 	
 	public void setMaxSpeed(double maxSpeed) {
@@ -116,21 +116,35 @@ public class DriveBase extends Subsystem {
 		rightPod.setMaxSpeed(maxSpeed);
 	}
 
+	/**
+	 * Get the instantaneous speed of the left side drive pod, in feet per second
+	 * @return instantaneous speed of the left side drive pod, in feet per second
+	 */
 	public double getLeftSpeed() {
 		return leftPod.getEncoderVelocityFeetPerSecond();
 	}
 
+	/**
+	 * Get the instantaneous speed of the right side drive pod, in feet per second
+	 * @return instantaneous speed of the right side drive pod, in feet per second
+	 */
 	public double getRightSpeed() {
 		return rightPod.getEncoderVelocityFeetPerSecond();
 	}
 
+	/**
+	 * Get the driven distance of the left drive pod in ticks
+	 * @return driven distance of the left drive pod in ticks
+	 */
 	public double getLeftEncoderPos() {
-
 		return leftPod.getQuadEncPos();
 	}
 
+	/**
+	 * Get the driven distance of the right drive pod in ticks
+	 * @return driven distance of the right drive pod in ticks
+	 */
 	public double getRightEncoderPos() {
-
 		return rightPod.getQuadEncPos();
 	}
 	
