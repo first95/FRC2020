@@ -14,12 +14,7 @@ public class ManuallyControlDrivebase extends Command {
     @Override
     protected void execute() {
         Robot.drivebase.arcade();
-        //Robot.drivebase.autoShift();
-        
-
-        // For button shifting
-        // Robot.drivebase.setGear(Robot.oi.getHighGear());
-
+       
 
     }
     
@@ -32,6 +27,6 @@ public class ManuallyControlDrivebase extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.drivebase.stop();
+        
     }
 }

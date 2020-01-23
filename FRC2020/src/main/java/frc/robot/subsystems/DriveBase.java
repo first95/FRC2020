@@ -15,17 +15,7 @@ import frc.robot.components.DrivePod;
  * the robot's chassis. These include two 3-motor drive pods.
  */
 public class DriveBase extends Subsystem {
-	// in inches
-	private final double DISTANCE_FROM_OUTER_TO_INNER_WHEEL = 13.5;
-	// in inches
-	private final double DISTANCE_FROM_INNER_TO_INNER_WHEEL = 23.25;
-	private final double RADIUS_OF_AVERAGED_WHEEL_CIRCLE = Math.sqrt(Math.pow((DISTANCE_FROM_INNER_TO_INNER_WHEEL/2), 2) + Math.pow(DISTANCE_FROM_OUTER_TO_INNER_WHEEL, 2));
-	// The speed at which we want the center of the robot to travel
-	// private final double SWEEPER_TURN_SPEED_INCHES_PER_SECOND = 3.5*12.0;
-	private final double TURN_SPEED_INCHES_PER_SECOND = 36;
-	// This is tied to speed, if you change the speed of the turn also change this value
-	
-	private final double SWEEPER_TURN_SPEED_INCHES_PER_SECOND = 24;
+
 	private DrivePod leftPod, rightPod;
 	private Solenoid shifter;
 
@@ -77,116 +67,14 @@ public class DriveBase extends Subsystem {
 	}
 
 
-	public boolean onTarget() {
-		return leftPod.isOnTarget() && rightPod.isOnTarget();
-	}
 
 	/**
-	 * Command that the robot should travel a specific distance along the carpet.
-	 * Call this once to command distance - do not call repeatedly, as this will
-	 * reset the distance remaining.
-	 * 
-	 * @param inchesToTravel
-	 *            - number of inches forward to travel
+	 * Turn dynamic braking on or off
+	 * @param isEnabled true to brake, false to freewheel
 	 */
-	public void travelStraight(double inchesToTravel) {
-		// Max speed back and forward, always make this number positve when setting it.
-		leftPod.setMaxSpeed(0.9);
-		rightPod.setMaxSpeed(0.9);
-
-		leftPod.setCLPosition(inchesToTravel);
-		rightPod.setCLPosition(inchesToTravel);
-	}
-
-	/**
-	 * Command that the robot should travel a specific distance along the carpet.
-	 * Call this once to command distance - do not call repeatedly, as this will
-	 * reset the distance remaining.
-	 * 
-	 * @param inchesToTravel
-	 *            - number of inches forward to travel
-	 * @param inchesPerSecond
-	 *            - speed at which to travel
-	 */
-	public void travelStraight(double inchesPerSecond, double inchesToTravel) {
-		leftPod.driveForDistanceAtSpeed(inchesPerSecond, inchesToTravel);
-		rightPod.driveForDistanceAtSpeed(inchesPerSecond, inchesToTravel);
-	}
-
-	// Talon Brake system
 	public void brake(boolean isEnabled) {
 		leftPod.enableBrakeMode(isEnabled);
 		rightPod.enableBrakeMode(isEnabled);
-	}
-
-	public void pivotDegreesClockwise(double inchesPerSecond, double degreesToPivotCw) {
-		double leftDistanceInches = (2 * RADIUS_OF_AVERAGED_WHEEL_CIRCLE * Math.PI) * (degreesToPivotCw/360);
-		double rightDistanceInches = leftDistanceInches;
-		double turnSign = (degreesToPivotCw > 0)? 1.0 : -1.0;
-		leftPod.driveForDistanceAtSpeed( turnSign * inchesPerSecond, -leftDistanceInches);
-		rightPod.driveForDistanceAtSpeed(turnSign * inchesPerSecond, rightDistanceInches);		
-	}
-	
-	// Do not use this for turning! Use setPivotRate
-	public void pivotDegreesClockwise(double degreesToPivotCw) {
-
-		double leftDistanceInches = (2 * RADIUS_OF_AVERAGED_WHEEL_CIRCLE * Math.PI) * ((degreesToPivotCw)/360);
-		double rightDistanceInches = leftDistanceInches;
-		//leftDistanceInches *= PIVOT_FUDGE_FACTOR;
-		//rightDistanceInches *= PIVOT_FUDGE_FACTOR;
-		double turnSign = (degreesToPivotCw > 0)? 1.0 : -1.0;
-		leftPod.driveForDistanceAtSpeed( turnSign * TURN_SPEED_INCHES_PER_SECOND, -leftDistanceInches);
-		rightPod.driveForDistanceAtSpeed(turnSign * TURN_SPEED_INCHES_PER_SECOND, rightDistanceInches);
-	}
-
-	public void setPivotRate(double inchesPerSecond) {
-		leftPod.setCLSpeed(inchesPerSecond, true);
-		rightPod.setCLSpeed(inchesPerSecond, true);
-	}
-	
-	/**
-	 * Cause the robot's center to sweep out an arc with given radius and angle. A
-	 * positive clockwise angle is forward and to the right, a negative clockwise
-	 * angle is forward and to the left.
-	 * 
-	 * This does not take into account the drivebase's tendency toward straight
-	 * turns.
-	 * 
-	 * @param degreesToTurnCw
-	 * @param turnRadiusInches
-	 */
-	public void travelSweepingTurnForward(double degreesToTurnCw, double turnRadiusInches) {
-		double leftDistanceInches;
-		double rightDistanceInches;
-
-		double fractionOfAFullCircumference = Math.abs(degreesToTurnCw / 360.0);
-		double sweepTimeS = (fractionOfAFullCircumference * turnRadiusInches * 2.0 * Math.PI)
-				/ SWEEPER_TURN_SPEED_INCHES_PER_SECOND;
-		if (degreesToTurnCw > 0) {
-			// Forward and to the right - CW
-			leftDistanceInches = fractionOfAFullCircumference * Math.PI * 2.0
-					* (turnRadiusInches + Constants.ROBOT_WHEELBASE_WIDTH_INCHES / 2.0);
-			rightDistanceInches = fractionOfAFullCircumference * Math.PI * 2.0
-					* (turnRadiusInches - Constants.ROBOT_WHEELBASE_WIDTH_INCHES / 2.0);
-		} else {
-			// Forward and to the left - CCW
-			leftDistanceInches = fractionOfAFullCircumference * Math.PI * 2.0
-					* (turnRadiusInches - Constants.ROBOT_WHEELBASE_WIDTH_INCHES / 2.0);
-			rightDistanceInches = fractionOfAFullCircumference * Math.PI * 2.0
-					* (turnRadiusInches + Constants.ROBOT_WHEELBASE_WIDTH_INCHES / 2.0);
-		}
-		double leftSpeedInchesPerSecond = leftDistanceInches / sweepTimeS;
-		double rightSpeedInchesPerSecond = rightDistanceInches / sweepTimeS;
-
-		leftPod.driveForDistanceAtSpeed(leftSpeedInchesPerSecond, leftDistanceInches);
-		rightPod.driveForDistanceAtSpeed(rightSpeedInchesPerSecond, rightDistanceInches);
-	}
-
-	/** 
-	 * Stop moving
-	 */
-	public void stop() {
-
 	}
 
 	/**
