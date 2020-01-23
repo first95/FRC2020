@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.vision.ToggleCameraMode;
+import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.XBox360Controller;
 
 /**
@@ -48,6 +50,18 @@ public class OI {
 		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
         cameraViewSwitcher.whenPressed(new ToggleCameraMode());
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
+
+		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		
+		JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		
+		JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		
+		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 		
 	}
 
