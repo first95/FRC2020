@@ -17,21 +17,6 @@ Here we exercise every feature of the robot that can be used during teleoperated
 - [ ] Drive fast and confirm the robot upshifts automatically. (You should hear a loud click)
 - [ ] Let the robot slow down and confirm the robot downshifts automatically. (You should hear a loud click)
 
-### Elevator
-
-- [ ] Raise and lower elevator through its full range
-- [ ] Visit each height preset
-- [ ] Hold down a preset button.  Confirm the elevator holds at that position.
-- [ ] Tap a preset button, but release it before the elevator gets there.  Confirm the elevator stops moving before it reaches its destination.
-- [ ] Run the climber winch
-
-### Wrist and maw
-
-- [ ] Lift wrist into all 4 positions
-- [ ] Open and close maw
-- [ ] Run chain in and out
-- [ ] Automatically acquire a cube
-
 ## Startup test.
 
 - [ ] Set up a "practice" in the drivers' station.  This will run an auto move, then transition into teleoperated.  Confirm that the auto move runs, and that no exceptions are thrown on the console when the robot enters teleoperated mode.
