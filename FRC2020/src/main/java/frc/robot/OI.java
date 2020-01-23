@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.vision.ToggleCameraMode;
+import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.XBox360Controller;
 
 /**
@@ -48,6 +50,18 @@ public class OI {
 		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
         cameraViewSwitcher.whenPressed(new ToggleCameraMode());
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
+
+		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		
+		JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		
+		JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		
+		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 		
 	}
 
@@ -68,12 +82,6 @@ public class OI {
 			weaponsController.setRumble(RumbleType.kRightRumble, 0);
 		}
 	}
-
-	// If anything needs to be posted to the SmartDashboard, place it here
-	public void log() {
-		
-	}
-
 
     /**
      * Get the forward travel rate commanded by the driver
@@ -111,7 +119,7 @@ public class OI {
 	 * Rumble a controller.
 	 * Note that you may have overlapping low- and high-pitched rumbles
 	 * @param controller which controller to rumble
-	 * @param side right of left side
+	 * @param side right of left side.  Note that the left side has a lower RPM and what feels like a heavier weight compared to the right.
 	 * @param severity how strongly to rumble, between 0.0 and 1.0
 	 * @param duration how long, in seconds, the rumble should last
 	 */

@@ -73,14 +73,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		Scheduler.getInstance().run(); // Runs all active commands
-		drivebase.pullPidConstantsFromSmartDash();
 		oi.visit();
 		drivebase.visit();
-
-		// Depending if you want all output or just limited
-		// use either debugLog() or just log()
-		// debugLog();
-		log();
 	}
 
 	@Override
@@ -108,14 +102,4 @@ public class Robot extends TimedRobot {
 
 	}
 
-	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
-	private void log() {
-		debugLog();
-	}
-
-	private void debugLog() {
-		drivebase.log();
-	}
 }
