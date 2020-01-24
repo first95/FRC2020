@@ -8,6 +8,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def gitDetails = versionDetails()
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -70,7 +71,8 @@ jar {
             'Main-Class': ROBOT_MAIN_CLASS,
             'Build-Host': InetAddress.getLocalHost().getHostName(),
             'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
-            'Implementation-Version': gitVersion()
+            'Implementation-Version': gitVersion(),
+            'Implementation-gitBranch': gitDetails.branchName
             )
         
     }
