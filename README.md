@@ -1,5 +1,5 @@
 # FRC2020
-The code base for our 2020 robot
+The code base for our 2020 robot "Spangler"
 
 To open the main robot code, open Visual Studio Code, click "Open Folder", and open the `FRC2019` folder.
 
