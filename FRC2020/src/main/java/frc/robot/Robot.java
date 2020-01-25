@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		// Unlock the auto shifter
-		drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
+		// drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
 
 		drivebase.brake(true);
 	}
