@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -9,6 +11,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -27,11 +30,15 @@ public class ScatterPlotter extends JFrame {
     }
 
     /**
-     * Set up chart for showing.
-     * Call this after adding all your series but before showing this window.
-     * @param plotTitle Mandatory because people who don't label their plots like to murder kittens
-     * @param xAxisTitle Mandatory because people who don't label their axes are the worst people ever
-     * @param yAxisTitle Mandatory because people who don't label their axes are the kind of people who kick puppies
+     * Set up chart for showing. Call this after adding all your series but before
+     * showing this window.
+     * 
+     * @param plotTitle  Mandatory because people who don't label their plots like
+     *                   to murder kittens
+     * @param xAxisTitle Mandatory because people who don't label their axes are the
+     *                   worst people ever
+     * @param yAxisTitle Mandatory because people who don't label their axes are the
+     *                   kind of people who kick puppies
      */
     public void PopulateChart(String plotTitle, String xAxisTitle, String yAxisTitle) {
 
@@ -42,6 +49,14 @@ public class ScatterPlotter extends JFrame {
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(new Color(255, 228, 196));
 
+        // Choose some sensible defaults
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        for(int i = 0 ; i < plot.getSeriesCount(); ++i) {
+            renderer.setSeriesLinesVisible(i, true);
+            Shape shape = new Ellipse2D.Double(-2,-2,4,4);
+            renderer.setSeriesShape(i, shape);
+        }
+
         // Create Panel
         ChartPanel panel = new ChartPanel(chart);
         setContentPane(panel);
@@ -49,16 +64,16 @@ public class ScatterPlotter extends JFrame {
 
     /**
      * Add a series to this plot. Call before calling PopulateChart
+     * 
      * @param series
      */
     public void AddSeries(XYSeries series) {
         dataset.addSeries(series);
     }
 
-
     public static void main(String[] args) {
         ScatterPlotter sp = new ScatterPlotter("Scatter plotter test");
-        
+
         // Boys (Age,weight) series
         XYSeries series1 = new XYSeries("Boys");
         series1.add(1, 72.9);
@@ -96,6 +111,6 @@ public class ScatterPlotter extends JFrame {
             sp.setLocationRelativeTo(null);
             sp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             sp.setVisible(true);
-    });
-  }
+        });
+    }
 }
