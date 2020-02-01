@@ -136,9 +136,12 @@ public class DrivePodSpark {
 	// 	return leader.getSelectedSensorPosition(Constants.PID_IDX);
 	// }
 
-	// public double getEncoderVelocityFeetPerSecond() {
-	// 	return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
-	// }
+	public double getEncoderVelocityFeetPerSecond() {
+		// TODO: find the real conversion value here.
+		// This is for a 6" diameter direct-drive wheel
+		return leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
+		// return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
+	}
 
 
 }
