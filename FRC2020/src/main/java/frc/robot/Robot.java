@@ -39,6 +39,9 @@ public class Robot extends TimedRobot {
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);
+		// Show git build information from Jar Manifest
+		SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle() );
+		SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion() );
 		// Disable brakes on talons to make it
 		// easier to push
 		drivebase.brake(false);
@@ -81,7 +84,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		// Unlock the auto shifter
-		drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
+		// drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
 
 		drivebase.brake(true);
 	}

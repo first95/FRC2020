@@ -19,13 +19,13 @@ public class Constants
 		// Indices for solenoids
 		public static final int SHIFTER_SOLENOID_NUM  = 0;
 		
-		// Indices for Talons
+		// Indices for SparkMaxes
 		// Drive base
-		public static final int LEFT_LEAD = 10;
-		public static final int LEFT_F1 = 11;
-		public static final int LEFT_F2 = 12;
-		public static final int RIGHT_LEAD = 20;
-		public static final int RIGHT_F1 = 21;
-		public static final int RIGHT_F2 = 22;
+		public static final int LEFT_LEAD = 7;
+		public static final int LEFT_F = 6;
+		// public static final int LEFT_F2 = 12;
+		public static final int RIGHT_LEAD = 9;
+		public static final int RIGHT_F = 8;
+		// public static final int RIGHT_F2 = 22;
 		
 	}
