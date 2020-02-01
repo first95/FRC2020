@@ -51,17 +51,17 @@ public class OI {
         cameraViewSwitcher.whenPressed(new ToggleCameraMode());
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
 
-		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		// JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		// driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
 		
-		JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		// JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		// driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
 		
-		JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		// JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		// weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
 		
-		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		// JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		// weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 		
 	}
 
@@ -180,4 +180,12 @@ public class OI {
 		stick.setRumble(Joystick.RumbleType.kRightRumble, 0);
 		stick.setRumble(Joystick.RumbleType.kRightRumble, 0);
     }
+
+	/**
+	 * Get the amount to power the sucker
+	 * @return 0 for off, 1 for full power
+	 */
+	public double getSuckerAxis() {
+		return driverController.getRawAxis(XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+	}
 }

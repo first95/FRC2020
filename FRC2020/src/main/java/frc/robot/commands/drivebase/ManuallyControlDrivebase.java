@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ManuallyControlDrivebase extends Command {
-    
 
     public ManuallyControlDrivebase() {
         requires(Robot.drivebase);
@@ -14,10 +13,9 @@ public class ManuallyControlDrivebase extends Command {
     @Override
     protected void execute() {
         Robot.drivebase.driveWithJoysticks();
-       
-
+        Robot.drivebase.SetSuckerPower(Robot.oi.getSuckerAxis());
     }
-    
+
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
@@ -27,6 +25,6 @@ public class ManuallyControlDrivebase extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        
+
     }
 }
