@@ -7,7 +7,7 @@ public class Main {
     public static final double DT_S = 0.05;
 
     public static void main(String[] args) {
-        Stimulus stim = new Stimulus(0.2, 2);
+        Stimulus stim = new Stimulus(0.0, 0.5);
 
         XYSeries actual = new XYSeries("Actual");
         XYSeries measured = new XYSeries("Measured");
