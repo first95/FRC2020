@@ -7,14 +7,19 @@ public class Main {
     public static final double DT_S = 0.05;
 
     public static void main(String[] args) {
-        XYSeries actual = new XYSeries("Actual");
+        Stimulus stim = new Stimulus(0.2, 2);
 
+        XYSeries actual = new XYSeries("Actual");
+        XYSeries measured = new XYSeries("Measured");
         for (double t = 0; t < Stimulus.STIM_DURATION_S; t += DT_S) {
-            actual.add(t, Stimulus.GetProcessActual(t));
+            double value = stim.GetProcessActual(t);
+            actual.add(t, value);
+            measured.add(t, stim.Measure(value));
         }
 
         ScatterPlotter sp = new ScatterPlotter("Retrospective state estimator test");
         sp.AddSeries(actual);
+        sp.AddSeries(measured);
 
         sp.PopulateChart("State", "Time(s)", "Value");
         SwingUtilities.invokeLater(() -> {
@@ -23,6 +28,5 @@ public class Main {
             sp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             sp.setVisible(true);
         });
-
     }
 }
