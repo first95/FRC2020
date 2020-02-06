@@ -6,6 +6,8 @@ package frc.robot.components;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.AlternateEncoderType;
 // import com.revrobotics.CANSparkMax.IdleMode;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,10 @@ public class DrivePodSpark {
 	private String name;
 	private double twiddle = 1.0; // This value is used to force SmartDashboard line graphs to update by slightly changing the value
 
+	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
+	private static final int kCPR = 1024;
+	private CANEncoder m_alternateEncoder;
+
 	// Provide the CAN addresses of the three motor controllers.
 	// Set reverse to true if positive throttle values correspond to moving the
 	// robot backwards.
@@ -36,6 +42,8 @@ public class DrivePodSpark {
 		this.leader = new CANSparkMax(leaderCanNum, MotorType.kBrushless);
 		this.follower = new CANSparkMax(followerCanNum, MotorType.kBrushless);
 		
+		m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
+
 		// Tell the followers to follow the leader
 		follower.follow(leader);
 
@@ -139,7 +147,7 @@ public class DrivePodSpark {
 	public double getEncoderVelocityFeetPerSecond() {
 		// TODO: find the real conversion value here.
 		// This is for a 6" diameter direct-drive wheel
-		return leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
+		return 0; //leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
 		// return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
 	}
 
