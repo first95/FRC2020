@@ -31,4 +31,5 @@ public class Constants
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
 		
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
 	}

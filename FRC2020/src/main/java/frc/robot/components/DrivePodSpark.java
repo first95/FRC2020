@@ -6,6 +6,9 @@ package frc.robot.components;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import frc.robot.Constants;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.AlternateEncoderType;
 // import com.revrobotics.CANSparkMax.IdleMode;
@@ -157,10 +160,7 @@ public class DrivePodSpark {
 	// }
 
 	public double getEncoderVelocityFeetPerSecond() {
-		// TODO: find the real conversion value here.
-		// This is for a 6" diameter direct-drive wheel
-		return leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
-		// return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
+		return leader.getEncoder().getVelocity()* (Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60);
 	}
 
 
