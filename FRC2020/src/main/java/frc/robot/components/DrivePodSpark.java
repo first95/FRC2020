@@ -6,6 +6,8 @@ package frc.robot.components;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.AlternateEncoderType;
 // import com.revrobotics.CANSparkMax.IdleMode;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +25,11 @@ public class DrivePodSpark {
 	private CANSparkMax leader, follower;
 	private String name;
 	private double twiddle = 1.0; // This value is used to force SmartDashboard line graphs to update by slightly changing the value
+	private boolean inverse;
+
+	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
+	private static final int kCPR = 1024;
+	private CANEncoder m_alternateEncoder;
 
 	// Provide the CAN addresses of the three motor controllers.
 	// Set reverse to true if positive throttle values correspond to moving the
@@ -36,11 +43,14 @@ public class DrivePodSpark {
 		this.leader = new CANSparkMax(leaderCanNum, MotorType.kBrushless);
 		this.follower = new CANSparkMax(followerCanNum, MotorType.kBrushless);
 		
-		// Tell the followers to follow the leader
-		follower.follow(leader);
+		m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
 
-		leader.setInverted(reverse);
-		follower.setInverted(reverse);
+		// Tell the followers to follow the leader
+		// follower.follow(leader);
+
+		inverse = reverse;
+		// leader.setInverted(reverse);
+		// follower.setInverted(reverse);
 
 		init();
 	}
@@ -111,7 +121,16 @@ public class DrivePodSpark {
 	public void setThrottle(double throttle) {
 		// This is the only set...() method where we don't need to call either
 		// applySpeedPidConsts() or applyPositionPidConsts().
-		leader.set(throttle);
+		if (inverse)
+		{
+			leader.set(-1 * throttle);
+			follower.set(-1 * throttle);
+		}
+		else
+		{
+			leader.set(throttle);
+			follower.set(throttle);
+		}
 		// followers follow
 	}
 
@@ -125,6 +144,7 @@ public class DrivePodSpark {
 
 	public void setVoltageRamp(double rampRate) {
 		leader.setOpenLoopRampRate(rampRate);
+		follower.setOpenLoopRampRate(rampRate);
 	}
 
 	public void enableBrakeMode(boolean isEnabled) {
@@ -136,9 +156,12 @@ public class DrivePodSpark {
 	// 	return leader.getSelectedSensorPosition(Constants.PID_IDX);
 	// }
 
-	// public double getEncoderVelocityFeetPerSecond() {
-	// 	return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
-	// }
+	public double getEncoderVelocityFeetPerSecond() {
+		// TODO: find the real conversion value here.
+		// This is for a 6" diameter direct-drive wheel
+		return 0; //leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
+		// return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
+	}
 
 
 }

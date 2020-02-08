@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.DriveBase.GearShiftMode;
 import frc.robot.subsystems.VisionCoprocessor;
+import frc.robot.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 
 		// Initialize all subsystems
 		drivebase = new DriveBase();
-		compressor = new Compressor();
+		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionCoprocessor();
         oi = new OI();
 

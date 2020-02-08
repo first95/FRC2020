@@ -7,6 +7,9 @@ public class Constants
 		public static double joystickDeadbandV = 0.07;
 		public static double joystickDeadbandH = 0.05;
 		
+		// PCM Device ID
+		public static final int PCM_NUM = 0;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.5; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 5.0; // ft per sec
