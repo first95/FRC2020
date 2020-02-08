@@ -10,6 +10,10 @@ public class Constants
 		// PCM Device ID
 		public static final int PCM_NUM = 0;
 
+		// Ground Pick-up IDs
+		public static final int GROUND_PICK_UP_TALON_ID = 1;
+		public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.5; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 5.0; // ft per sec

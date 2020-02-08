@@ -20,6 +20,7 @@ public class OI {
 	// Controllers
 	private Joystick driverController = new Joystick(0);
 	private Joystick weaponsController = new Joystick(1);
+	private JoystickButton groundPickUpDeploy; 
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
@@ -30,6 +31,7 @@ public class OI {
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
+	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -61,6 +63,8 @@ public class OI {
 		
 		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
 		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
+
+		groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 		
 	}
 
@@ -113,6 +117,24 @@ public class OI {
 	public boolean getLowGear() {
 		return driverController.getRawButton(BUTTON_FORCE_LOW_GEAR);
 	}
+
+	/**
+     * Get the roller rotation speed commanded by the driver
+     * @return -1 for full speed backward, +1 for full speed forward
+     */
+	public double getGroundPickUpRollerAxis() {
+		return weaponsController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+	}
+
+	/**
+	 * Ask if the driver wants ground pick-up to be deployed
+	 * @return
+	 */
+	public boolean getGroundPickUpDeployed() {
+		return groundPickUpDeploy.get();
+	}
+
+
 
 	/**
 	 * Rumble a controller.

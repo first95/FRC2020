@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
 
@@ -23,6 +24,7 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionCoprocessor vision;
+	public static GroundPickUp groundPickUp;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
