@@ -25,6 +25,7 @@ public class DrivePodSpark {
 	private CANSparkMax leader, follower;
 	private String name;
 	private double twiddle = 1.0; // This value is used to force SmartDashboard line graphs to update by slightly changing the value
+	private boolean inverse;
 
 	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
 	private static final int kCPR = 1024;
@@ -47,8 +48,9 @@ public class DrivePodSpark {
 		// Tell the followers to follow the leader
 		follower.follow(leader);
 
-		leader.setInverted(reverse);
-		follower.setInverted(reverse);
+		inverse = reverse;
+		// leader.setInverted(reverse);
+		// follower.setInverted(reverse);
 
 		init();
 	}
@@ -119,7 +121,14 @@ public class DrivePodSpark {
 	public void setThrottle(double throttle) {
 		// This is the only set...() method where we don't need to call either
 		// applySpeedPidConsts() or applyPositionPidConsts().
-		leader.set(throttle);
+		if (inverse)
+		{
+			leader.set(-1 * throttle);
+		}
+		else
+		{
+			leader.set(throttle);
+		}
 		// followers follow
 	}
 
