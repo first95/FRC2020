@@ -12,12 +12,11 @@ import frc.robot.Robot;
 
 
 public class GroundPickUpCommand extends Command {
+    // Stores whether or not the deploy button was pressed during the last loop
     private boolean wasDeployedButtonPressed = false;
     
     public GroundPickUpCommand() {
         requires(Robot.groundPickUp);
-    // Use requires() here to declare subsystem dependencies
-    //requires(Robot.m_subsystem);
   }
 
   // Called just before this Command runs the first time
@@ -28,6 +27,8 @@ public class GroundPickUpCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+      // If the deploy button was not pressed during the last loop and is pressed during the current loop,
+      // toggle deploy
       if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed())
       {
             Robot.groundPickUp.toggleGroundPickUpDeploy();
