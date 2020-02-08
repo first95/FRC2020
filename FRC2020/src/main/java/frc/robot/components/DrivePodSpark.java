@@ -46,7 +46,7 @@ public class DrivePodSpark {
 		m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
 
 		// Tell the followers to follow the leader
-		follower.follow(leader);
+		// follower.follow(leader);
 
 		inverse = reverse;
 		// leader.setInverted(reverse);
@@ -124,10 +124,12 @@ public class DrivePodSpark {
 		if (inverse)
 		{
 			leader.set(-1 * throttle);
+			follower.set(-1 * throttle);
 		}
 		else
 		{
 			leader.set(throttle);
+			follower.set(throttle);
 		}
 		// followers follow
 	}
@@ -142,6 +144,7 @@ public class DrivePodSpark {
 
 	public void setVoltageRamp(double rampRate) {
 		leader.setOpenLoopRampRate(rampRate);
+		follower.setOpenLoopRampRate(rampRate);
 	}
 
 	public void enableBrakeMode(boolean isEnabled) {
