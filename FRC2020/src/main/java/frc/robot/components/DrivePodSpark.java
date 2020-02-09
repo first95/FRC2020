@@ -6,6 +6,9 @@ package frc.robot.components;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import frc.robot.Constants;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.AlternateEncoderType;
 // import com.revrobotics.CANSparkMax.IdleMode;
@@ -30,6 +33,7 @@ public class DrivePodSpark {
 	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
 	private static final int kCPR = 1024;
 	private CANEncoder m_alternateEncoder;
+	private CANEncoder m_encoder;
 
 	// Provide the CAN addresses of the three motor controllers.
 	// Set reverse to true if positive throttle values correspond to moving the
@@ -43,7 +47,12 @@ public class DrivePodSpark {
 		this.leader = new CANSparkMax(leaderCanNum, MotorType.kBrushless);
 		this.follower = new CANSparkMax(followerCanNum, MotorType.kBrushless);
 		
-		m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
+		// Commenting out the alternate encoder until we have the proper hardware interface
+		// to go between the grayhill and the Spark Max
+		//m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
+
+	    // Create the default encoder associated with the leader
+		m_encoder = this.leader.getEncoder();
 
 		// Tell the followers to follow the leader
 		// follower.follow(leader);
@@ -156,11 +165,10 @@ public class DrivePodSpark {
 	// 	return leader.getSelectedSensorPosition(Constants.PID_IDX);
 	// }
 
-	public double getEncoderVelocityFeetPerSecond() {
-		// TODO: find the real conversion value here.
-		// This is for a 6" diameter direct-drive wheel
-		return 0; //leader.getEncoder().getVelocity()* (6 * Math.PI / 60);
-		// return (leader.getSelectedSensorVelocity(Constants.PID_IDX)) * (1 / (ENCODER_TICKS_PER_INCH * 12)) * (10 / 1);
+	public double getEncoderVelocityFeetPerSecondSansGear() {
+		//return leader.getEncoder().getVelocity()* (Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60);
+		// getVelocity returns velocity in motor unit (default is RPM)
+		return m_encoder.getVelocity()*(Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60)/12;
 	}
 
 
