@@ -31,5 +31,8 @@ public class Constants
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
 		
+		// Drivebase constants
 		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
+		public static final double LOW_GEAR_RATIO = 20.83;
+		public static final double HIGH_GEAR_RATIO = 9.17;
 	}

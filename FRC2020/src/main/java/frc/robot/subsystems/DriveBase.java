@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.components.DrivePodSpark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The DriveBase subsystem incorporates the sensors and actuators attached to
@@ -113,7 +114,12 @@ public class DriveBase extends Subsystem {
 	 * @return instantaneous speed of the left side drive pod, in feet per second
 	 */
 	public double getLeftSpeed() {
-		return leftPod.getEncoderVelocityFeetPerSecond();
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.HIGH_GEAR_RATIO;
+		} else {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.LOW_GEAR_RATIO;
+		}
 	}
 
 	/**
@@ -122,7 +128,12 @@ public class DriveBase extends Subsystem {
 	 * @return instantaneous speed of the right side drive pod, in feet per second
 	 */
 	public double getRightSpeed() {
-		return rightPod.getEncoderVelocityFeetPerSecond();
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.HIGH_GEAR_RATIO;
+		} else {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.LOW_GEAR_RATIO;
+		}
 	}
 
 	/**
@@ -227,6 +238,8 @@ public class DriveBase extends Subsystem {
 
 	public void visit() {
 		handleGear();
+		SmartDashboard.putNumber("Left velocity (ftps)", getLeftSpeed());
+		SmartDashboard.putNumber("Right velocity (ftps)", getRightSpeed());
 	}
 
 	/**
