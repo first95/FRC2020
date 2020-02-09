@@ -23,6 +23,8 @@ public class OI {
 	
 	// Buttons on weapons controller
 	private JoystickButton groundPickUpDeploy; 
+	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
+	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
@@ -36,6 +38,7 @@ public class OI {
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
+	public static final int SINGULATOR_AXIS = XBox360Controller.Axis.RIGHT_STICK_Y.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -136,6 +139,19 @@ public class OI {
 	 */
 	public boolean getGroundPickUpDeployed() {
 		return groundPickUpDeploy.get();
+	}
+
+	public boolean getSingulatorButton() {
+		return weaponsController.getRawButtonPressed(SINGULATOR_BUTTON);
+	}
+
+	public double getSingulatorAxis() {
+		return weaponsController.getRawAxis(SINGULATOR_AXIS);
+	}
+
+	public double getSingulatorSpeed() {
+		double singulatorSpeed = 1;
+		return singulatorSpeed;
 	}
 
 

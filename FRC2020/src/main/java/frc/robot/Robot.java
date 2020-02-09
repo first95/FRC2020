@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
+import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
 
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static VisionCoprocessor vision;
 	public static GroundPickUp groundPickUp;
+	public static Singulator singulator;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -37,7 +39,8 @@ public class Robot extends TimedRobot {
 		drivebase = new DriveBase();
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionCoprocessor();
-        oi = new OI();
+		oi = new OI();
+		singulator = new Singulator();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

@@ -7,18 +7,41 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
+// import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
+import frc.robot.commands.SingulatorCommand;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Singulator extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
+  private IMotorControllerEnhanced Singulator;
+  private IMotorControllerEnhanced SingulatorIntake;
+
+  public Singulator() {
+    super();
+
+    Singulator = new TalonSRX(Constants.INNER_SINGULATOR_TALON_ID);
+    SingulatorIntake = new TalonSRX(Constants.SINGULATOR_INTAKE_TALON_ID);
+  }
+
+  public double getSingulatorCurrentSpike() {
+    return Singulator.getOutputCurrent();
+  }
+
+  public void setSingulatorSpeed(double Speed) {
+    Singulator.set(ControlMode.PercentOutput, Speed);
+  }
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new SingulatorCommand());
   }
 }

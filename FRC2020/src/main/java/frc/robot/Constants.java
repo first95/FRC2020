@@ -14,6 +14,12 @@ public class Constants
 		public static final int GROUND_PICK_UP_TALON_ID = 1;
 		public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
 
+		// Singulator IDs
+		public static final int INNER_SINGULATOR_TALON_ID = 3;
+
+		// Singulator intake IDs
+		public static final int SINGULATOR_INTAKE_TALON_ID = 2;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.5; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 5.0; // ft per sec
@@ -35,4 +41,6 @@ public class Constants
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
 		
+		// Current limiting parameters
+		public static final int SINGULATOR_CUR_SPIKE_AMPS = 10;
 	}
