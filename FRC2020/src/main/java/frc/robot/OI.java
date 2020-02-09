@@ -38,7 +38,6 @@ public class OI {
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
-	public static final int SINGULATOR_AXIS = XBox360Controller.Axis.RIGHT_STICK_Y.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -142,19 +141,8 @@ public class OI {
 	}
 
 	public boolean getSingulatorButton() {
-		return weaponsController.getRawButtonPressed(SINGULATOR_BUTTON);
+		return weaponsController.getRawButton(SINGULATOR_BUTTON);
 	}
-
-	public double getSingulatorAxis() {
-		return weaponsController.getRawAxis(SINGULATOR_AXIS);
-	}
-
-	public double getSingulatorSpeed() {
-		double singulatorSpeed = 1;
-		return singulatorSpeed;
-	}
-
-
 
 	/**
 	 * Rumble a controller.
