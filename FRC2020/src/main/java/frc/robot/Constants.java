@@ -34,5 +34,13 @@ public class Constants
 		public static final int RIGHT_LEAD = 9;
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
+
+		// Digital I/O pin names
+		public static final int SINGULATOR_SENSOR = 0;
+		public static final int INDEXER_ENTRANCE_SENSOR = 1;
+		public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
+		public static final int SHOOTER_LOADED_SENSOR = 3;
+			
+		}
 		
 	}
