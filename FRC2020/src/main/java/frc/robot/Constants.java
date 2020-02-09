@@ -11,8 +11,8 @@ public class Constants
 		public static final int PCM_NUM = 0;
 
 		// Speed Shifter Values
-		public static final double SPEED_TO_SHIFT_UP = 5.5; // ft per sec
-		public static final double SPEED_TO_SHIFT_DOWN = 5.0; // ft per sec
+		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec
+		public static final double SPEED_TO_SHIFT_DOWN = 3.0; // ft per sec
 
 		// Used with Talons
 		public static final int PID_IDX = 0; // The Talons support up to 2 PID loops, with indexes 0 and 1.  We only use 0.

@@ -199,7 +199,7 @@ public class DriveBase extends Subsystem {
 					hasAlreadyShifted = false;
 				}
 
-			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
+			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) && ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
 				if (allowDeshift) {
 					shiftTimer.reset();
 					shiftTimer.start();
