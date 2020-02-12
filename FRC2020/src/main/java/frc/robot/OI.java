@@ -22,8 +22,8 @@ public class OI {
 	private Joystick weaponsController = new Joystick(1);
 	
 	// Buttons on weapons controller
-	private JoystickButton groundPickUpDeploy; 
 	private JoystickButton runIndexer; 
+	public static final int GROUND_PICK_UP_DEPLOY = XBox360Controller.Button.X.Number(); 
 	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 
@@ -38,7 +38,7 @@ public class OI {
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
 	
 	// Axes on weapons controller
-	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
+	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -71,8 +71,8 @@ public class OI {
 		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
 		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
-		groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
+		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 		
 	}
 
@@ -139,7 +139,8 @@ public class OI {
 	 * @return
 	 */
 	public boolean getGroundPickUpDeployed() {
-		return groundPickUpDeploy.get();
+		// System.out.println("button has been pressed");
+		return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
 	}
 
 	/**

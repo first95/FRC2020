@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
 		indexer = new Indexer();
 		digitalIOSensors = new DigitalIOSensors();
 		singulator = new Singulator();
+		groundPickUp = new GroundPickUp();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

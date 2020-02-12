@@ -32,6 +32,7 @@ public class GroundPickUpCommand extends Command {
       if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed())
       {
             Robot.groundPickUp.toggleGroundPickUpDeploy();
+            // System.out.println("ground pickup has been deployed");
       }
 
       Robot.groundPickUp.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
