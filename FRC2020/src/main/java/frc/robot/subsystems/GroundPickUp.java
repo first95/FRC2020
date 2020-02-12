@@ -30,15 +30,20 @@ public class GroundPickUp extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
     setDefaultCommand(new GroundPickUpCommand());
   }
 
+  /** 
+  Set the speed at which the roller rotates at
+  */
   public void setRollerSpeed(double speed)
   {
       rollers.set(ControlMode.PercentOutput, speed);
   }
     
+  /**  
+  If ground pick-up is deployed, retract it; else, deploy it 
+  */
   public void toggleGroundPickUpDeploy()
     {
         deploy.set(! deploy.get());
