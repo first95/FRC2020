@@ -22,6 +22,7 @@ public class OI {
 	private Joystick weaponsController = new Joystick(1);
 	
 	// Buttons on weapons controller
+	private JoystickButton runIndexer; 
 	public static final int GROUND_PICK_UP_DEPLOY = XBox360Controller.Button.X.Number(); 
 	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
@@ -70,6 +71,7 @@ public class OI {
 		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
 		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
+		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 		
 	}
@@ -141,6 +143,13 @@ public class OI {
 		return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
 	}
 
+	/**
+	 * Ask if the indexer should be moving power cells onward
+	 * @return
+	 */
+	public boolean getRunIndexer() {
+		return runIndexer.get();
+	}
 	public boolean getSingulatorButton() {
 		return weaponsController.getRawButton(SINGULATOR_BUTTON);
 	}
