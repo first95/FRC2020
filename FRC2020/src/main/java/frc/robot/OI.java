@@ -21,6 +21,7 @@ public class OI {
 	private Joystick driverController = new Joystick(0);
 	private Joystick weaponsController = new Joystick(1);
 	private JoystickButton groundPickUpDeploy; 
+	private JoystickButton runIndexer; 
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
@@ -65,6 +66,7 @@ public class OI {
 		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
 		groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
+		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		
 	}
 
@@ -134,7 +136,13 @@ public class OI {
 		return groundPickUpDeploy.get();
 	}
 
-
+	/**
+	 * Ask if the indexer should be moving power cells onward
+	 * @return
+	 */
+	public boolean getRunIndexer() {
+		return runIndexer.get();
+	}
 
 	/**
 	 * Rumble a controller.
