@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DigitalIOSensors;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.Singulator;
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static VisionCoprocessor vision;
 	public static GroundPickUp groundPickUp;
+	public static DigitalIOSensors digitalIOSensors;
 	public static Singulator singulator;
 
 	/**
@@ -40,6 +42,7 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionCoprocessor();
 		oi = new OI();
+		digitalIOSensors = new DigitalIOSensors();
 		singulator = new Singulator();
 		groundPickUp = new GroundPickUp();
 
