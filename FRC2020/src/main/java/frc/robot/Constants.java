@@ -14,6 +14,12 @@ public class Constants
 		public static final int GROUND_PICK_UP_TALON_ID = 1;
 		public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
 
+		// Singulator IDs
+		public static final int INNER_SINGULATOR_TALON_ID = 3;
+
+		// Singulator intake IDs
+		public static final int SINGULATOR_INTAKE_TALON_ID = 2;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 3.0; // ft per sec
@@ -41,4 +47,10 @@ public class Constants
 		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
 		public static final double LOW_GEAR_RATIO = 20.83;
 		public static final double HIGH_GEAR_RATIO = 9.17;
+
+		// Digital I/O pin names
+		public static final int SINGULATOR_SENSOR = 0;
+		public static final int INDEXER_ENTRANCE_SENSOR = 1;
+		public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
+		public static final int SHOOTER_LOADED_SENSOR = 3;
 	}
