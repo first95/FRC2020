@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class SingulatorCommand extends Command {
-public static double spinningSpeed = 0.5;
-public static double intakeSpeed;
+public static double spinningSpeed = 0.8;
+public static double intakeSpeed = 0.8;
 
   public SingulatorCommand() {
     requires(Robot.singulator);
@@ -28,9 +28,9 @@ public static double intakeSpeed;
   @Override
   protected void execute() {
     if(Robot.oi.getSingulatorButton()) {
-      Robot.singulator.setSingulatorSpeed(spinningSpeed);
+      Robot.singulator.setSingulatorSpeed(spinningSpeed, -intakeSpeed);
     } else {
-      Robot.singulator.setSingulatorSpeed(0);
+      Robot.singulator.setSingulatorSpeed(0, 0);
     }
 
   }

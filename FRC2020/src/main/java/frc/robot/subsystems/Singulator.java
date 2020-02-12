@@ -36,8 +36,9 @@ public class Singulator extends Subsystem {
     return Singulator.getOutputCurrent();
   }
 
-  public void setSingulatorSpeed(double Speed) {
+  public void setSingulatorSpeed(double Speed, double IntakeSpeed) {
     Singulator.set(ControlMode.PercentOutput, Speed);
+    SingulatorIntake.set(ControlMode.PercentOutput, IntakeSpeed);
   }
 
   @Override
