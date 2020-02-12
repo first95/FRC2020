@@ -8,6 +8,7 @@ import frc.robot.subsystems.DigitalIOSensors;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.PowerCellMover;
 import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
@@ -27,10 +28,11 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionCoprocessor vision;
-	public static GroundPickUp groundPickUp;
-	public static Indexer indexer;
+	// public static GroundPickUp groundPickUp;
+	// public static Indexer indexer;
 	public static DigitalIOSensors digitalIOSensors;
-	public static Singulator singulator;
+	// public static Singulator singulator;
+	public static PowerCellMover powerCellMover;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -44,11 +46,11 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionCoprocessor();
 		oi = new OI();
-		groundPickUp = new GroundPickUp();
-		indexer = new Indexer();
+		// groundPickUp = new GroundPickUp();
+		// indexer = new Indexer();
 		digitalIOSensors = new DigitalIOSensors();
-		singulator = new Singulator();
-		groundPickUp = new GroundPickUp();
+		// singulator = new Singulator();
+		powerCellMover = new PowerCellMover();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

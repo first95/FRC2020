@@ -16,7 +16,7 @@ public class GroundPickUpCommand extends Command {
     private boolean wasDeployedButtonPressed = false;
     
     public GroundPickUpCommand() {
-        requires(Robot.groundPickUp);
+        // requires(Robot.groundPickUp);
   }
 
   // Called just before this Command runs the first time
@@ -31,11 +31,11 @@ public class GroundPickUpCommand extends Command {
       // toggle deploy
       if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed())
       {
-            Robot.groundPickUp.toggleGroundPickUpDeploy();
+            // Robot.groundPickUp.toggleGroundPickUpDeploy();
             // System.out.println("ground pickup has been deployed");
       }
 
-      Robot.groundPickUp.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
+      // Robot.groundPickUp.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
   }
 
   // Make this return true when this Command no longer needs to run execute()

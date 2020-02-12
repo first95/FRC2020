@@ -16,9 +16,9 @@ import frc.robot.Robot;
 public class ManuallyControlIndexer extends Command {
   public static double MANUAL_RUN_SPEED = 0.8;
 
-  public ManuallyControlIndexer() {
+  public ManuallyControlIndexer() { 
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.indexer);
+    // requires(Robot.indexer);
   }
 
   // Called just before this Command runs the first time
@@ -30,9 +30,9 @@ public class ManuallyControlIndexer extends Command {
   @Override
   protected void execute() {
     if (Robot.oi.getRunIndexer()) {
-      Robot.indexer.runIndexer(MANUAL_RUN_SPEED);
+      // Robot.indexer.runIndexer(MANUAL_RUN_SPEED);
     } else {
-      Robot.indexer.runIndexer(0);
+      // Robot.indexer.runIndexer(0);
     }
   }
 
