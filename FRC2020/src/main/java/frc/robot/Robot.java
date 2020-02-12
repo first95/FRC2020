@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
 		vision = new VisionCoprocessor();
 		oi = new OI();
 		singulator = new Singulator();
+		groundPickUp = new GroundPickUp();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

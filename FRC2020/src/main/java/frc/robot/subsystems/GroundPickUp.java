@@ -26,6 +26,8 @@ public class GroundPickUp extends Subsystem {
         
         rollers = new TalonSRX(Constants.GROUND_PICK_UP_TALON_ID);
         deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
+
+        // System.out.println("hardware is set");
     }
 
   @Override
@@ -39,6 +41,7 @@ public class GroundPickUp extends Subsystem {
   public void setRollerSpeed(double speed)
   {
       rollers.set(ControlMode.PercentOutput, speed);
+      // System.out.println("rollers have a command");
   }
     
   /**  
@@ -46,6 +49,7 @@ public class GroundPickUp extends Subsystem {
   */
   public void toggleGroundPickUpDeploy()
     {
-        deploy.set(! deploy.get());
+        deploy.set(!deploy.get());
+        // System.out.println("it has been deployed");
     }
 }
