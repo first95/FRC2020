@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
 
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
 	public static VisionCoprocessor vision;
 	public static GroundPickUp groundPickUp;
 	public static Indexer indexer;
+	public static Singulator singulator;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -42,6 +44,7 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		groundPickUp = new GroundPickUp();
 		indexer = new Indexer();
+		singulator = new Singulator();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

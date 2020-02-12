@@ -20,8 +20,12 @@ public class OI {
 	// Controllers
 	private Joystick driverController = new Joystick(0);
 	private Joystick weaponsController = new Joystick(1);
+	
+	// Buttons on weapons controller
 	private JoystickButton groundPickUpDeploy; 
 	private JoystickButton runIndexer; 
+	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
+	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
@@ -32,6 +36,8 @@ public class OI {
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
+	
+	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 
 	/** Describes which of the controlleres you're referring to */
@@ -142,6 +148,9 @@ public class OI {
 	 */
 	public boolean getRunIndexer() {
 		return runIndexer.get();
+	}
+	public boolean getSingulatorButton() {
+		return weaponsController.getRawButton(SINGULATOR_BUTTON);
 	}
 
 	/**
