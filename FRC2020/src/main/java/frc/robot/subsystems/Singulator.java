@@ -43,6 +43,6 @@ public class Singulator extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new SingulatorCommand());
+    setDefaultCommand(new SingulatorCommand()); 
   }
 }
