@@ -37,6 +37,7 @@ public class Indexer extends Subsystem {
      * @param speed 0 for stationary, 1 for full forward
      */
     public void runIndexer(double speed) {
+        System.out.println("Setting indexer speed to " + speed);
         beltMotor.set(speed);
     }
 }

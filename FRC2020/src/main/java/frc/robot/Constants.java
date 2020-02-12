@@ -34,7 +34,7 @@ public class Constants
 		public static final int RIGHT_LEAD = 9;
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
-		public static final int INDEXER_BELT_MOTOR_ID = 12;
+		public static final int INDEXER_BELT_MOTOR_ID = 10;
 
 		
 		// Drivebase constants

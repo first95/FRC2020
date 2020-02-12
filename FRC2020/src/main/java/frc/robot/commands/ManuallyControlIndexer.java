@@ -29,7 +29,11 @@ public class ManuallyControlIndexer extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.indexer.runIndexer(Robot.oi.getRunIndexer() ? 0.8 : 0);
+    if (Robot.oi.getRunIndexer()) {
+      Robot.indexer.runIndexer(MANUAL_RUN_SPEED);
+    } else {
+      Robot.indexer.runIndexer(0);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
