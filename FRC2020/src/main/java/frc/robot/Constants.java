@@ -20,6 +20,10 @@ public class Constants
 		// Singulator intake IDs
 		public static final int SINGULATOR_INTAKE_TALON_ID = 2;
 
+		// Shooter IDs
+		public static final int LEADER_SHOOT = 12;
+		public static final int FOLLOWER_SHOOT = 13;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 3.0; // ft per sec
