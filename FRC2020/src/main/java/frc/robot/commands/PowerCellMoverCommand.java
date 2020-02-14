@@ -40,9 +40,9 @@ public class PowerCellMoverCommand extends Command {
 
     // Singulator speed setting
     if(Robot.oi.getSingulatorButton()) {
-      Robot.powerCellMover.setSingulatorSpeed(spinningSpeed, -intakeSpeed);
+      Robot.powerCellMover.setSingulatorSpeed(spinningSpeed);
     } else {
-      Robot.powerCellMover.setSingulatorSpeed(0, 0);
+      Robot.powerCellMover.setSingulatorSpeed(0);
     }
     // Ground pickup deploy and speed settings
     // If the deploy button was not pressed during the last loop and is pressed during the current loop,

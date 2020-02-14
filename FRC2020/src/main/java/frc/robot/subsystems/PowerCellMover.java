@@ -75,16 +75,16 @@ public class PowerCellMover extends Subsystem {
      * @param speed 0 for stationary, 1 for full forward
      */
     public void runIndexer(double speed) {
-      System.out.println("Setting indexer speed to " + speed);
+     // System.out.println("Setting indexer speed to " + speed);
       beltMotor.set(speed);
   }
 
   /**
    *  Set the speed at which the singulator rollers rotate
    */
-  public void setSingulatorSpeed(double Speed, double IntakeSpeed) {
+  public void setSingulatorSpeed(double Speed) {
     Singulator.set(ControlMode.PercentOutput, Speed);
-    SingulatorIntake.set(ControlMode.PercentOutput, IntakeSpeed);
+    
   }
 
   /** 
@@ -93,6 +93,7 @@ public class PowerCellMover extends Subsystem {
   public void setRollerSpeed(double speed)
   {
       rollers.set(ControlMode.PercentOutput, speed);
+      SingulatorIntake.set(ControlMode.PercentOutput, -speed);
       // System.out.println("rollers have a command");
   }
     
