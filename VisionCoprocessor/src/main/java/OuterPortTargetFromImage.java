@@ -228,6 +228,22 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		String[] filesToProcess = {
 			"test_images/2020SampleVisionImages/BlueGoal-060in-Center.jpg                           ",
 			"test_images/2020SampleVisionImages/BlueGoal-084in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-108in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-132in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-156in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-156in-Left.jpg                             ",
+			"test_images/2020SampleVisionImages/BlueGoal-180in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-224in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-228in-ProtectedZone.jpg                    ",
+			"test_images/2020SampleVisionImages/BlueGoal-330in-ProtectedZone.jpg                    ",
+			"test_images/2020SampleVisionImages/BlueGoal-Far-ProtectedZone.jpg                      ",
+			"test_images/2020SampleVisionImages/RedLoading-016in-Down.jpg                           ",
+			"test_images/2020SampleVisionImages/RedLoading-030in-Down.jpg                           ",
+			"test_images/2020SampleVisionImages/RedLoading-048in-Down.jpg                           ",
+			"test_images/2020SampleVisionImages/RedLoading-048in.jpg                                 ",
+			"test_images/2020SampleVisionImages/RedLoading-060in.jpg                                 ",
+			"test_images/2020SampleVisionImages/RedLoading-084in.jpg                                 ",
+			"test_images/2020SampleVisionImages/RedLoading-108in.jpg                                 ",
 		};
 	
 		OuterPortTargetFromImage processor = new OuterPortTargetFromImage();
@@ -237,7 +253,7 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 
 			for(OuterPortTarget opt : processor.getDetectedTargets()) {
 				opt.drawOn(img);
-							}
+			}
 
 			HighGui.imshow(file, img);
 		}
