@@ -240,6 +240,7 @@ public class DriveBase extends Subsystem {
 		handleGear();
 		SmartDashboard.putNumber("Left velocity (ftps)", getLeftSpeed());
 		SmartDashboard.putNumber("Right velocity (ftps)", getRightSpeed());
+		applyPositionPidConsts();
 	}
 
 	/**
@@ -266,6 +267,22 @@ public class DriveBase extends Subsystem {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Apply position control PID values
+	 */
+	public void applyPositionPidConsts(){
+		leftPod.applyPositionPidConsts();
+		rightPod.applyPositionPidConsts();
+	}
+
+	/**
+	 * Apply set point for position control
+	 */
+	public void travleDistance(double rotations) {
+		leftPod.travleDistance(rotations);
+		rightPod.travleDistance(rotations);
 	}
 
 }

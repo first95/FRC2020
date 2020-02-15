@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.PositionCloseLoopControlCommand;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.vision.ToggleCameraMode;
 import frc.robot.oi.JoystickAxisButton;
@@ -33,6 +34,7 @@ public class OI {
 	public static final int SWITCH_CAM_VIEW_BUTTON = XBox360Controller.Button.START.Number();
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
+	private JoystickButton applyPositionControl;
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
@@ -74,7 +76,9 @@ public class OI {
 
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
-		
+
+		applyPositionControl = new JoystickButton(driverController, XBox360Controller.Button.X.Number());
+		applyPositionControl.whenPressed(new PositionCloseLoopControlCommand());
 	}
 
 	// There are a few things the OI wants to revisit every time around
