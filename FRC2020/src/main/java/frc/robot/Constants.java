@@ -20,6 +20,9 @@ public class Constants
 		// Singulator intake IDs
 		public static final int SINGULATOR_INTAKE_TALON_ID = 2;
 
+		// Ring Light controller IDs
+		public static final int TARGET_CAM_GREEN_RINGLIGHT_TALON_ID = 4;
+
 		// Shooter IDs
 		public static final int LEADER_SHOOT = 12;
 		public static final int FOLLOWER_SHOOT = 13;

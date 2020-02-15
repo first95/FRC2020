@@ -27,6 +27,8 @@ public class OI {
 	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
+	public static final int GREEN_RING_LIGHT_BUTTON = XBox360Controller.Button.LEFT_BUMPER.Number();
+
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
@@ -153,6 +155,9 @@ public class OI {
 	}
 	public boolean getSingulatorButton() {
 		return weaponsController.getRawButton(SINGULATOR_BUTTON);
+	}
+	public boolean getGreenRingLightButton() {
+		return weaponsController.getRawButton(GREEN_RING_LIGHT_BUTTON);
 	}
 
 	public boolean getShooterButton() {
