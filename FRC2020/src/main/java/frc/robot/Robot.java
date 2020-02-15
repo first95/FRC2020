@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 	public static DigitalIOSensors digitalIOSensors;
 	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;
-	public static Shooter shooter;
+	// public static Shooter shooter;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
 		digitalIOSensors = new DigitalIOSensors();
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
-		shooter = new Shooter();
+		// shooter = new Shooter();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

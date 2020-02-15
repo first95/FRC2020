@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.commands.PowerCellMoverCommand;
+import frc.robot.commands.ManuallyControlPowerCellMovers;
 
 /**
  * Add your docs here.
@@ -30,7 +30,7 @@ public class PowerCellMover extends Subsystem {
   // DigitalInput IndexerLoadedSensor = new DigitalInput(Constants.INDEXER_POWERCELL_LOADED_SENSOR);
   // DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
-  private CANSparkMax beltMotor;
+  private CANSparkMax beltMotor, leader, follower;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   private Solenoid deploy;
@@ -40,6 +40,8 @@ public class PowerCellMover extends Subsystem {
 
     // SparkMax initialization
     beltMotor = new CANSparkMax(Constants.INDEXER_BELT_MOTOR_ID, MotorType.kBrushless);
+    leader = new CANSparkMax(Constants.LEADER_SHOOT, MotorType.kBrushless);
+    follower = new CANSparkMax(Constants.FOLLOWER_SHOOT, MotorType.kBrushless);
 
     // Talon initialization
     Singulator = new TalonSRX(Constants.INNER_SINGULATOR_TALON_ID);
@@ -48,6 +50,8 @@ public class PowerCellMover extends Subsystem {
 
     // Solenoid initialization
     deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
+
+    init();
   }
 
   // public boolean getSingulatorSensor() {
@@ -69,6 +73,21 @@ public class PowerCellMover extends Subsystem {
   //   // get the current state of the sensor watching for powercells in position to be fired
   //   return ShooterLoadedSensor.get();
   // }
+
+  private void init() {
+		leader.restoreFactoryDefaults();
+		follower.restoreFactoryDefaults();
+  }
+  
+   /**
+     * Run the shooter
+     * @param speed 0 for stationary, 1 for full forward, -1 for full reverse
+     */
+    public void runShooterOpen(double speed) {
+      //System.out.println("Setting shooter speed to " + speed);
+      leader.set(speed);
+      follower.set(-1 * speed);
+  }
 
   /**
      * Run the indexer belt
@@ -108,6 +127,6 @@ public class PowerCellMover extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new PowerCellMoverCommand());
+    setDefaultCommand(new ManuallyControlPowerCellMovers());
   }
 }
