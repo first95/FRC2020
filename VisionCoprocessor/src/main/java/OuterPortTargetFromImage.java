@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.*;
+import org.opencv.highgui.HighGui;
+import org.opencv.core.MatOfPoint;
 
 /**
 * OuterPortTargetFromImage class.
@@ -26,10 +29,29 @@ import org.opencv.objdetect.*;
 */
 public class OuterPortTargetFromImage implements VisionPipeline {
 
+	public static class OuterPortTarget {
+		public OuterPortTarget(ArrayList<MatOfPoint> target) {
+			retroTarget = target;
+		}
+		private ArrayList<MatOfPoint> retroTarget = null;
+
+		public void drawOn(Mat img) {
+			drawOn(img, new Scalar(255,255,255));
+		}
+		public void drawOn(Mat img, Scalar color) {
+			LinkedList<MatOfPoint> targets = new LinkedList<>();
+			for (int i = 0; i < retroTarget.size(); i++) {
+				targets.add(retroTarget.get(i));
+			}
+			Imgproc.drawContours(img, targets, -1, color);
+		}
+	}
+
 	//Outputs
 	private Mat blurOutput = new Mat();
 	private Mat hsvThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+	private List<OuterPortTarget> detectedTargets = new LinkedList<>();
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -57,6 +79,8 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		boolean findContoursExternalOnly = false;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
+		detectedTargets = findTargets(findContoursOutput());
+
 	}
 
 	/**
@@ -83,6 +107,9 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		return findContoursOutput;
 	}
 
+	public List<OuterPortTarget> getDetectedTargets() {
+		return detectedTargets;
+	}
 
 	/**
 	 * An indication of which type of filter to use for a blur.
@@ -187,7 +214,35 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		Imgproc.findContours(input, contours, hierarchy, mode, method);
 	}
 
+	public static List<OuterPortTarget> findTargets(ArrayList<MatOfPoint> targetRegions) {
+		LinkedList<OuterPortTarget> targets = new LinkedList<OuterPortTarget>();
 
+		OuterPortTarget opt = new OuterPortTarget(targetRegions);
+		targets.add(opt);
+
+		return targets;
+	}
+
+	public static void main(String[] args) {
+
+		String[] filesToProcess = {
+			"test_images/2020SampleVisionImages/BlueGoal-060in-Center.jpg                           ",
+			"test_images/2020SampleVisionImages/BlueGoal-084in-Center.jpg                           ",
+		};
+	
+		OuterPortTargetFromImage processor = new OuterPortTargetFromImage();
+		for (String file : filesToProcess) {
+			Mat img = Imgcodecs.imread(file);
+			processor.process(img);
+
+			for(OuterPortTarget opt : processor.getDetectedTargets()) {
+				opt.drawOn(img);
+							}
+
+			HighGui.imshow(file, img);
+		}
+		HighGui.waitKey(10);
+	}
 
 
 }
