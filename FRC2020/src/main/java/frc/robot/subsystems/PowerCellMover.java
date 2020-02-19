@@ -18,17 +18,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
+
 import frc.robot.commands.PowerCellMoverCommand;
+
 
 /**
  * Add your docs here.
  */
 public class PowerCellMover extends Subsystem {
 
-  // DigitalInput SingulatorSensor = new DigitalInput(Constants.SINGULATOR_SENSOR);
-  // DigitalInput IndexerEntranceSensor = new DigitalInput(Constants.INDEXER_ENTRANCE_SENSOR);
-  // DigitalInput IndexerLoadedSensor = new DigitalInput(Constants.INDEXER_POWERCELL_LOADED_SENSOR);
-  // DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
+  DigitalInput SingulatorSensor = new DigitalInput(Constants.SINGULATOR_SENSOR);
+  DigitalInput IndexerEntranceSensor = new DigitalInput(Constants.INDEXER_ENTRANCE_SENSOR);
+  DigitalInput IndexerLoadedSensor = new DigitalInput(Constants.INDEXER_POWERCELL_LOADED_SENSOR);
+  DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
   private CANSparkMax beltMotor;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
@@ -53,25 +55,25 @@ public class PowerCellMover extends Subsystem {
     deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
   }
 
-  // public boolean getSingulatorSensor() {
-  //   // get the current state of the sensor watching for powercells in the singulator
-  //   return SingulatorSensor.get();
-  // }
+   public boolean getSingulatorSensor() {
+     // get the current state of the sensor watching for powercells in the singulator
+     return SingulatorSensor.get();
+   }
   
-  // public boolean getIndexerEntranceSensor() {
-  //   // get the current state of the sensor watching for powercells where the indexer can first grab them
-  //   return IndexerEntranceSensor.get();
-  // }
+   public boolean getIndexerEntranceSensor() {
+     // get the current state of the sensor watching for powercells where the indexer can first grab them
+     return IndexerEntranceSensor.get();
+   }
   
-  // public boolean getIndexerLoadedSensor() {
-  //   // get the current state of the sensor watching for powercells in the first position fully within the indexer
-  //   return IndexerLoadedSensor.get();
-  // }
+   public boolean getIndexerLoadedSensor() {
+     // get the current state of the sensor watching for powercells in the first position fully within the indexer
+     return IndexerLoadedSensor.get();
+   }
   
-  // public boolean getShooterLoadedSensor() {
-  //   // get the current state of the sensor watching for powercells in position to be fired
-  //   return ShooterLoadedSensor.get();
-  // }
+   public boolean getShooterLoadedSensor() {
+     // get the current state of the sensor watching for powercells in position to be fired
+     return ShooterLoadedSensor.get();
+   }
 
   /**
      * Run the indexer belt
