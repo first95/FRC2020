@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ManuallyControlPowerCellMovers extends Command {
@@ -81,6 +82,12 @@ public class ManuallyControlPowerCellMovers extends Command {
     }
 
     Robot.powerCellMover.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
+
+    SmartDashboard.putBoolean("SingulatorOccupied",Robot.powerCellMover.getSingulatorSensor());
+    SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.powerCellMover.getIndexerEntranceSensor());
+    SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
+    SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
