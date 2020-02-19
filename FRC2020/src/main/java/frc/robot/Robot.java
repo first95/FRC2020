@@ -10,6 +10,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
 import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
 
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
 	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;
 	public static Shooter shooter;
+	public static Climber climber;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -51,6 +53,7 @@ public class Robot extends TimedRobot {
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
 		shooter = new Shooter();
+		climber = new Climber();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

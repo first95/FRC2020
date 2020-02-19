@@ -35,6 +35,7 @@ public class OI {
 	public static final int SWITCH_CAM_VIEW_BUTTON = XBox360Controller.Button.START.Number();
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
+	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
@@ -144,6 +145,14 @@ public class OI {
 	public boolean getGroundPickUpDeployed() {
 		// System.out.println("button has been pressed");
 		return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
+	}
+
+	/**
+	 * Ask if the driver wants climber deploy toggled
+	 * @return
+	 */
+	public boolean getClimberDeployed() {
+		return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
 	}
 
 	/**
