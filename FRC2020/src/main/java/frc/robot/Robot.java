@@ -89,6 +89,10 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledPeriodic() {
+		SmartDashboard.putBoolean("SingulatorOccupied",Robot.powerCellMover.getSingulatorSensor());
+		SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.powerCellMover.getIndexerEntranceSensor());
+		SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
+		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());	
 	}
 
 	@Override
