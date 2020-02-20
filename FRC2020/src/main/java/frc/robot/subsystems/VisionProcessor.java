@@ -18,11 +18,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.vision.SetCameraMode;
 
 /**
- * A subsystem to read from the vision coprocessor
+ * A subsystem to read from the camera(s), process them, and output video to the smart dashboard
  */
-public class VisionCoprocessor extends Subsystem {
-    private NetworkTableEntry bearingsListEntry = null;
-    private NetworkTableEntry rangesListEntry = null;
+public class VisionProcessor extends Subsystem {
+
     private double[] bearingsList = null;
     private double[] rangesList = null;
 
@@ -32,27 +31,8 @@ public class VisionCoprocessor extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new SetCameraMode());
-        NetworkTableInstance allTables = NetworkTableInstance.getDefault();
-        NetworkTable visionTable = allTables.getTable("vision_metrics");
-        bearingsListEntry = visionTable.getEntry("target bearings (deg)");
-        rangesListEntry = visionTable.getEntry("target bearings (deg)");
-        NetworkTableEntry numVisionTargetsVisibleEntry = visionTable.getEntry("target bearings (deg)");
-        numVisionTargetsVisibleEntry.addListener(event -> {this.onNumVtUpdated(event);} , EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-        isCameraHumanVisible = allTables.getTable("camera_control").getEntry("camera_for_humans");
     }
 
-    private void onNumVtUpdated(EntryNotification event) {
-        int numVisionTargets = (int)(event.value.getDouble());
-        double[] bearings = bearingsListEntry.getDoubleArray(new double[0]);
-        double[] ranges = rangesListEntry.getDoubleArray(new double[0]);
-
-        // Simple synchronization confiration
-        if(numVisionTargets == bearings.length && numVisionTargets == ranges.length) {
-            bearingsList = bearings;
-            rangesList = ranges;
-        }
-    }
 
     public class VisionTargetInfo {
         VisionTargetInfo(double bearingDegrees, double rangeInches) {
