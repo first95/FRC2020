@@ -57,7 +57,8 @@ public class PowerCellMover extends Subsystem {
 
    public boolean getSingulatorSensor() {
      // get the current state of the sensor watching for powercells in the singulator
-     return SingulatorSensor.get();
+     // this sensor emits reverse logic signals from that of the other 3 so negating here
+     return (! SingulatorSensor.get());
    }
   
    public boolean getIndexerEntranceSensor() {

@@ -14,7 +14,7 @@ import frc.robot.Robot;
  * An example command. You can replace me with your own command.
  */
 public class ManuallyControlShooter extends Command {
-  public static double MANUAL_RUN_SPEED = 0.3;
+  public static double MANUAL_RUN_SPEED = 0.4;
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
