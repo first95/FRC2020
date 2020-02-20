@@ -9,11 +9,8 @@ package frc.robot.subsystems;
 
 import java.util.LinkedList;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.EntryNotification;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.vision.SetCameraMode;
 
@@ -21,11 +18,20 @@ import frc.robot.commands.vision.SetCameraMode;
  * A subsystem to read from the camera(s), process them, and output video to the smart dashboard
  */
 public class VisionProcessor extends Subsystem {
+    /** The camera aimed at the upper port */
+    UsbCamera upperPortCam;
+    /** The view exposed to the drivers for them to see through */
+    MjpegServer fpsViewServer;
 
     private double[] bearingsList = null;
     private double[] rangesList = null;
 
-    private NetworkTableEntry isCameraHumanVisible;
+    public VisionProcessor() {
+        super();
+        upperPortCam = new UsbCamera("Upper port cam", 0);
+        fpsViewServer = new MjpegServer("First person view", 1181);
+        fpsViewServer.setSource(upperPortCam);
+    }
 
     @Override
     public void initDefaultCommand() {
@@ -56,21 +62,21 @@ public class VisionProcessor extends Subsystem {
         return vvts;
     }
 
-    /**
-     * Get current camera configuration
-     * @return true if the camera is configured for human use, 
-     * or false if configured for machine vision.
-     */
-    public boolean isCameraHumanVision() {
-        return isCameraHumanVisible.getBoolean(false);
-    }
+    // /**
+    //  * Get current camera configuration
+    //  * @return true if the camera is configured for human use, 
+    //  * or false if configured for machine vision.
+    //  */
+    // public boolean isCameraHumanVision() {
+    //     return isCameraHumanVisible.getBoolean(false);
+    // }
 
-    /**
-     * Command the camera to enter a mode
-     * @param isHumanVisible true if the camera should be configured for human use, 
-     * or false to configure the camera for machine vision.
-     */
-    public void setCameraIsHumanVisible(boolean isHumanVisible) {
-        isCameraHumanVisible.setBoolean(isHumanVisible);
-    }
+    // /**
+    //  * Command the camera to enter a mode
+    //  * @param isHumanVisible true if the camera should be configured for human use, 
+    //  * or false to configure the camera for machine vision.
+    //  */
+    // public void setCameraIsHumanVisible(boolean isHumanVisible) {
+    //     isCameraHumanVisible.setBoolean(isHumanVisible);
+    // }
 }
