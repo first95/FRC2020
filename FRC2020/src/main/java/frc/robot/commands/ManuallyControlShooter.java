@@ -33,18 +33,18 @@ public class ManuallyControlShooter extends Command {
   @Override
   protected void execute() {
       // Singulator speed setting
-      if(Robot.oi.getShooterButton()) {
-        Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
-        current_speed = MANUAL_RUN_SPEED;
-      } else {
-        // Slowing down motor and don't want to do it too fast
-        if (current_speed < MIN_RUN_SPEED) {
-          current_speed = 0;
-        } else {
-          current_speed = current_speed*MANUAL_RUN_SPEED;
-        }
-        Robot.shooter.runShooterOpen(current_speed);
-      }
+      // if(Robot.oi.getShooterButton()) {
+      //   Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
+      //   current_speed = MANUAL_RUN_SPEED;
+      // } else {
+      //   // Slowing down motor and don't want to do it too fast
+      //   if (current_speed < MIN_RUN_SPEED) {
+      //     current_speed = 0;
+      //   } else {
+      //     current_speed = current_speed*MANUAL_RUN_SPEED;
+      //   }
+      //   Robot.shooter.runShooterOpen(current_speed);
+      // }
   }
 
   // Make this return true when this Command no longer needs to run execute()

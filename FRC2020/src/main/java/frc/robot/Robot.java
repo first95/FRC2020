@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionCoprocessor vision;
-	// public static GroundPickUp groundPickUp;
+	public static GroundPickUp groundPickUp;
 	// public static Indexer indexer;
 	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;

@@ -13,6 +13,8 @@ import frc.robot.subsystems.PowerCellMover;
 
 public class AutoPowerCellMover extends Command {
 
+  private boolean wasDeployedButtonPressed = false;
+
   public boolean shooterButtonPressed = Robot.oi.getShooterButton();
   public static boolean shooterIsLoadedCheck;
   public static boolean movingFromSingulator;
@@ -21,8 +23,17 @@ public class AutoPowerCellMover extends Command {
 
   public static boolean dummy = false;
 
+  public int time = 0;
+
+  public static double MANUAL_RUN_SPEED = 0.4;
+  public static double MANUAL_REDUCTION = 0.2;
+  public static double MIN_RUN_SPEED = 0.05;
+  private double current_speed = 0;
+
   public AutoPowerCellMover() {
     requires(Robot.powerCellMover);
+    requires(Robot.shooter);
+    requires(Robot.groundPickUp);
   }
 
   // Called just before this Command runs the first time
@@ -33,72 +44,129 @@ public class AutoPowerCellMover extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dummy = true;
 
-    if(shooterButtonPressed)
-    {
-      // Robot.powerCellMover.setSingulatorSpeed(0.8);
-      // Robot.powerCellMover.runIndexer(0.8);
-      // Robot.shooter.runShooterOpen(0.8);
+    // If the deploy button was not pressed during the last loop and is pressed
+    // during the current loop,
+    // toggle deploy
+    if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed()) {
+      Robot.groundPickUp.toggleGroundPickUpDeploy();
+      System.out.println("ground pickup has been deployed");
     }
-    else
-    {
-      if(Robot.powerCellMover.getShooterLoadedSensor() == true)
-      {
-        // Robot.powerCellMover.setSingulatorSpeed(0);
-        // Robot.powerCellMover.runIndexer(0);
-        // Robot.shooter.runShooterOpen(0);
 
-        shooterIsLoadedCheck = true;
+    Robot.groundPickUp.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
+
+    if (Robot.oi.getShooterButton()) {
+      Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
+      current_speed = MANUAL_RUN_SPEED;
+
+      if(time++ >= 1000)
+      {
+        Robot.powerCellMover.runIndexer(1);
       }
       else
       {
-        shooterIsLoadedCheck = false;
+        Robot.powerCellMover.runIndexer(0);
       }
+      
+    } else {
+      // Slowing down motor and don't want to do it too fast
+      if (current_speed < MIN_RUN_SPEED) {
+        current_speed = 0;
+      } else {
+        current_speed = current_speed * MANUAL_RUN_SPEED;
+      }
+      Robot.shooter.runShooterOpen(current_speed);
+    }
+    // dummy = true;
 
-      if(shooterIsLoadedCheck == false)
-      {
-        if(Robot.powerCellMover.getSingulatorSensor() == true && Robot.powerCellMover.getIndexerEntranceSensor() == false)
-        {
-          // Robot.powerCellMover.setSingulatorSpeed(0.8);
-          // Robot.powerCellMover.runIndexer(0);
-          movingFromSingulator = true;
-          movingIntoIndexer = false;
-          isInIdexer = false;
-        }
-        else if(Robot.powerCellMover.getIndexerEntranceSensor() == true && Robot.powerCellMover.getIndexerLoadedSensor() == false)
-        {
-          // Robot.powerCellMover.setSingulatorSpeed(0);
-          // Robot.powerCellMover.runIndexer(0.2);
-          movingFromSingulator = false;
-          movingIntoIndexer = true;
-          isInIdexer = false;
-        }
-        else if(Robot.powerCellMover.getIndexerLoadedSensor() == true)
-        {
-          // Robot.powerCellMover.setSingulatorSpeed(0);
-          // Robot.powerCellMover.runIndexer(0);
-          movingFromSingulator = false;
-          movingIntoIndexer = false;
-          isInIdexer = true;
-        }
-        else
-        {
-          // Robot.powerCellMover.setSingulatorSpeed(0);
-          // Robot.powerCellMover.runIndexer(0);
-          movingFromSingulator = false;
-          movingIntoIndexer = false;
-          isInIdexer = false;
-        }
-      }
-      else
-      {
-        // Robot.powerCellMover.setSingulatorSpeed(0);
-        // Robot.powerCellMover.runIndexer(0);
+    System.out.println("time = " + time);
+
+    if (Robot.powerCellMover.getShooterLoadedSensor() == true) {
+      Robot.powerCellMover.setSingulatorSpeed(0);
+      Robot.powerCellMover.runIndexer(0);
+      Robot.shooter.runShooterOpen(0);
+
+      shooterIsLoadedCheck = true;
+    } else {
+      shooterIsLoadedCheck = false;
+    }
+
+    if (shooterIsLoadedCheck == false) {
+      if ((Robot.powerCellMover.getSingulatorSensor() == false)
+          && (Robot.powerCellMover.getIndexerEntranceSensor() == false)
+          && (Robot.powerCellMover.getIndexerLoadedSensor() == false)) {
+        Robot.powerCellMover.setSingulatorSpeed(0);
+        Robot.powerCellMover.runIndexer(0);
+        movingFromSingulator = false;
+        movingIntoIndexer = false;
+        isInIdexer = false;
+      } else if ((Robot.powerCellMover.getSingulatorSensor() == true)
+          && (Robot.powerCellMover.getIndexerEntranceSensor() == false)
+          && (Robot.powerCellMover.getIndexerLoadedSensor() == false)) {
+        Robot.powerCellMover.setSingulatorSpeed(0.8);
+        Robot.powerCellMover.runIndexer(0);
+        movingFromSingulator = true;
+        movingIntoIndexer = false;
+        isInIdexer = false;
+      } else if ((Robot.powerCellMover.getSingulatorSensor() == true)
+          && (Robot.powerCellMover.getIndexerEntranceSensor() == true)
+          && (Robot.powerCellMover.getIndexerLoadedSensor() == false)) {
+        Robot.powerCellMover.setSingulatorSpeed(0.3);
+        Robot.powerCellMover.runIndexer(0.5);
+        movingFromSingulator = true;
+        movingIntoIndexer = true;
+        isInIdexer = false;
+      } else if (Robot.powerCellMover.getSingulatorSensor() == true
+          && Robot.powerCellMover.getIndexerEntranceSensor() == false
+          && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
+        Robot.powerCellMover.setSingulatorSpeed(0.8);
+        Robot.powerCellMover.runIndexer(0);
+        movingFromSingulator = true;
+        movingIntoIndexer = false;
+        isInIdexer = true;
+      } else if (Robot.powerCellMover.getSingulatorSensor() == true
+          && Robot.powerCellMover.getIndexerEntranceSensor() == true
+          && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
+        Robot.powerCellMover.setSingulatorSpeed(0.3);
+        Robot.powerCellMover.runIndexer(0.5);
+        movingFromSingulator = true;
+        movingIntoIndexer = true;
+        isInIdexer = true;
+      } else if (Robot.powerCellMover.getSingulatorSensor() == false
+          && Robot.powerCellMover.getIndexerEntranceSensor() == true
+          && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
+        Robot.powerCellMover.setSingulatorSpeed(0);
+        Robot.powerCellMover.runIndexer(0.5);
+        movingFromSingulator = false;
+        movingIntoIndexer = true;
+        isInIdexer = false;
+      } else if (Robot.powerCellMover.getSingulatorSensor() == false
+          && Robot.powerCellMover.getIndexerEntranceSensor() == true
+          && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
+        Robot.powerCellMover.setSingulatorSpeed(0);
+        Robot.powerCellMover.runIndexer(0.5);
+        movingFromSingulator = false;
+        movingIntoIndexer = true;
+        isInIdexer = true;
+      } else {
+        Robot.powerCellMover.setSingulatorSpeed(0);
+        Robot.powerCellMover.runIndexer(0);
         movingFromSingulator = false;
         movingIntoIndexer = false;
         isInIdexer = false;
       }
+    } else if (shooterIsLoadedCheck == true && Robot.powerCellMover.getSingulatorSensor()) {
+      Robot.powerCellMover.setSingulatorSpeed(0.8);
+      Robot.powerCellMover.runIndexer(0);
+      movingFromSingulator = true;
+      movingIntoIndexer = false;
+      isInIdexer = false;
+    } else {
+      Robot.powerCellMover.setSingulatorSpeed(0);
+      Robot.powerCellMover.runIndexer(0);
+      movingFromSingulator = false;
+      movingIntoIndexer = false;
+      isInIdexer = false;
     }
   }
 
