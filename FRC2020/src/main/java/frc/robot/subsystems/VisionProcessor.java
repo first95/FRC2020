@@ -28,7 +28,7 @@ public class VisionProcessor extends Subsystem {
 
     public VisionProcessor() {
         super();
-        upperPortCam = new UsbCamera("Upper port cam", 0);
+        upperPortCam = new UsbCamera("Upper port cam", "/dev/video0");
         fpsViewServer = new MjpegServer("First person view", 1181);
         fpsViewServer.setSource(upperPortCam);
     }
@@ -62,21 +62,22 @@ public class VisionProcessor extends Subsystem {
         return vvts;
     }
 
-    // /**
-    //  * Get current camera configuration
-    //  * @return true if the camera is configured for human use, 
-    //  * or false if configured for machine vision.
-    //  */
-    // public boolean isCameraHumanVision() {
-    //     return isCameraHumanVisible.getBoolean(false);
-    // }
 
-    // /**
-    //  * Command the camera to enter a mode
-    //  * @param isHumanVisible true if the camera should be configured for human use, 
-    //  * or false to configure the camera for machine vision.
-    //  */
-    // public void setCameraIsHumanVisible(boolean isHumanVisible) {
-    //     isCameraHumanVisible.setBoolean(isHumanVisible);
-    // }
+    /**
+     * Get current camera configuration
+     * @return true if the camera is configured for human use, 
+     * or false if configured for machine vision.
+     */
+    public boolean isCameraHumanVision() {
+        return false;
+    }
+
+    /**
+     * Command the camera to enter a mode
+     * @param isHumanVisible true if the camera should be configured for human use, 
+     * or false to configure the camera for machine vision.
+     */
+    public void setCameraIsHumanVisible(boolean isHumanVisible) {
+        
+    }
 }
