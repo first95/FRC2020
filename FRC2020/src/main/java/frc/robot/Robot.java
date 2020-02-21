@@ -12,7 +12,7 @@ import frc.robot.subsystems.PowerCellMover;
 import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.VisionCoprocessor;
+import frc.robot.subsystems.VisionProcessor;
 import frc.robot.Constants;
 
 /**
@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 	public static DriveBase drivebase;
 	public static Compressor compressor;
 	public static OI oi;
-	public static VisionCoprocessor vision;
+	public static VisionProcessor vision;
 	// public static GroundPickUp groundPickUp;
 	// public static Indexer indexer;
 	public static DigitalIOSensors digitalIOSensors;
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 		// Initialize all subsystems
 		drivebase = new DriveBase();
 		compressor = new Compressor(Constants.PCM_NUM);
-		vision = new VisionCoprocessor();
+		vision = new VisionProcessor();
 		oi = new OI();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
