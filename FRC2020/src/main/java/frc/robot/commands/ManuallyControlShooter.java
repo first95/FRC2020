@@ -14,14 +14,14 @@ import frc.robot.Robot;
  * An example command. You can replace me with your own command.
  */
 public class ManuallyControlShooter extends Command {
-  public static double MANUAL_RUN_SPEED = 0.4;
+  public static double MANUAL_RUN_SPEED = 0.3;
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
 
   public ManuallyControlShooter() { 
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.shooter);
+    // requires(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
@@ -33,18 +33,18 @@ public class ManuallyControlShooter extends Command {
   @Override
   protected void execute() {
       // Singulator speed setting
-      // if(Robot.oi.getShooterButton()) {
-      //   Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
-      //   current_speed = MANUAL_RUN_SPEED;
-      // } else {
-      //   // Slowing down motor and don't want to do it too fast
-      //   if (current_speed < MIN_RUN_SPEED) {
-      //     current_speed = 0;
-      //   } else {
-      //     current_speed = current_speed*MANUAL_RUN_SPEED;
-      //   }
-      //   Robot.shooter.runShooterOpen(current_speed);
-      // }
+      if(Robot.oi.getShooterButton()) {
+        // Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
+        current_speed = MANUAL_RUN_SPEED;
+      } else {
+        // Slowing down motor and don't want to do it too fast
+        if (current_speed < MIN_RUN_SPEED) {
+          current_speed = 0;
+        } else {
+          current_speed = current_speed*MANUAL_RUN_SPEED;
+        }
+        // Robot.shooter.runShooterOpen(current_speed);
+      }
   }
 
   // Make this return true when this Command no longer needs to run execute()
