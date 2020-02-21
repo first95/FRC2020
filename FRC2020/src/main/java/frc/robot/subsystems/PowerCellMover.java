@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
-
+import frc.robot.commands.AutoPowerCellMover;
 import frc.robot.commands.PowerCellMoverCommand;
 
 
@@ -122,6 +122,6 @@ public class PowerCellMover extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new PowerCellMoverCommand());
+    setDefaultCommand(new AutoPowerCellMover());
   }
 }
