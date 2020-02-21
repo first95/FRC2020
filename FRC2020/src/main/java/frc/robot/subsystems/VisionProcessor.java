@@ -9,50 +9,36 @@ package frc.robot.subsystems;
 
 import java.util.LinkedList;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.EntryNotification;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.vision.SetCameraMode;
 
 /**
- * A subsystem to read from the vision coprocessor
+ * A subsystem to read from the camera(s), process them, and output video to the smart dashboard
  */
-public class VisionCoprocessor extends Subsystem {
-    private NetworkTableEntry bearingsListEntry = null;
-    private NetworkTableEntry rangesListEntry = null;
+public class VisionProcessor extends Subsystem {
+    /** The camera aimed at the upper port */
+    UsbCamera upperPortCam;
+    /** The view exposed to the drivers for them to see through */
+    MjpegServer fpsViewServer;
+
     private double[] bearingsList = null;
     private double[] rangesList = null;
 
-    private NetworkTableEntry isCameraHumanVisible;
+    public VisionProcessor() {
+        super();
+        upperPortCam = new UsbCamera("Upper port cam", "/dev/video0");
+        fpsViewServer = new MjpegServer("First person view", 1181);
+        fpsViewServer.setSource(upperPortCam);
+    }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new SetCameraMode());
-        NetworkTableInstance allTables = NetworkTableInstance.getDefault();
-        NetworkTable visionTable = allTables.getTable("vision_metrics");
-        bearingsListEntry = visionTable.getEntry("target bearings (deg)");
-        rangesListEntry = visionTable.getEntry("target bearings (deg)");
-        NetworkTableEntry numVisionTargetsVisibleEntry = visionTable.getEntry("target bearings (deg)");
-        numVisionTargetsVisibleEntry.addListener(event -> {this.onNumVtUpdated(event);} , EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-        isCameraHumanVisible = allTables.getTable("camera_control").getEntry("camera_for_humans");
     }
 
-    private void onNumVtUpdated(EntryNotification event) {
-        int numVisionTargets = (int)(event.value.getDouble());
-        double[] bearings = bearingsListEntry.getDoubleArray(new double[0]);
-        double[] ranges = rangesListEntry.getDoubleArray(new double[0]);
-
-        // Simple synchronization confiration
-        if(numVisionTargets == bearings.length && numVisionTargets == ranges.length) {
-            bearingsList = bearings;
-            rangesList = ranges;
-        }
-    }
 
     public class VisionTargetInfo {
         VisionTargetInfo(double bearingDegrees, double rangeInches) {
@@ -76,13 +62,14 @@ public class VisionCoprocessor extends Subsystem {
         return vvts;
     }
 
+
     /**
      * Get current camera configuration
      * @return true if the camera is configured for human use, 
      * or false if configured for machine vision.
      */
     public boolean isCameraHumanVision() {
-        return isCameraHumanVisible.getBoolean(false);
+        return false;
     }
 
     /**
@@ -91,6 +78,6 @@ public class VisionCoprocessor extends Subsystem {
      * or false to configure the camera for machine vision.
      */
     public void setCameraIsHumanVisible(boolean isHumanVisible) {
-        isCameraHumanVisible.setBoolean(isHumanVisible);
+        
     }
 }
