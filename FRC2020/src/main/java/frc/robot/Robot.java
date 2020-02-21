@@ -46,17 +46,17 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 
 		// Initialize all subsystems
-		// drivebase = new DriveBase();
-		// compressor = new Compressor(Constants.PCM_NUM);
+		drivebase = new DriveBase();
+		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionProcessor();
-		// oi = new OI();
+		oi = new OI();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
-		// digitalIOSensors = new DigitalIOSensors();
+		digitalIOSensors = new DigitalIOSensors();
 		// singulator = new Singulator();
-		// powerCellMover = new PowerCellMover();
-		// shooter = new Shooter();
-		// climber = new Climber();
+		powerCellMover = new PowerCellMover();
+		shooter = new Shooter();
+		climber = new Climber();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
 		// Disable brakes on talons to make it
 		// easier to push
-		// drivebase.brake(false);
+		drivebase.brake(false);
 
 	}
 
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 	 * robot is disabled.
 	 */
 	public void disabledInit() {
-		// drivebase.brake(false);
+		drivebase.brake(false);
 	}
 
 	public void disabledPeriodic() {
@@ -97,8 +97,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		Scheduler.getInstance().run(); // Runs all active commands
-		// oi.visit();
-		// drivebase.visit();
+		oi.visit();
+		drivebase.visit();
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
 		// Unlock the auto shifter
 		// drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
 
-		// drivebase.brake(true);
+		drivebase.brake(true);
 	}
 
 	/**
