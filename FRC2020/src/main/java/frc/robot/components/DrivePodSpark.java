@@ -36,8 +36,7 @@ public class DrivePodSpark {
 
 	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
 	private static final int kCPR = 1024;
-	private CANEncoder m_alternateEncoder;
-	private CANEncoder m_encoder;
+	// private CANEncoder leaderEncoder, followerEncoder;
 
 	private CANPIDController leaderPidController, followerPidController;
 
@@ -67,14 +66,15 @@ public class DrivePodSpark {
 		//m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
 
 	    // Create the default encoder associated with the leader
-		m_encoder = this.leader.getEncoder();
+		// leaderEncoder = this.leader.getEncoder();
+		// followerEncoder = this.follower.getEncoder();
 
 		// Create the default PID controller associated with the leader
-		leaderPidController = this.leader.getPIDController();
-		followerPidController = this.follower.getPIDController();
+		// leaderPidController = this.leader.getPIDController();
+		// followerPidController = this.follower.getPIDController();
 
 		// Tell the followers to follow the leader
-		// follower.follow(leader);
+		follower.follow(leader);
 
 		inverse = reverse;
 		// leader.setInverted(reverse);
@@ -166,12 +166,12 @@ public class DrivePodSpark {
 		if (inverse)
 		{
 			leader.set(-1 * throttle);
-			follower.set(-1 * throttle);
+			// follower.set(-1 * throttle);
 		}
 		else
 		{
 			leader.set(throttle);
-			follower.set(throttle);
+			// follower.set(throttle);
 		}
 		// followers follow
 	}
@@ -201,7 +201,7 @@ public class DrivePodSpark {
 	public double getEncoderVelocityFeetPerSecondSansGear() {
 		//return leader.getEncoder().getVelocity()* (Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60);
 		// getVelocity returns velocity in motor unit (default is RPM)
-		return m_encoder.getVelocity()*(Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60)/12;
+		return 2;//leaderEncoder.getVelocity()*(Constants.DRIVE_WHEEL_DIAMETER_IN * Math.PI / 60)/12;
 	}
 
 	public void applyPositionPidConsts() {
