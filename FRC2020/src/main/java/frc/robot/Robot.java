@@ -4,14 +4,15 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.DigitalIOSensors;
+// import frc.robot.subsystems.DigitalIOSensors;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
 import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.VisionCoprocessor;
+import frc.robot.subsystems.VisionProcessor;
+import frc.robot.subsystems.Climber;
 import frc.robot.Constants;
 
 /**
@@ -28,10 +29,11 @@ public class Robot extends TimedRobot {
 	public static DriveBase drivebase;
 	public static Compressor compressor;
 	public static OI oi;
-	public static VisionCoprocessor vision;
+	public static VisionProcessor vision;
+	public static Climber climber;
 	// public static GroundPickUp groundPickUp;
 	// public static Indexer indexer;
-	public static DigitalIOSensors digitalIOSensors;
+	// public static DigitalIOSensors digitalIOSensors;
 	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;
 	// public static Shooter shooter;
@@ -48,11 +50,12 @@ public class Robot extends TimedRobot {
 		// Initialize all subsystems
 		drivebase = new DriveBase();
 		compressor = new Compressor(Constants.PCM_NUM);
-		vision = new VisionCoprocessor();
+		vision = new VisionProcessor();
+		climber = new Climber();
 		oi = new OI();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
-		digitalIOSensors = new DigitalIOSensors();
+		// digitalIOSensors = new DigitalIOSensors();
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
 		// shooter = new Shooter();

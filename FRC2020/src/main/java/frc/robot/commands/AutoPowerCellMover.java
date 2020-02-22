@@ -32,8 +32,8 @@ public class AutoPowerCellMover extends Command {
 
   public AutoPowerCellMover() {
     requires(Robot.powerCellMover);
-    requires(Robot.shooter);
-    requires(Robot.groundPickUp);
+    // requires(Robot.shooter);
+    // requires(Robot.groundPickUp);
   }
 
   // Called just before this Command runs the first time
@@ -48,35 +48,6 @@ public class AutoPowerCellMover extends Command {
     // If the deploy button was not pressed during the last loop and is pressed
     // during the current loop,
     // toggle deploy
-    if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed()) {
-      Robot.groundPickUp.toggleGroundPickUpDeploy();
-      System.out.println("ground pickup has been deployed");
-    }
-
-    Robot.groundPickUp.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
-
-    if (Robot.oi.getShooterButton()) {
-      Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
-      current_speed = MANUAL_RUN_SPEED;
-
-      if(time++ >= 1000)
-      {
-        Robot.powerCellMover.runIndexer(1);
-      }
-      else
-      {
-        Robot.powerCellMover.runIndexer(0);
-      }
-      
-    } else {
-      // Slowing down motor and don't want to do it too fast
-      if (current_speed < MIN_RUN_SPEED) {
-        current_speed = 0;
-      } else {
-        current_speed = current_speed * MANUAL_RUN_SPEED;
-      }
-      Robot.shooter.runShooterOpen(current_speed);
-    }
     // dummy = true;
 
     System.out.println("time = " + time);
@@ -84,7 +55,7 @@ public class AutoPowerCellMover extends Command {
     if (Robot.powerCellMover.getShooterLoadedSensor() == true) {
       Robot.powerCellMover.setSingulatorSpeed(0);
       Robot.powerCellMover.runIndexer(0);
-      Robot.shooter.runShooterOpen(0);
+      Robot.powerCellMover.runShooterOpen(0);
 
       shooterIsLoadedCheck = true;
     } else {
@@ -167,6 +138,42 @@ public class AutoPowerCellMover extends Command {
       movingFromSingulator = false;
       movingIntoIndexer = false;
       isInIdexer = false;
+    }
+  }
+
+  public void autoIndexGroundPickUp()
+  {
+    if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed()) {
+      Robot.powerCellMover.toggleGroundPickUpDeploy();
+      System.out.println("ground pickup has been deployed");
+    }
+
+    Robot.powerCellMover.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
+  }
+
+  public void autoIndexShooter()
+  {
+    if (Robot.oi.getShooterButton()) {
+      Robot.powerCellMover.runShooterOpen(MANUAL_RUN_SPEED);
+      current_speed = MANUAL_RUN_SPEED;
+
+      if(time++ >= 1000)
+      {
+        Robot.powerCellMover.runIndexer(1);
+      }
+      else
+      {
+        Robot.powerCellMover.runIndexer(0);
+      }
+      
+    } else {
+      // Slowing down motor and don't want to do it too fast
+      if (current_speed < MIN_RUN_SPEED) {
+        current_speed = 0;
+      } else {
+        current_speed = current_speed * MANUAL_RUN_SPEED;
+      }
+      Robot.powerCellMover.runShooterOpen(current_speed);
     }
   }
 
