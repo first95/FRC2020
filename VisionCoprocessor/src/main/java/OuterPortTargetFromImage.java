@@ -71,7 +71,7 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		Mat hsvThresholdInput = blurOutput;
 		double[] hsvThresholdHue = {74.46043165467626, 80.0};
 		double[] hsvThresholdSaturation = {201.79856115107913, 255.0};
-		double[] hsvThresholdValue = {55.03597122302158, 255.0};
+		double[] hsvThresholdValue = {40, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step Find_Contours0:
