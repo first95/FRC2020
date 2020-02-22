@@ -23,7 +23,7 @@ public class AutoPowerCellMover extends Command {
   public static boolean dummy = false;
 
   public int time = 0;
-  public static double INDEXER_RUN_SPEED = 0.5;
+  public static double INDEXER_RUN_SPEED = 0.3;
   public static double SINGULATOR_RUN_SPEED = 0.5;
 
 
