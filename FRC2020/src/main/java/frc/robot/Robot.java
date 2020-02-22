@@ -4,16 +4,15 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DigitalIOSensors;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.GroundPickUp;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
 import frc.robot.subsystems.Singulator;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.VisionCoprocessor;
 import frc.robot.Constants;
-import frc.robot.commands.AutoPowerCellMover;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,12 +29,12 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionCoprocessor vision;
-	public static GroundPickUp groundPickUp;
+	// public static GroundPickUp groundPickUp;
 	// public static Indexer indexer;
+	public static DigitalIOSensors digitalIOSensors;
 	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;
-	public static Shooter shooter;
-	public static Climber climber;
+	// public static Shooter shooter;
 
 	public static int dummy = 0;
 
@@ -53,10 +52,10 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
+		digitalIOSensors = new DigitalIOSensors();
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
-		shooter = new Shooter();
-		climber = new Climber();
+		// shooter = new Shooter();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);
@@ -92,12 +91,6 @@ public class Robot extends TimedRobot {
 	}
 
 	public void disabledPeriodic() {
-		SmartDashboard.putBoolean("SingulatorOccupied",Robot.powerCellMover.getSingulatorSensor());
-		SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.powerCellMover.getIndexerEntranceSensor());
-		SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
-		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
-		
-		SmartDashboard.putBoolean("dummy", AutoPowerCellMover.dummy);
 	}
 
 	@Override
@@ -105,16 +98,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run(); // Runs all active commands
 		oi.visit();
 		drivebase.visit();
-
-		SmartDashboard.putBoolean("SingulatorOccupied",Robot.powerCellMover.getSingulatorSensor());
-		SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.powerCellMover.getIndexerEntranceSensor());
-		SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
-		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
-
-		SmartDashboard.putBoolean("Shooter is loaded", AutoPowerCellMover.shooterIsLoadedCheck);
-		SmartDashboard.putBoolean("Moving into singulator", AutoPowerCellMover.movingFromSingulator);
-		SmartDashboard.putBoolean("Moving into indexer", AutoPowerCellMover.movingIntoIndexer);
-		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
 	}
 
 	@Override
