@@ -58,7 +58,7 @@ public class AutoPowerCellMover extends Command {
     if (shooterIsLoadedCheck == false) {
       if (Robot.powerCellMover.getSingulatorSensor() == true && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.3);
+        Robot.powerCellMover.setSingulatorSpeed(0.5);
         Robot.powerCellMover.runIndexer(0);
         movingFromSingulator = true;
         movingIntoIndexer = false;
@@ -68,7 +68,7 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.3);
+        Robot.powerCellMover.setSingulatorSpeed(0.5);
         Robot.powerCellMover.runIndexer(0);
         movingFromSingulator = true;
         movingIntoIndexer = false;
@@ -79,7 +79,7 @@ public class AutoPowerCellMover extends Command {
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
         Robot.powerCellMover.setSingulatorSpeed(0);
-        Robot.powerCellMover.runIndexer(0.5);
+        Robot.powerCellMover.runIndexer(0.3);
         movingFromSingulator = false;
         movingIntoIndexer = true;
         isInIdexer = false;
@@ -88,8 +88,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.3);
-        Robot.powerCellMover.runIndexer(0.5);
+        Robot.powerCellMover.setSingulatorSpeed(0.5);
+        Robot.powerCellMover.runIndexer(0.3);
         movingFromSingulator = true;
         movingIntoIndexer = true;
         isInIdexer = false;
@@ -108,8 +108,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
-        Robot.powerCellMover.setSingulatorSpeed(0.8);
-        Robot.powerCellMover.runIndexer(0);
+        Robot.powerCellMover.setSingulatorSpeed(0.5);
+        Robot.powerCellMover.runIndexer(0.3);
         movingFromSingulator = true;
         movingIntoIndexer = false;
         isInIdexer = true;
@@ -119,7 +119,7 @@ public class AutoPowerCellMover extends Command {
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
         Robot.powerCellMover.setSingulatorSpeed(0);
-        Robot.powerCellMover.runIndexer(0.5);
+        Robot.powerCellMover.runIndexer(0.3);
         movingFromSingulator = false;
         movingIntoIndexer = true;
         isInIdexer = true;
@@ -128,8 +128,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
-        Robot.powerCellMover.setSingulatorSpeed(0.3);
-        Robot.powerCellMover.runIndexer(0.5);
+        Robot.powerCellMover.setSingulatorSpeed(0.5);
+        Robot.powerCellMover.runIndexer(0.3);
         movingFromSingulator = true;
         movingIntoIndexer = true;
         isInIdexer = true;
@@ -145,7 +145,7 @@ public class AutoPowerCellMover extends Command {
         AutoPowerCellMoverShooter();
       }
     } else if (Robot.powerCellMover.getShooterLoadedSensor() == true && Robot.powerCellMover.getSingulatorSensor() == true) {
-      Robot.powerCellMover.setSingulatorSpeed(0.2);
+      Robot.powerCellMover.setSingulatorSpeed(0.3);
       Robot.powerCellMover.runIndexer(0);
       movingFromSingulator = true;
       movingIntoIndexer = false;
