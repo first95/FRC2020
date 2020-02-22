@@ -23,8 +23,11 @@ public class AutoPowerCellMover extends Command {
   public static boolean dummy = false;
 
   public int time = 0;
+  public static double INDEXER_RUN_SPEED = 0.5;
+  public static double SINGULATOR_RUN_SPEED = 0.5;
 
-  public static double MANUAL_RUN_SPEED_SHOOTER = 0.8;
+
+  public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
@@ -56,11 +59,11 @@ public class AutoPowerCellMover extends Command {
     }
 
     if (shooterIsLoadedCheck == false) {
-      if (Robot.powerCellMover.getSingulatorSensor() == true && Robot.powerCellMover.getIndexerEntranceSensor() == false
+      if (Robot.powerCellMover.getSingulatorSensor() == false && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.5);
+        Robot.powerCellMover.setSingulatorSpeed(0);
         Robot.powerCellMover.runIndexer(0);
-        movingFromSingulator = true;
+        movingFromSingulator = false;
         movingIntoIndexer = false;
         isInIdexer = false;
         AutoPowerCellMoverGroundCollect();
@@ -68,7 +71,7 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.5);
+        Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
         Robot.powerCellMover.runIndexer(0);
         movingFromSingulator = true;
         movingIntoIndexer = false;
@@ -79,7 +82,7 @@ public class AutoPowerCellMover extends Command {
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
         Robot.powerCellMover.setSingulatorSpeed(0);
-        Robot.powerCellMover.runIndexer(0.3);
+        Robot.powerCellMover.runIndexer(INDEXER_RUN_SPEED);
         movingFromSingulator = false;
         movingIntoIndexer = true;
         isInIdexer = false;
@@ -88,8 +91,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == false) {
-        Robot.powerCellMover.setSingulatorSpeed(0.5);
-        Robot.powerCellMover.runIndexer(0.3);
+        Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
+        Robot.powerCellMover.runIndexer(INDEXER_RUN_SPEED);
         movingFromSingulator = true;
         movingIntoIndexer = true;
         isInIdexer = false;
@@ -108,8 +111,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == false
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
-        Robot.powerCellMover.setSingulatorSpeed(0.5);
-        Robot.powerCellMover.runIndexer(0.3);
+        Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
+        Robot.powerCellMover.runIndexer(INDEXER_RUN_SPEED);
         movingFromSingulator = true;
         movingIntoIndexer = false;
         isInIdexer = true;
@@ -119,7 +122,7 @@ public class AutoPowerCellMover extends Command {
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
         Robot.powerCellMover.setSingulatorSpeed(0);
-        Robot.powerCellMover.runIndexer(0.3);
+        Robot.powerCellMover.runIndexer(INDEXER_RUN_SPEED);
         movingFromSingulator = false;
         movingIntoIndexer = true;
         isInIdexer = true;
@@ -128,8 +131,8 @@ public class AutoPowerCellMover extends Command {
       } else if (Robot.powerCellMover.getSingulatorSensor() == true
           && Robot.powerCellMover.getIndexerEntranceSensor() == true
           && Robot.powerCellMover.getIndexerLoadedSensor() == true) {
-        Robot.powerCellMover.setSingulatorSpeed(0.5);
-        Robot.powerCellMover.runIndexer(0.3);
+        Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
+        Robot.powerCellMover.runIndexer(INDEXER_RUN_SPEED);
         movingFromSingulator = true;
         movingIntoIndexer = true;
         isInIdexer = true;
