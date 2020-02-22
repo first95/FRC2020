@@ -160,10 +160,12 @@ public class AutoPowerCellMover extends Command {
       if(time++ >= 1000)
       {
         Robot.powerCellMover.runIndexer(1);
+        Robot.powerCellMover.setSingulatorSpeed(0.4);
       }
       else
       {
         Robot.powerCellMover.runIndexer(0);
+        Robot.powerCellMover.setSingulatorSpeed(0);
       }
       
     } else {
