@@ -13,7 +13,7 @@ import frc.robot.Robot;
 
 public class ManuallyControlPowerCellMovers extends Command {
 
-  public static double MANUAL_RUN_SPEED_SHOOTER = 0.3;
+  public static double MANUAL_RUN_SPEED_SHOOTER = 0.8;
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
