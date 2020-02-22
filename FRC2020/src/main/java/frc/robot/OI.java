@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.PositionCloseLoopControlCommand;
+import frc.robot.commands.drivebase.PositionCloseLoopControlCommand;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.vision.ToggleCameraMode;
 import frc.robot.oi.JoystickAxisButton;

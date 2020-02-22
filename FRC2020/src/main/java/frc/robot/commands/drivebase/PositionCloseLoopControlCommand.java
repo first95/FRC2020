@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,7 +27,10 @@ public class PositionCloseLoopControlCommand extends Command {
         // Read Set Rotations from SmartDashboard
         double rotations = SmartDashboard.getNumber("SetPoint", 0);
 
-        Robot.drivebase.travleDistance(rotations);;
+        Robot.drivebase.travleDistance(rotations);
+
+        // Display set point (in rotations) on SmartDashboard
+		    SmartDashboard.putNumber("SetPoint", rotations);
   }
 
   // Called repeatedly when this Command is scheduled to run
