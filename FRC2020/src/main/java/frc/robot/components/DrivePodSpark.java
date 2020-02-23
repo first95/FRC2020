@@ -73,6 +73,9 @@ public class DrivePodSpark {
 		// leaderPidController = this.leader.getPIDController();
 		// followerPidController = this.follower.getPIDController();
 
+		leader.restoreFactoryDefaults();
+		follower.restoreFactoryDefaults();
+
 		// Tell the followers to follow the leader
 		follower.follow(leader);
 
@@ -84,8 +87,6 @@ public class DrivePodSpark {
 	}
 
 	private void init() {
-		leader.restoreFactoryDefaults();
-		follower.restoreFactoryDefaults();
 
 		// Set PID coefficients
 		leaderPidController.setP(kP);
@@ -265,6 +266,6 @@ public class DrivePodSpark {
     
 		// Display set point and position of motor (in rotations) on SmartDashboard
 		SmartDashboard.putNumber("SetPoint", rotations);
-    	SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
+    	// SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
 	}
 }

@@ -39,6 +39,8 @@ public class OI {
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
+	public static final int LEFT_Y = XBox360Controller.Axis.LEFT_STICK_Y.Number();
+	public static final int RIGHT_Y = XBox360Controller.Axis.RIGHT_STICK_Y.Number();
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
@@ -113,6 +115,14 @@ public class OI {
      */
 	public double getTurnAxis() {
 		return driverController.getRawAxis(DRIVE_TURN_AXIS);
+	}
+
+	public double getLeftY() {
+		return driverController.getRawAxis(LEFT_Y);
+	}
+
+	public double getRightY() {
+		return driverController.getRawAxis(RIGHT_Y);
 	}
 
 	/**
