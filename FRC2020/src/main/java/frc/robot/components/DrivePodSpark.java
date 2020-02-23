@@ -70,8 +70,8 @@ public class DrivePodSpark {
 		// followerEncoder = this.follower.getEncoder();
 
 		// Create the default PID controller associated with the leader
-		// leaderPidController = this.leader.getPIDController();
-		// followerPidController = this.follower.getPIDController();
+		leaderPidController = this.leader.getPIDController();
+		followerPidController = this.follower.getPIDController();
 
 		leader.restoreFactoryDefaults();
 		follower.restoreFactoryDefaults();
