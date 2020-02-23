@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -101,6 +102,7 @@ public class PowerCellMover extends Subsystem {
     public void runIndexer(double speed) {
      // System.out.println("Setting indexer speed to " + speed);
       beltMotor.set(speed);
+      beltMotor.setIdleMode(IdleMode.kBrake);
   }
 
   /**
