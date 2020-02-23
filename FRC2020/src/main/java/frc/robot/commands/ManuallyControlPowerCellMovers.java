@@ -8,18 +8,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class PowerCellMoverCommand extends Command {
+public class ManuallyControlPowerCellMovers extends Command {
 
-  public static double MANUAL_RUN_SPEED = 0.8;
+  public static double MANUAL_RUN_SPEED_SHOOTER = 0.8;
+  public static double MANUAL_REDUCTION = 0.2;
+  public static double MIN_RUN_SPEED = 0.05;
+  private double current_speed = 0;
+
+  public static double MANUAL_RUN_SPEED_INDEXER = 0.8;
 
   public static double spinningSpeed = 0.8;
   public static double intakeSpeed = 0.8;
 
   private boolean wasDeployedButtonPressed = false;
 
-  public PowerCellMoverCommand() { 
+  public ManuallyControlPowerCellMovers() { 
     requires(Robot.powerCellMover);
   }
 
@@ -31,9 +37,23 @@ public class PowerCellMoverCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // Shooter speed setting
+    if(Robot.oi.getShooterButton()) {
+      Robot.powerCellMover.runShooterOpen(MANUAL_RUN_SPEED_SHOOTER);
+      current_speed = MANUAL_RUN_SPEED_SHOOTER;
+    } else {
+      // Slowing down motor and don't want to do it too fast
+      if (current_speed < MIN_RUN_SPEED) {
+        current_speed = 0;
+      } else {
+        current_speed = current_speed*MANUAL_RUN_SPEED_SHOOTER;
+      }
+      Robot.powerCellMover.runShooterOpen(current_speed);
+    }
+
     // Indexer speed setting
     if (Robot.oi.getRunIndexer()) {
-      Robot.powerCellMover.runIndexer(MANUAL_RUN_SPEED);
+      Robot.powerCellMover.runIndexer(MANUAL_RUN_SPEED_INDEXER);
     } else {
       Robot.powerCellMover.runIndexer(0);
     }
@@ -44,6 +64,14 @@ public class PowerCellMoverCommand extends Command {
     } else {
       Robot.powerCellMover.setSingulatorSpeed(0);
     }
+
+    // Green ring light control 
+    if(Robot.oi.getGreenRingLightButton()) {
+      Robot.powerCellMover.setGreenRingLightOutput(1);
+    } else {
+      Robot.powerCellMover.setGreenRingLightOutput(0);
+    }
+
     // Ground pickup deploy and speed settings
     // If the deploy button was not pressed during the last loop and is pressed during the current loop,
       // toggle deploy
@@ -54,6 +82,12 @@ public class PowerCellMoverCommand extends Command {
     }
 
     Robot.powerCellMover.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
+
+    SmartDashboard.putBoolean("SingulatorOccupied",Robot.powerCellMover.getSingulatorSensor());
+    SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.powerCellMover.getIndexerEntranceSensor());
+    SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
+    SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

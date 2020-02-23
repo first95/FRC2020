@@ -21,7 +21,7 @@ public class ManuallyControlShooter extends Command {
 
   public ManuallyControlShooter() { 
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.shooter);
+    // requires(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
@@ -34,7 +34,7 @@ public class ManuallyControlShooter extends Command {
   protected void execute() {
       // Singulator speed setting
       if(Robot.oi.getShooterButton()) {
-        Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
+        // Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
         current_speed = MANUAL_RUN_SPEED;
       } else {
         // Slowing down motor and don't want to do it too fast
@@ -43,7 +43,7 @@ public class ManuallyControlShooter extends Command {
         } else {
           current_speed = current_speed*MANUAL_RUN_SPEED;
         }
-        Robot.shooter.runShooterOpen(current_speed);
+        // Robot.shooter.runShooterOpen(current_speed);
       }
   }
 

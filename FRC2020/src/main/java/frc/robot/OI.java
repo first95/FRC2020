@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.drivebase.PositionCloseLoopControlCommand;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.vision.ToggleCameraMode;
 import frc.robot.oi.JoystickAxisButton;
@@ -28,22 +27,24 @@ public class OI {
 	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
+	public static final int GREEN_RING_LIGHT_BUTTON = XBox360Controller.Button.LEFT_BUMPER.Number();
+	public static final int BACKWARDS_BUTTON = XBox360Controller.Button.RIGHT_BUMPER.Number();
+
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int SWITCH_CAM_VIEW_BUTTON = XBox360Controller.Button.START.Number();
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
-	private JoystickButton applyPositionControl;
+	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
-	public static final int LEFT_Y = XBox360Controller.Axis.LEFT_STICK_Y.Number();
-	public static final int RIGHT_Y = XBox360Controller.Axis.RIGHT_STICK_Y.Number();
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
+	public static final int HUMAN_PLAYER_PICKUP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -78,9 +79,7 @@ public class OI {
 
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
-
-		applyPositionControl = new JoystickButton(driverController, XBox360Controller.Button.X.Number());
-		applyPositionControl.whenPressed(new PositionCloseLoopControlCommand());
+		
 	}
 
 	// There are a few things the OI wants to revisit every time around
@@ -117,14 +116,6 @@ public class OI {
 		return driverController.getRawAxis(DRIVE_TURN_AXIS);
 	}
 
-	public double getLeftY() {
-		return driverController.getRawAxis(LEFT_Y);
-	}
-
-	public double getRightY() {
-		return driverController.getRawAxis(RIGHT_Y);
-	}
-
 	/**
 	 * Ask if the driver wants the robot to be in high gear
 	 * @return
@@ -148,6 +139,9 @@ public class OI {
 	public double getGroundPickUpRollerAxis() {
 		return weaponsController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
 	}
+	public double getHumanPlayerStationPickUpRollerAxis() {
+		return weaponsController.getRawAxis(HUMAN_PLAYER_PICKUP_ROLLER_AXIS);
+	}
 
 	/**
 	 * Ask if the driver wants ground pick-up to be deployed
@@ -156,6 +150,14 @@ public class OI {
 	public boolean getGroundPickUpDeployed() {
 		// System.out.println("button has been pressed");
 		return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
+	}
+
+	/**
+	 * Ask if the driver wants climber deploy toggled
+	 * @return
+	 */
+	public boolean getClimberDeployed() {
+		return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
 	}
 
 	/**
@@ -168,10 +170,17 @@ public class OI {
 	public boolean getSingulatorButton() {
 		return weaponsController.getRawButton(SINGULATOR_BUTTON);
 	}
+	public boolean getGreenRingLightButton() {
+		return weaponsController.getRawButton(GREEN_RING_LIGHT_BUTTON);
+	}
 
 	public boolean getShooterButton() {
 		return weaponsController.getRawButton(SHOOTER_BUTTON);
-	}	
+	}
+	
+	public boolean getBackwardsButtonPressed() {
+		return weaponsController.getRawButton(BACKWARDS_BUTTON);
+	}
 
 	/**
 	 * Rumble a controller.

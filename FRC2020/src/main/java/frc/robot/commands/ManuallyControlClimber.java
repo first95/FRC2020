@@ -8,17 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 
-/**
- * An example command.  You can replace me with your own command.
- */
-public class PublishDigitalIO extends Command {
-  public PublishDigitalIO() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.digitalIOSensors);
+public class ManuallyControlClimber extends Command {
+    // Stores whether or not the deploy button was pressed during the last loop
+    private boolean wasDeployedButtonPressed = false;
+    
+    public ManuallyControlClimber() {
+        requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
@@ -29,11 +27,17 @@ public class PublishDigitalIO extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putBoolean("SingulatorOccupied",Robot.digitalIOSensors.getSingulatorSensor());
-    SmartDashboard.putBoolean("IndexerEntranceOccupied",Robot.digitalIOSensors.getIndexerEntranceSensor());
-    SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.digitalIOSensors.getIndexerLoadedSensor());
-    SmartDashboard.putBoolean("ShooterLoaded",Robot.digitalIOSensors.getShooterLoadedSensor());
-    
+      // If the deploy button was not pressed during the last loop and is pressed during the current loop,
+      // toggle deploy and then set wasDeployed to true
+      if (!wasDeployedButtonPressed && Robot.oi.getClimberDeployed())
+      {
+            Robot.climber.toggleClimberDeploy();
+            System.out.println("climber deploy has been toggled");
+            wasDeployedButtonPressed = true;
+      } else {
+        // Set wasDeployed to false
+        wasDeployedButtonPressed = false;
+      }
   }
 
   // Make this return true when this Command no longer needs to run execute()
