@@ -28,6 +28,7 @@ public class OI {
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
 	public static final int GREEN_RING_LIGHT_BUTTON = XBox360Controller.Button.LEFT_BUMPER.Number();
+	public static final int BACKWARDS_BUTTON = XBox360Controller.Button.RIGHT_BUMPER.Number();
 
 
 	// Buttons on drive controller
@@ -43,6 +44,7 @@ public class OI {
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
+	public static final int HUMAN_PLAYER_PICKUP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -137,6 +139,9 @@ public class OI {
 	public double getGroundPickUpRollerAxis() {
 		return weaponsController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
 	}
+	public double getHumanPlayerStationPickUpRollerAxis() {
+		return weaponsController.getRawAxis(HUMAN_PLAYER_PICKUP_ROLLER_AXIS);
+	}
 
 	/**
 	 * Ask if the driver wants ground pick-up to be deployed
@@ -171,7 +176,11 @@ public class OI {
 
 	public boolean getShooterButton() {
 		return weaponsController.getRawButton(SHOOTER_BUTTON);
-	}	
+	}
+	
+	public boolean getBackwardsButtonPressed() {
+		return weaponsController.getRawButton(BACKWARDS_BUTTON);
+	}
 
 	/**
 	 * Rumble a controller.

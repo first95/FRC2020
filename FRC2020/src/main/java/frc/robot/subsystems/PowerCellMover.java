@@ -127,8 +127,10 @@ public class PowerCellMover extends Subsystem {
   public void setRollerSpeed(double speed)
   {
       rollers.set(ControlMode.PercentOutput, speed);
-      SingulatorIntake.set(ControlMode.PercentOutput, -speed);
       // System.out.println("rollers have a command");
+  }
+  public void setSingulatorIntakeSpeed(double speed) {
+    SingulatorIntake.set(ControlMode.PercentOutput, -speed);
   }
     
   /**  
