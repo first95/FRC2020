@@ -27,19 +27,24 @@ public class VisionProcessor extends Subsystem {
     /** The view exposed to the drivers for them to see through */
     MjpegServer lookupServer;
 
+    // Note that these paths are based on the physical port into which each camera is plugged.
+    // Using these paths makes it not matter which camera is found first, which is what we get with /dev/videoN
+    public final String UPPER_PORT_CAM_PATH = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0";
+    public final String LOOKUP_CAM_PATH     = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
+
     private double[] bearingsList = null;
     private double[] rangesList = null;
 
     public VisionProcessor() {
         super();
-        // /dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0
-        upperPortCam = new UsbCamera("Upper port cam", "/dev/video0");
+        upperPortCam = new UsbCamera("Upper port cam", UPPER_PORT_CAM_PATH);
         upperPortCam.setResolution(800, 600);
+        upperPortCam.setFPS(24);
         fpsViewServer = new MjpegServer("First person view", 1181);
         fpsViewServer.setSource(upperPortCam);
-        //  /dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0 
-        lookupCam = new UsbCamera("Upward-facing cam", "/dev/video1");
+        lookupCam = new UsbCamera("Upward-facing cam", LOOKUP_CAM_PATH);
         lookupCam.setResolution(800, 600);
+        lookupCam.setFPS(24);
         lookupServer = new MjpegServer("Lookup view", 1182);
         lookupServer.setSource(lookupCam);
     }
