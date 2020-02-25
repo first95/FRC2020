@@ -113,6 +113,28 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Moving into singulator", AutoPowerCellMover.movingFromSingulator);
 		SmartDashboard.putBoolean("Moving into indexer", AutoPowerCellMover.movingIntoIndexer);
 		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
+
+		// System.out.println("20");
+
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
+
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != powerCellMover.kP)) { powerCellMover.LeaderPIDController.setP(p); }
+    if((i != powerCellMover.kI)) { powerCellMover.LeaderPIDController.setI(i); }
+    if((d != powerCellMover.kD)) { powerCellMover.LeaderPIDController.setD(d); }
+    if((iz != powerCellMover.kIz)) { powerCellMover.LeaderPIDController.setIZone(iz); }
+    if((ff != powerCellMover.kFF)) { powerCellMover.LeaderPIDController.setFF(ff); }
+    if((max != powerCellMover.kMaxOutput) || (min != powerCellMover.kMinOutput)) { 
+		powerCellMover.LeaderPIDController.setOutputRange(min, max); 
+		powerCellMover.kMinOutput = min; powerCellMover.kMaxOutput = max; 
+    }
 	}
 
 	@Override

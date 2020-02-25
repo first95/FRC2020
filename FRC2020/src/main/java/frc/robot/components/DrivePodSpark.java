@@ -73,8 +73,8 @@ public class DrivePodSpark {
 		leaderPidController = this.leader.getPIDController();
 		followerPidController = this.follower.getPIDController();
 
-		leader.restoreFactoryDefaults();
-		follower.restoreFactoryDefaults();
+		// leader.restoreFactoryDefaults();
+		// follower.restoreFactoryDefaults();
 
 		// Tell the followers to follow the leader
 		follower.follow(leader);

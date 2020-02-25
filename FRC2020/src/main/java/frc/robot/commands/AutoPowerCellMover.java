@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.PowerCellMover;
@@ -35,6 +37,8 @@ public class AutoPowerCellMover extends Command {
   public static double SINGULATOR_RUN_SPEED = 0.5;
 
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
+  public static double TARGET_SHOOTER_VELOCITY = 1200;
+  public static double MIN_SHOOTER_VELOCITY = 1000;
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
@@ -67,55 +71,55 @@ public class AutoPowerCellMover extends Command {
           if (singulatorSensor == true && wasSingulatorSensorTrippedLastIteration == false) {
             Switch(State.SINGULATOR);
             AutoPowerCellMoverGroundCollect();
-            AutoPowerCellMoverShooter();
+            AutoPowerCellMoverShooterClosed();
             wasSingulatorSensorTrippedLastIteration = true;
           } else if (singulatorSensor == true && wasSingulatorSensorTrippedLastIteration == true) {
             Switch(State.SINGULATOR);
             AutoPowerCellMoverGroundCollect();
-            AutoPowerCellMoverShooter();
+            AutoPowerCellMoverShooterClosed();
           } else if (singulatorSensor == false && wasSingulatorSensorTrippedLastIteration == true) {
             Switch(State.SINGULATOR);
             AutoPowerCellMoverGroundCollect();
-            AutoPowerCellMoverShooter();
+            AutoPowerCellMoverShooterClosed();
             wasSingulatorSensorTrippedLastIteration = false;
           } else {
             Switch(State.IDLE);
             AutoPowerCellMoverGroundCollect();
-            AutoPowerCellMoverShooter();
+            AutoPowerCellMoverShooterClosed();
           }
         } else if (indexerLoadedSensor == false && indexerEntranceSensor == true) {
           Switch(State.INDEXER_ENTRANCE);
           AutoPowerCellMoverGroundCollect();
-          AutoPowerCellMoverShooter();
+          AutoPowerCellMoverShooterClosed();
         } else if (indexerLoadedSensor == true && wasIndexerLoadedSensorTrippedLastIteration == false) {
           Switch(State.INDEXER_LOADED_A);
           AutoPowerCellMoverGroundCollect();
-          AutoPowerCellMoverShooter();
+          AutoPowerCellMoverShooterClosed();
           wasIndexerLoadedSensorTrippedLastIteration = true;
         } else if (indexerLoadedSensor == true && wasIndexerLoadedSensorTrippedLastIteration == true) {
           Switch(State.INDEXER_LOADED_A);
           AutoPowerCellMoverGroundCollect();
-          AutoPowerCellMoverShooter();
+          AutoPowerCellMoverShooterClosed();
         } else if (indexerLoadedSensor == false && wasIndexerLoadedSensorTrippedLastIteration == true) {
           Switch(State.INDEXER_LOADED_B);
           AutoPowerCellMoverGroundCollect();
-          AutoPowerCellMoverShooter();
+          AutoPowerCellMoverShooterClosed();
           wasIndexerLoadedSensorTrippedLastIteration = false;
         }
       } else if (shooterSensor == true && singulatorSensor == true) {
         Switch(State.SINGULATOR);
         AutoPowerCellMoverGroundCollect();
-        AutoPowerCellMoverShooter();
+        AutoPowerCellMoverShooterClosed();
       } else {
         Switch(State.IDLE);
         AutoPowerCellMoverGroundCollect();
-        AutoPowerCellMoverShooter();
+        AutoPowerCellMoverShooterClosed();
       }
     } else if (Robot.oi.getBackwardsButtonPressed() == true) {
       Robot.powerCellMover.setSingulatorSpeed(-1);
       Robot.powerCellMover.runIndexer(-1);
       AutoPowerCellMoverGroundCollect();
-      AutoPowerCellMoverShooter();
+      AutoPowerCellMoverShooterClosed();
     }
     // dummy = true;
 
@@ -362,6 +366,23 @@ public class AutoPowerCellMover extends Command {
         current_speed = current_speed * MANUAL_RUN_SPEED_SHOOTER;
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
+    }
+  }
+  public void AutoPowerCellMoverShooterClosed() {
+    if (Robot.oi.getShooterButton() == true)
+    {
+      System.out.println("1");
+      Robot.powerCellMover.runShooterClosed(TARGET_SHOOTER_VELOCITY, ControlType.kVelocity);
+      if (Robot.powerCellMover.getShooterVelocity() < MIN_SHOOTER_VELOCITY) {
+        Robot.powerCellMover.runIndexer(0);
+        Robot.powerCellMover.setSingulatorSpeed(0);
+      }
+      else if (Robot.powerCellMover.getShooterVelocity() >= MIN_SHOOTER_VELOCITY) {
+        Robot.powerCellMover.runIndexer(1);
+        Robot.powerCellMover.setSingulatorSpeed(0.4);
+      }
+    } else {
+      Robot.powerCellMover.runShooterOpen(0);
     }
   }
 

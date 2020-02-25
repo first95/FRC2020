@@ -29,8 +29,8 @@ public class Shooter extends Subsystem {
     }
 
 	private void init() {
-		leader.restoreFactoryDefaults();
-		follower.restoreFactoryDefaults();
+		// leader.restoreFactoryDefaults();
+		// follower.restoreFactoryDefaults();
 	}
 
     @Override
