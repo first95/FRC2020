@@ -22,15 +22,26 @@ public class VisionProcessor extends Subsystem {
     UsbCamera upperPortCam;
     /** The view exposed to the drivers for them to see through */
     MjpegServer fpsViewServer;
+    /** The camera aimed upward at the climber/control panel */
+    UsbCamera lookupCam;
+    /** The view exposed to the drivers for them to see through */
+    MjpegServer lookupServer;
 
     private double[] bearingsList = null;
     private double[] rangesList = null;
 
     public VisionProcessor() {
         super();
+        // /dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0
         upperPortCam = new UsbCamera("Upper port cam", "/dev/video0");
+        upperPortCam.setResolution(800, 600);
         fpsViewServer = new MjpegServer("First person view", 1181);
         fpsViewServer.setSource(upperPortCam);
+        //  /dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0 
+        lookupCam = new UsbCamera("Upward-facing cam", "/dev/video1");
+        lookupCam.setResolution(800, 600);
+        lookupServer = new MjpegServer("Lookup view", 1182);
+        lookupServer.setSource(lookupCam);
     }
 
     @Override
