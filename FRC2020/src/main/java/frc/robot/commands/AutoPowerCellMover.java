@@ -360,8 +360,7 @@ public class AutoPowerCellMover extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
 
-      if (current_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER && 
-          current_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
+      if (time >= 70) {
         Robot.powerCellMover.runIndexer(1);
         Robot.powerCellMover.setSingulatorSpeed(0.4);
       } else {
