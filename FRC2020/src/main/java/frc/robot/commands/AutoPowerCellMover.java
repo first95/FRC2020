@@ -30,7 +30,6 @@ public class AutoPowerCellMover extends Command {
 
   public static boolean dummy = false;
 
-  public int time = 0;
   public static double INDEXER_RUN_SPEED = 0.5;
   public static double SINGULATOR_RUN_SPEED = 0.5;
 
@@ -39,6 +38,8 @@ public class AutoPowerCellMover extends Command {
   public static double RUN_TOLERANCE_SHOOTER = 120; // tolerance range for shooter speed
   public static double MAINTAIN_RUN_SPEED_SHOOTER = 0.38; // want this to roughly hold target RPM
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
+  public static double INDEXER_SINGULATOR_SHOOTER_MIN = 1000; // below this speed, don't run indexer/singulator based on shooter
+  public static double INDEXER_SINGULATOR_SHOOTER_MAX = 4000; // above this speed, don't run indexer/singulator based on shooter
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
@@ -360,17 +361,15 @@ public class AutoPowerCellMover extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
 
-      if (current_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER && 
-          current_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
+      if (current_speed > INDEXER_SINGULATOR_SHOOTER_MIN &&
+          current_speed < INDEXER_SINGULATOR_SHOOTER_MAX) {
         Robot.powerCellMover.runIndexer(1);
         Robot.powerCellMover.setSingulatorSpeed(0.4);
       } else {
         Robot.powerCellMover.runIndexer(0);
         Robot.powerCellMover.setSingulatorSpeed(0);
-        time++;
       }
     } else {
-      time = 0;
       // Slowing down motor and don't want to do it too fast
       if (current_speed < MIN_RUN_SPEED) {
         current_speed = 0;
