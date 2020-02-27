@@ -13,7 +13,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.VisionProcessor;
 import frc.robot.Constants;
-import frc.robot.commands.AutoPowerCellMover;
+//import frc.robot.commands.AutoPowerCellMover;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
 		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
 		
-		SmartDashboard.putBoolean("dummy", AutoPowerCellMover.dummy);
+		//SmartDashboard.putBoolean("dummy", AutoPowerCellMover.dummy);
 	}
 
 	@Override
@@ -109,10 +109,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("IndexerPosition1Occupied",Robot.powerCellMover.getIndexerLoadedSensor());
 		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
 
-		SmartDashboard.putBoolean("Shooter is loaded", AutoPowerCellMover.shooterIsLoadedCheck);
-		SmartDashboard.putBoolean("Moving into singulator", AutoPowerCellMover.movingFromSingulator);
-		SmartDashboard.putBoolean("Moving into indexer", AutoPowerCellMover.movingIntoIndexer);
-		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
+		// SmartDashboard.putBoolean("Shooter is loaded", AutoPowerCellMover.shooterIsLoadedCheck);
+		// SmartDashboard.putBoolean("Moving into singulator", AutoPowerCellMover.movingFromSingulator);
+		// SmartDashboard.putBoolean("Moving into indexer", AutoPowerCellMover.movingIntoIndexer);
+		// SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
 
 		SmartDashboard.putNumber("Shooter speed (RPM)", powerCellMover.getShooterSpeed());
 	}
