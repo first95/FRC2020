@@ -113,6 +113,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Moving into singulator", AutoPowerCellMover.movingFromSingulator);
 		SmartDashboard.putBoolean("Moving into indexer", AutoPowerCellMover.movingIntoIndexer);
 		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
+
+		SmartDashboard.putNumber("Shooter speed (RPM)", powerCellMover.getShooterSpeed());
 	}
 
 	@Override

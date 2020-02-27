@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -34,6 +35,7 @@ public class PowerCellMover extends Subsystem {
   DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
   private CANSparkMax beltMotor, leader, follower;
+  private CANEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   private TalonSRX greenRingLight;
@@ -82,7 +84,9 @@ public class PowerCellMover extends Subsystem {
 
   private void init() {
 		leader.restoreFactoryDefaults();
-		follower.restoreFactoryDefaults();
+    follower.restoreFactoryDefaults();
+    
+    leaderEncoder = leader.getEncoder();
   }
   
    /**
@@ -93,6 +97,13 @@ public class PowerCellMover extends Subsystem {
       //System.out.println("Setting shooter speed to " + speed);
       leader.set(speed);
       follower.set(-1 * speed);
+  }
+
+   /**
+     * Get speed from shooter (RPM)
+     */
+    public double getShooterSpeed() {
+      return leaderEncoder.getVelocity();
   }
 
   /**
