@@ -8,6 +8,7 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -18,8 +19,9 @@ public class AutoMoves extends CommandGroup {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot.m_subsystem);
     // addSequential(new AutoSpinUpShooter(1000));
-    addSequential(new AutoShoot(6000));
-    addSequential(new AutoDrive(1000, Robot.AutoDriveSpeed));
+    Robot.AutoDriveSpeed = SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", 0.3);
+    addSequential(new AutoShoot(8000));
+    addSequential(new AutoDrive(1000, -Robot.AutoDriveSpeed));
   }
 
 }

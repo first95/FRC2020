@@ -60,7 +60,7 @@ public class AutoShoot extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
 
-      if (time >= 70) {
+      if (time >= 210) {
         Robot.powerCellMover.runIndexer(0.3);
       } else {
         Robot.powerCellMover.runIndexer(0);
