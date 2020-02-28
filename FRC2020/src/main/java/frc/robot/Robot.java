@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 	public static PowerCellMover powerCellMover;
 	// public static Shooter shooter;
 	public static Climber climber;
+	public static double AutoDriveSpeed = 0.3;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -118,6 +119,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
 
 		SmartDashboard.putNumber("Shooter speed (RPM)", powerCellMover.getShooterSpeed());
+
+		SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
 	}
 
 	@Override

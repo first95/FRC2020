@@ -11,14 +11,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- * An example command.  You can replace me with your own command.
+ * Auto Drice for specified number of miliseconds at specified percent speed
  */
 public class AutoDrive extends Command {
   private long startTime;
   private long timeOutMs;
+  private double speed;
 
-  public AutoDrive(long timeOutMs) {
+  public AutoDrive(long timeOutMs, double speed) {
     this.timeOutMs = timeOutMs;
+    this.speed = speed;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivebase);
   }
@@ -32,7 +34,7 @@ public class AutoDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivebase.driveWithTankControls(0.3, 0.3);
+    Robot.drivebase.driveWithTankControls(speed, speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

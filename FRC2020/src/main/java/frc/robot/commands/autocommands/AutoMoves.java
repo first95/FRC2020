@@ -8,6 +8,7 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 
 /**
  * An example command. You can replace me with your own command.
@@ -18,7 +19,7 @@ public class AutoMoves extends CommandGroup {
     // requires(Robot.m_subsystem);
     // addSequential(new AutoSpinUpShooter(1000));
     addSequential(new AutoShoot(6000));
-    addSequential(new AutoDrive(1000));
+    addSequential(new AutoDrive(1000, Robot.AutoDriveSpeed));
   }
 
 }
