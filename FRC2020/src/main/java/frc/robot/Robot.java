@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 	// public static Shooter shooter;
 	public static Climber climber;
 	public static double AutoDriveSpeed = 0.3;
+	public static double PSAutoDriveSpeed = 0.3;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -63,6 +64,8 @@ public class Robot extends TimedRobot {
 		// Show git build information from Jar Manifest
 		SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
 		SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+
+		SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
 		SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
 
 		// Disable brakes on talons to make it
@@ -122,7 +125,9 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Shooter speed (RPM)", powerCellMover.getShooterSpeed());
 
-		SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
+		// SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
+		// SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
+
 	}
 
 	@Override
