@@ -118,7 +118,7 @@ public class AutoPowerCellMover extends Command {
       }
     } else if (Robot.oi.getBackwardsButtonPressed() == true) {
       Robot.powerCellMover.setSingulatorSpeed(-1);
-      Robot.powerCellMover.runIndexer(-1);
+      Robot.powerCellMover.runIndexer(-0.8);
       AutoPowerCellMoverGroundCollect();
       AutoPowerCellMoverShooter();
     }
