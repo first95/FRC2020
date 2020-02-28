@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
 		// Show git build information from Jar Manifest
 		SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
 		SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+		SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
+
 		// Disable brakes on talons to make it
 		// easier to push
 		drivebase.brake(false);
