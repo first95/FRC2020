@@ -20,7 +20,7 @@ public class AutoMoves extends CommandGroup {
     // requires(Robot.m_subsystem);
     // addSequential(new AutoSpinUpShooter(1000));
     Robot.AutoDriveSpeed = SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", 0.3);
-    Robot.AutoDriveSpeed = SmartDashboard.getNumber("Pre-Shoot Automode Drive speed", 0.3);
+    Robot.PSAutoDriveSpeed = SmartDashboard.getNumber("Pre-Shoot Automode Drive speed", 0.3);
 
     addSequential(new AutoDrive(3000, -Robot.PSAutoDriveSpeed));
     addSequential(new AutoShoot(8000));
