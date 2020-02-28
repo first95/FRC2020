@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 	// public static Shooter shooter;
 	public static Climber climber;
 	public static double AutoDriveSpeed = 0.3;
-	public static double PSAutoDriveSpeed = 0.3;
+	public static double PSAutoDriveSpeed = 0.2;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
