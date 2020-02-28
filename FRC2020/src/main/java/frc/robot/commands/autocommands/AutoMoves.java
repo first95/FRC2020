@@ -16,8 +16,8 @@ public class AutoMoves extends CommandGroup {
   public AutoMoves() {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot.m_subsystem);
-    addSequential(new AutoSpinUpShooter(1000));
-    addSequential(new AutoShoot(1000));
+    // addSequential(new AutoSpinUpShooter(1000));
+    addSequential(new AutoShoot(6000));
     addSequential(new AutoDrive(1000));
   }
 
