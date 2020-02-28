@@ -38,7 +38,7 @@ public class VisionProcessor extends Subsystem {
     public VisionProcessor() {
         super();
         upperPortCam = new UsbCamera("Upper port cam", UPPER_PORT_CAM_PATH);
-        upperPortCam.setResolution(640, 480);
+        upperPortCam.setResolution(320, 240);
         upperPortCam.setFPS(20);
         fpsViewServer = new MjpegServer("First person view", 1181);
         fpsViewServer.setSource(upperPortCam);
