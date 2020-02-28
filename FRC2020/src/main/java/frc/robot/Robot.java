@@ -37,8 +37,9 @@ public class Robot extends TimedRobot {
 	public static PowerCellMover powerCellMover;
 	// public static Shooter shooter;
 	public static Climber climber;
-	public static double AutoDriveSpeed = 0.3;
+	public static double AutoDriveSpeed = 0;
 	public static double PSAutoDriveSpeed = 0.2;
+	public static boolean retractGroundCollectorDisabled;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -96,6 +97,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void disabledInit() {
 		drivebase.brake(false);
+		retractGroundCollectorDisabled = true;
 	}
 
 	public void disabledPeriodic() {
@@ -137,6 +139,7 @@ public class Robot extends TimedRobot {
 		// drivebase.setShiftMode(GearShiftMode.AUTOSHIFT);
 
 		drivebase.brake(true);
+		retractGroundCollectorDisabled = false;
 	}
 
 	/**

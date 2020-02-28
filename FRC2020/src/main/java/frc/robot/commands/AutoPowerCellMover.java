@@ -327,8 +327,10 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverGroundCollect() {
     if (!wasDeployedButtonPressed && Robot.oi.getGroundPickUpDeployed()) {
+      if(Robot.retractGroundCollectorDisabled == false) {
       Robot.powerCellMover.toggleGroundPickUpDeploy();
       // System.out.println("ground pickup has been deployed");
+      }
     }
     if (Robot.oi.getGroundPickUpRollerAxis() > 0) {
       Robot.powerCellMover.setRollerSpeed(Robot.oi.getGroundPickUpRollerAxis());
