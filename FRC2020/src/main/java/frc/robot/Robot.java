@@ -5,15 +5,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.GroundPickUp;
-import frc.robot.subsystems.Indexer;
+// import frc.robot.subsystems.GroundPickUp;
+// import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
-import frc.robot.subsystems.Singulator;
-import frc.robot.subsystems.Shooter;
+// import frc.robot.subsystems.Singulator;
+// import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.VisionProcessor;
 import frc.robot.Constants;
 import frc.robot.commands.AutoPowerCellMover;
+import frc.robot.commands.autocommands.AutoMoves;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -69,7 +70,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-
+		var commandgroup = new AutoMoves();
+		Scheduler.getInstance().add(commandgroup);
 	}
 
 	/**
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
 
 	}
 
