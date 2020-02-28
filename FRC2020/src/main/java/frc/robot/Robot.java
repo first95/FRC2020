@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void disabledInit() {
 		drivebase.brake(false);
-		retractGroundCollectorDisabled = true;
+		Robot.powerCellMover.deploy.set(false);
 	}
 
 	public void disabledPeriodic() {
