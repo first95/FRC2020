@@ -66,7 +66,7 @@ public class AutoPowerCellMover extends Command {
     indexerEntranceSensor = Robot.powerCellMover.getIndexerEntranceSensor();
     singulatorSensor = Robot.powerCellMover.getSingulatorSensor();
 
-    if (Robot.oi.getBackwardsButtonPressed() == false) {
+    if (Robot.oi.getBackwardsButtonPressed() == false && Robot.oi.getDejamShootButton() == false) {
       if (shooterSensor == false) {
         if (indexerLoadedSensor == false && indexerEntranceSensor == false) {
           if (singulatorSensor == true && wasSingulatorSensorTrippedLastIteration == false) {
@@ -116,12 +116,19 @@ public class AutoPowerCellMover extends Command {
         AutoPowerCellMoverGroundCollect();
         AutoPowerCellMoverShooter();
       }
-    } else if (Robot.oi.getBackwardsButtonPressed() == true) {
+    } else if (Robot.oi.getBackwardsButtonPressed() == true && Robot.oi.getDejamShootButton() == false) {
       Robot.powerCellMover.setSingulatorSpeed(-1);
       Robot.powerCellMover.runIndexer(-0.8);
       AutoPowerCellMoverGroundCollect();
       AutoPowerCellMoverShooter();
-    }
+    } 
+    // else if (Robot.oi.getDejamShootButton() == true) {
+    //   Robot.powerCellMover.setSingulatorSpeed(-1);
+    //   Robot.powerCellMover.runIndexer(0.05);
+    //   Robot.powerCellMover.runShooterOpen(0.01);
+    //   AutoPowerCellMoverGroundCollect();
+    //   AutoPowerCellMoverShooter();
+    // }
     // dummy = true;
 
     // if (Robot.oi.getBackwardsButtonPressed() == false) {
