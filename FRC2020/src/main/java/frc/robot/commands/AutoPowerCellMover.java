@@ -118,7 +118,7 @@ public class AutoPowerCellMover extends Command {
       }
     } else if (Robot.oi.getBackwardsButtonPressed() == true) {
       Robot.powerCellMover.setSingulatorSpeed(-1);
-      Robot.powerCellMover.runIndexer(-1);
+      Robot.powerCellMover.runIndexer(-0.8);
       AutoPowerCellMoverGroundCollect();
       AutoPowerCellMoverShooter();
     }
@@ -360,7 +360,7 @@ public class AutoPowerCellMover extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
 
-      if (time >= 70) {
+      if (time >= 35) {
         Robot.powerCellMover.runIndexer(1);
         Robot.powerCellMover.setSingulatorSpeed(0.4);
       } else {
@@ -377,6 +377,13 @@ public class AutoPowerCellMover extends Command {
         current_speed = current_speed * MANUAL_RUN_SPEED_SHOOTER;
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
+    }
+
+     // Green ring light control 
+     if(Robot.oi.getGreenRingLightButton()) {
+      Robot.powerCellMover.setGreenRingLightOutput(1);
+    } else {
+      Robot.powerCellMover.setGreenRingLightOutput(0);
     }
   }
 

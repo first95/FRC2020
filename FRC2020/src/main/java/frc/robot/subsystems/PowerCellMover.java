@@ -38,7 +38,7 @@ public class PowerCellMover extends Subsystem {
   private CANEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
-  private Solenoid deploy;
+  public Solenoid deploy;
 
   public PowerCellMover() {
     super();
