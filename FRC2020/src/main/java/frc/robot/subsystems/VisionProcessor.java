@@ -112,10 +112,12 @@ public class VisionProcessor extends Subsystem {
         case UPPER_PORT_HUMAN:
             SetLightMode(LightMode.OFF);
             fpsViewServer.setSource(upperPortCam);
+            // TODO: adjust exposure
             break;
         case UPPER_PORT_MACHINE:
             SetLightMode(LightMode.GREEN);
             fpsViewServer.setSource(upperPortCam);
+            // TODO: adjust exposure
             break;
         case SWITCH_HUMAN:
             SetLightMode(LightMode.OFF);
