@@ -16,15 +16,26 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.commands.vision.SetCameraMode;
+import frc.robot.commands.vision.SetVisionMode;
 
 /**
  * A subsystem to read from the camera(s), process them, and output video to the
  * smart dashboard
  */
 public class VisionProcessor extends Subsystem {
-    public enum Mode {
-        UPPER_PORT_HUMAN, UPPER_PORT_MACHINE, CONTROL_PANEL_MACHINE, SWITCH_HUMAN,
+    public enum VisionMode {
+        /** Camera is set to show the view of the upper port to a human, with both lights off */
+        UPPER_PORT_HUMAN,
+        /** Camera is configured for machine vision, green light on */
+        UPPER_PORT_MACHINE, 
+        /** Camera is set to show the view of the switch to a human, with both lights off  */
+        SWITCH_HUMAN,
+        /** Camera is configured for machine vision, white light on */
+        CONTROL_PANEL_MACHINE, 
+    }
+
+    private enum LightMode {
+        GREEN, WHITE, OFF
     }
 
     /** The camera aimed at the upper port */
@@ -33,10 +44,8 @@ public class VisionProcessor extends Subsystem {
     MjpegServer fpsViewServer;
     /** The camera aimed upward at the climber/control panel */
     UsbCamera lookupCam;
-    /** The view exposed to the drivers for them to see through */
-    MjpegServer lookupServer;
 
-    private TalonSRX greenRingLight;
+    private TalonSRX ringLightController;
 
     // Note that these paths are based on the physical port into which each camera
     // is plugged.
@@ -58,15 +67,14 @@ public class VisionProcessor extends Subsystem {
         lookupCam = new UsbCamera("Upward-facing cam", LOOKUP_CAM_PATH);
         lookupCam.setResolution(800, 600);
         lookupCam.setFPS(24);
-        lookupServer = new MjpegServer("Lookup view", 1182);
-        lookupServer.setSource(lookupCam);
-        greenRingLight = new TalonSRX(Constants.TARGET_CAM_GREEN_RINGLIGHT_TALON_ID);
+
+        ringLightController = new TalonSRX(Constants.TARGET_CAM_GREEN_RINGLIGHT_TALON_ID);
     }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new SetCameraMode());
+        setDefaultCommand(new SetVisionMode(VisionMode.UPPER_PORT_HUMAN));
     }
 
     public class VisionTargetInfo {
@@ -92,32 +100,53 @@ public class VisionProcessor extends Subsystem {
         return vvts;
     }
 
+
     /**
-     * Set green ring light state
-     * 
-     * @param PctOutput
+     * Set the vision system to a specific mode
+     * @param mode
      */
-    public void setGreenRingLightOutput(double PctOutput) {
-        greenRingLight.set(ControlMode.PercentOutput, PctOutput);
+    public void SetMode(VisionMode mode) {
+        System.out.println("Setting vision mode to: " + mode);
+        switch (mode) {
+        default:
+        case UPPER_PORT_HUMAN:
+            SetLightMode(LightMode.OFF);
+            fpsViewServer.setSource(upperPortCam);
+            break;
+        case UPPER_PORT_MACHINE:
+            SetLightMode(LightMode.GREEN);
+            fpsViewServer.setSource(upperPortCam);
+            break;
+        case SWITCH_HUMAN:
+            SetLightMode(LightMode.OFF);
+            fpsViewServer.setSource(lookupCam);
+            break;
+        case CONTROL_PANEL_MACHINE:
+            SetLightMode(LightMode.WHITE);
+            fpsViewServer.setSource(lookupCam);
+            break;
+        }
     }
 
     /**
-     * Get current camera configuration
+     * Set the mode for the lights
      * 
-     * @return true if the camera is configured for human use, or false if
-     *         configured for machine vision.
+     * @param mode
      */
-    public boolean isCameraHumanVision() {
-        return false;
+    private void SetLightMode(LightMode mode) {
+        System.out.println("Setting ringlight mode to: " + mode);
+        switch (mode) {
+        case GREEN:
+            ringLightController.set(ControlMode.PercentOutput, 1);
+            break;
+        case WHITE:
+            ringLightController.set(ControlMode.PercentOutput, -1);
+            break;
+        case OFF: // fallthrough
+        default:
+            ringLightController.set(ControlMode.PercentOutput, 0);
+            break;
+        }
     }
 
-    /**
-     * Command the camera to enter a mode
-     * 
-     * @param isHumanVisible true if the camera should be configured for human use,
-     *                       or false to configure the camera for machine vision.
-     */
-    public void setCameraIsHumanVisible(boolean isHumanVisible) {
-
-    }
 }

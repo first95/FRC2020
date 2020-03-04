@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.vision.ToggleCameraMode;
+import frc.robot.commands.vision.SetVisionMode;
 import frc.robot.oi.JoystickAxisButton;
+import frc.robot.oi.JoystickPovButton;
 import frc.robot.oi.XBox360Controller;
+import frc.robot.subsystems.VisionProcessor;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -61,8 +63,10 @@ public class OI {
 	public OI() {
 
 		// // Create some buttons
-		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
-        cameraViewSwitcher.whenPressed(new ToggleCameraMode());
+		new JoystickPovButton(driverController,  90).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_HUMAN));
+		new JoystickPovButton(driverController,   0).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_MACHINE));
+		new JoystickPovButton(driverController, 180).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.SWITCH_HUMAN));
+		new JoystickPovButton(driverController, 270).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.CONTROL_PANEL_MACHINE));
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
 
 		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
