@@ -65,12 +65,6 @@ public class ManuallyControlPowerCellMovers extends Command {
       Robot.powerCellMover.setSingulatorSpeed(0);
     }
 
-    // Green ring light control 
-    if(Robot.oi.getGreenRingLightButton()) {
-      Robot.powerCellMover.setGreenRingLightOutput(1);
-    } else {
-      Robot.powerCellMover.setGreenRingLightOutput(0);
-    }
 
     // Ground pickup deploy and speed settings
     // If the deploy button was not pressed during the last loop and is pressed during the current loop,
