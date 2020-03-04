@@ -378,13 +378,6 @@ public class AutoPowerCellMover extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
     }
-
-     // Green ring light control 
-     if(Robot.oi.getGreenRingLightButton()) {
-      Robot.powerCellMover.setGreenRingLightOutput(1);
-    } else {
-      Robot.powerCellMover.setGreenRingLightOutput(0);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
