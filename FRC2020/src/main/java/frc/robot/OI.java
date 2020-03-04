@@ -63,8 +63,8 @@ public class OI {
 	public OI() {
 
 		// // Create some buttons
-		new JoystickPovButton(driverController,  90).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_HUMAN));
-		new JoystickPovButton(driverController,   0).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_MACHINE));
+		new JoystickPovButton(driverController,   0).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_HUMAN));
+		new JoystickPovButton(driverController,  90).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_MACHINE));
 		new JoystickPovButton(driverController, 180).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.SWITCH_HUMAN));
 		new JoystickPovButton(driverController, 270).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.CONTROL_PANEL_MACHINE));
 		// cameraViewSwitcher.close(); // Don't need this one anymore?

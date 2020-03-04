@@ -73,8 +73,7 @@ public class VisionProcessor extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(new SetVisionMode(VisionMode.UPPER_PORT_HUMAN));
+        // Set no default command at all
     }
 
     public class VisionTargetInfo {
