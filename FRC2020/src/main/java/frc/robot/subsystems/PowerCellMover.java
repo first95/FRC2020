@@ -42,7 +42,6 @@ public class PowerCellMover extends Subsystem {
   private CANEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
-  private TalonSRX greenRingLight;
   public Solenoid deploy;
   private static double kP, kI, kD, kIz, kFF, minOutput, maxOutput, maxRPM;
 
@@ -59,7 +58,6 @@ public class PowerCellMover extends Subsystem {
     SingulatorIntake = new TalonSRX(Constants.SINGULATOR_INTAKE_TALON_ID);
     rollers = new TalonSRX(Constants.GROUND_PICK_UP_TALON_ID);
 
-    greenRingLight = new TalonSRX(Constants.TARGET_CAM_GREEN_RINGLIGHT_TALON_ID);
 
     // Solenoid initialization
     deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
@@ -197,14 +195,6 @@ public class PowerCellMover extends Subsystem {
   public void setSingulatorSpeed(double Speed) {
     Singulator.set(ControlMode.PercentOutput, Speed);
     
-  }
-
-  /**
-   * Set green ring light state
-   * @param PctOutput
-   */
-  public void setGreenRingLightOutput( double PctOutput) {
-    greenRingLight.set(ControlMode.PercentOutput, PctOutput);
   }
 
   /** 

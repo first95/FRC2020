@@ -22,7 +22,7 @@ public class JoystickPovButton extends Button {
    *
    * @param joystick     The GenericHID object that has the button (e.g. Joystick, KinectStick,
    *                     etc)
-   * @param povDirDeg    The PoV hat direction, in degrees
+   * @param povDirDeg    The PoV hat direction, in degrees, navigator's convention (0 is up, 90 is right)
    */
   public JoystickPovButton(GenericHID joystick, int povDirDeg) {
     m_joystick = joystick;
