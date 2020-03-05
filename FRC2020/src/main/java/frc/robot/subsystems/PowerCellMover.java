@@ -11,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -19,6 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.ManuallyControlPowerCellMovers;
 import frc.robot.commands.AutoPowerCellMover;
@@ -35,11 +38,13 @@ public class PowerCellMover extends Subsystem {
   DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
   private CANSparkMax beltMotor, leader, follower;
+  public static CANPIDController shooterPIDController;
   private CANEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   private TalonSRX greenRingLight;
   public Solenoid deploy;
+  private static double kP, kI, kD, kIz, kFF, minOutput, maxOutput, maxRPM;
 
   public PowerCellMover() {
     super();
@@ -59,7 +64,40 @@ public class PowerCellMover extends Subsystem {
     // Solenoid initialization
     deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
 
-    init();
+    follower.follow(leader);
+
+    shooterPIDController = leader.getPIDController();
+
+    leaderEncoder = leader.getEncoder();
+
+    // Initialize PID contstants
+    kP = 0.0002;
+    kI = 0;
+    kD = 0;
+    kIz = 0;
+    // kFF = 0;
+    maxOutput = 1;
+    minOutput = -1;
+    maxRPM = 2000;
+
+    // set PID coefficients
+    shooterPIDController.setP(kP, 0);
+    System.out.println("p has been set");
+    // shooterPIDController.setI(kI, 0);
+    // shooterPIDController.setD(kD, 0);
+    // shooterPIDController.setIZone(kIz, 0);
+    // shooterPIDController.setFF(kFF, 0);
+    // shooterPIDController.setOutputRange(minOutput, maxOutput, 0);
+
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", maxOutput);
+    SmartDashboard.putNumber("Min Output", minOutput);
+
+    // init();
   }
 
    public boolean getSingulatorSensor() {
@@ -83,12 +121,49 @@ public class PowerCellMover extends Subsystem {
    }
 
   private void init() {
-		leader.restoreFactoryDefaults();
-    follower.restoreFactoryDefaults();
-    
-    leaderEncoder = leader.getEncoder();
+		// leader.restoreFactoryDefaults();
+    // follower.restoreFactoryDefaults();
+  }
+
+  public static double p()
+  {
+    return kP;
+  }
+  public static double i()
+  {
+    return kI;
+  }
+  public static double d()
+  {
+    return kD;
+  }
+  public static double iZ()
+  {
+    return kIz;
+  }
+  public static double fF()
+  {
+    return kFF;
+  }
+  public static double min()
+  {
+    return minOutput;
+  }
+  public static double max()
+  {
+    return maxOutput;
+  }
+  public static double RPM()
+  {
+    return maxRPM;
   }
   
+
+  public void runShooterClosed(double setPoint, ControlType type)
+  {
+    shooterPIDController.setReference(setPoint, type);
+    SmartDashboard.putNumber("ProcessVariable", leaderEncoder.getVelocity());
+  }
    /**
      * Run the shooter
      * @param speed 0 for stationary, 1 for full forward, -1 for full reverse

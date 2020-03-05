@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 	public static double AutoDriveSpeed = 0;
 	public static double PSAutoDriveSpeed = 0.2;
 	public static boolean retractGroundCollectorDisabled;
+	public static double kP, kI, kD, kIz, kFF, minOutput, maxOutput, maxRPM;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -111,6 +112,15 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotPeriodic() {
+
+		kP = powerCellMover.p();
+		kI = powerCellMover.i();
+		kD = powerCellMover.d();
+		kIz = powerCellMover.iZ();
+		kFF = powerCellMover.fF();
+		minOutput = powerCellMover.min();
+		maxOutput = powerCellMover.max();
+		maxRPM = powerCellMover.RPM();
 		Scheduler.getInstance().run(); // Runs all active commands
 		oi.visit();
 		drivebase.visit();
@@ -130,6 +140,25 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
 		// SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
 
+		// read PID coefficients from SmartDashboard
+		// double p = SmartDashboard.getNumber("P Gain", 0);
+		// double i = SmartDashboard.getNumber("I Gain", 0);
+		// double d = SmartDashboard.getNumber("D Gain", 0);
+		// double iz = SmartDashboard.getNumber("I Zone", 0);
+		// double ff = SmartDashboard.getNumber("Feed Forward", 0);
+		// double max = SmartDashboard.getNumber("Max Output", 0);
+		// double min = SmartDashboard.getNumber("Min Output", 0);
+	
+		// // if PID coefficients on SmartDashboard have changed, write new values to controller
+		// if((p != kP)) { powerCellMover.shooterPIDController.setP(p, 0); kP = p; }
+		// if((i != kI)) { powerCellMover.shooterPIDController.setI(i, 0); kI = i; }
+		// if((d != kD)) { powerCellMover.shooterPIDController.setD(d, 0); kD = d; }
+		// if((iz != kIz)) { powerCellMover.shooterPIDController.setIZone(iz, 0); kIz = iz; }
+		// if((ff != kFF)) { powerCellMover.shooterPIDController.setFF(ff, 0); kFF = ff; }
+		// if((max != maxOutput) || (min != minOutput)) { 
+		//   powerCellMover.shooterPIDController.setOutputRange(min, max, 0); 
+		//   minOutput = min; maxOutput = max; 
+		// }
 	}
 
 	@Override

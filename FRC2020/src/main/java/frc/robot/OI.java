@@ -38,6 +38,7 @@ public class OI {
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
 	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
+	public static final int GO_TO_SETPOINT_BUTTON = XBox360Controller.Button.X.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
@@ -131,6 +132,10 @@ public class OI {
 	 */
 	public boolean getLowGear() {
 		return driverController.getRawButton(BUTTON_FORCE_LOW_GEAR);
+	}
+
+	public boolean getSetpointButton() {
+		return driverController.getRawButtonPressed(GO_TO_SETPOINT_BUTTON);
 	}
 
 	/**

@@ -24,8 +24,8 @@ public class Constants
 		public static final int TARGET_CAM_GREEN_RINGLIGHT_TALON_ID = 4;
 
 		// Shooter IDs
-		public static final int LEADER_SHOOT = 12;
-		public static final int FOLLOWER_SHOOT = 13;
+		public static final int LEADER_SHOOT = 13;
+		public static final int FOLLOWER_SHOOT = 12;
 
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec

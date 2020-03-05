@@ -13,9 +13,14 @@ public class ManuallyControlDrivebase extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drivebase.driveWithJoysticks();
-       
-
+        if (Robot.oi.getSetpointButton() == true)
+        {
+            Robot.drivebase.travleDistance(10);
+        }
+        else
+        {
+            Robot.drivebase.driveWithJoysticks();
+        }
     }
     
     // Make this return true when this Command no longer needs to run execute()
