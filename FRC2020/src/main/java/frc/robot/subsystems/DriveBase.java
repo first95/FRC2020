@@ -282,7 +282,13 @@ public class DriveBase extends Subsystem {
 	 */
 	public void travleDistance(double rotations) {
 		leftPod.travleDistance(rotations);
+		System.out.println("leftpod has been set");
 		rightPod.travleDistance(rotations);
+		System.out.println("rightpod has been set");
+	}
+
+	public double getPodOutput() {
+		return leftPod.getPodOutput();
 	}
 
 }

@@ -60,7 +60,7 @@ public class AutoShoot extends Command {
         // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
         current_speed = SLOW_RUN_SPEED_SHOOTER;
       }
-      Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
+      // Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
 
       if (time >= 140) {
         Robot.powerCellMover.runIndexer(0.6);
@@ -76,7 +76,7 @@ public class AutoShoot extends Command {
       } else {
         current_speed = current_speed * MANUAL_RUN_SPEED_SHOOTER;
       }
-      Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
+      // Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
     }
   }
   // Make this return true when this Command no longer needs to run execute()
@@ -89,7 +89,7 @@ public class AutoShoot extends Command {
   @Override
   protected void end() {
     Robot.powerCellMover.runShooterOpen(0);
-    Robot.powerCellMover.runShooterClosed(0, ControlType.kVelocity);
+    // Robot.powerCellMover.runShooterClosed(0, ControlType.kVelocity);
   }
 
   // Called when another command which requires one or more of the same

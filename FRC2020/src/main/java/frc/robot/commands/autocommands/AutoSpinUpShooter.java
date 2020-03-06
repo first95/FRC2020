@@ -34,7 +34,7 @@ public class AutoSpinUpShooter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
+    // Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
   }
 
   // Make this return true when this Command no longer needs to run execute()

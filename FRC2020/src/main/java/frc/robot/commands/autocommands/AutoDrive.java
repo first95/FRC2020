@@ -7,8 +7,11 @@
 
 package frc.robot.commands.autocommands;
 
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.components.DrivePodSpark;
 
 /**
  * Auto Drice for specified number of miliseconds at specified percent speed
@@ -17,6 +20,7 @@ public class AutoDrive extends Command {
   private long startTime;
   private long timeOutMs;
   private double speed;
+  private boolean goToSetpoint = true;
 
   public AutoDrive(long timeOutMs, double speed) {
     this.timeOutMs = timeOutMs;
@@ -34,7 +38,11 @@ public class AutoDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivebase.driveWithTankControls(speed, speed);
+      Robot.drivebase.applyPositionPidConsts();
+      DrivePodSpark.leaderPidController.setReference(100, ControlType.kPosition);
+      System.out.println("setpoint has been given");
+      double a = Robot.drivebase.getPodOutput();
+      System.out.println(a);
   }
 
   // Make this return true when this Command no longer needs to run execute()

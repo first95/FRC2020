@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
 import com.revrobotics.AlternateEncoderType;
 
 import com.revrobotics.CANPIDController;
@@ -38,10 +39,12 @@ public class DrivePodSpark {
 	private static final int kCPR = 1024;
 	// private CANEncoder leaderEncoder, followerEncoder;
 
-	private CANPIDController leaderPidController, followerPidController;
+	public static CANPIDController leaderPidController; // followerPidController;
+
+	private CANError error;
 
 	// PID coefficients
-	public double kP = 0.01; 
+	public double kP = 0.2; 
 	public double kI = 0;
 	public double kD = 0; 
 	public double kIz = 0; 
@@ -71,7 +74,7 @@ public class DrivePodSpark {
 
 		// Create the default PID controller associated with the leader
 		leaderPidController = this.leader.getPIDController();
-		followerPidController = this.follower.getPIDController();
+		// followerPidController = this.follower.getPIDController();
 
 		// leader.restoreFactoryDefaults();
 		// follower.restoreFactoryDefaults();
@@ -89,18 +92,21 @@ public class DrivePodSpark {
 	private void init() {
 
 		// Set PID coefficients
-		leaderPidController.setP(kP);
+		leaderPidController.setP(kP, 0);
 		// followerPidController.setP(kP);
-		leaderPidController.setI(kI);
+		leaderPidController.setI(kI, 0);
 		// followerPidController.setI(kI);
-		leaderPidController.setD(kD);
+		leaderPidController.setD(kD, 0);
 		// followerPidController.setD(kD);
-		leaderPidController.setIZone(kIz);
+		leaderPidController.setIZone(kIz, 0);
 		// followerPidController.setIZone(kIz);
-		leaderPidController.setFF(kFF);
+		leaderPidController.setFF(kFF, 0);
 		// followerPidController.setFF(kFF);
-		leaderPidController.setOutputRange(kMinOutput, kMaxOutput);
+		leaderPidController.setOutputRange(kMinOutput, kMaxOutput, 0);
 		// followerPidController.setOutputRange(kMinOutput, kMaxOutput);
+
+		System.out.println("PID values have been set");
+		System.out.println(kP);
 
 		// Leaders have quadrature encoders connected to their inputs
 		
@@ -228,44 +234,50 @@ public class DrivePodSpark {
 		// If PID coefficients on SmartDashboard have changed, write new values to controller
 		if((p != kP)) { 
 			leaderPidController.setP(p); 
-			followerPidController.setP(p);
+			// followerPidController.setP(p);
 			kP = p; 
 		}
 		if((i != kI)) { 
 			leaderPidController.setI(i); 
-			followerPidController.setI(i);
+			// followerPidController.setI(i);
 			kI = i; 
 		}
 		if((d != kD)) { 
 			leaderPidController.setD(d); 
-			followerPidController.setD(d);
+			// followerPidController.setD(d);
 			kD = d; 
 		}
 		if((iz != kIz)) { 
 			leaderPidController.setIZone(iz);
-			followerPidController.setIZone(iz);
+			// followerPidController.setIZone(iz);
 			kIz = iz; 
 		}
 		if((ff != kFF)) { 
 			leaderPidController.setFF(ff); 
-			followerPidController.setFF(ff);
+			// followerPidController.setFF(ff);
 			kFF = ff; 
 		}
 		if((max != kMaxOutput) || (min != kMinOutput)) { 
 			leaderPidController.setOutputRange(min, max); 
-			followerPidController.setOutputRange(min, max);
+			// followerPidController.setOutputRange(min, max);
 			kMinOutput = min; kMaxOutput = max;
 		}
 }
 
 	public void travleDistance(double rotations) {
 		
+		
 		// Set the set point
-		leaderPidController.setReference(rotations, ControlType.kPosition);
-		followerPidController.setReference(rotations, ControlType.kPosition);
+		leaderPidController.setReference(rotations, ControlType.kPosition, 0);
+		System.out.println("reference has been set");
+		// followerPidController.setReference(rotations, ControlType.kPosition, 0);
     
 		// Display set point and position of motor (in rotations) on SmartDashboard
 		SmartDashboard.putNumber("SetPoint", rotations);
     	// SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
+	}
+
+	public double getPodOutput() {
+		return leader.getAppliedOutput();
 	}
 }

@@ -113,14 +113,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 
-		kP = powerCellMover.p();
-		kI = powerCellMover.i();
-		kD = powerCellMover.d();
-		kIz = powerCellMover.iZ();
-		kFF = powerCellMover.fF();
-		minOutput = powerCellMover.min();
-		maxOutput = powerCellMover.max();
-		maxRPM = powerCellMover.RPM();
+		// kP = powerCellMover.p();
+		// kI = powerCellMover.i();
+		// kD = powerCellMover.d();
+		// kIz = powerCellMover.iZ();
+		// kFF = powerCellMover.fF();
+		// minOutput = powerCellMover.min();
+		// maxOutput = powerCellMover.max();
+		// maxRPM = powerCellMover.RPM();
 		Scheduler.getInstance().run(); // Runs all active commands
 		oi.visit();
 		drivebase.visit();
