@@ -1,20 +1,19 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.opencv.core.*;
-import org.opencv.core.Core.*;
-import org.opencv.features2d.FeatureDetector;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.*;
-import org.opencv.objdetect.*;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.LineSegmentDetector;
 
 /**
 * GripPipelineLinesFromTarget class.
@@ -25,22 +24,15 @@ import org.opencv.objdetect.*;
 */
 public class GripPipelineLinesFromTarget {
 
-	public static class OuterPortTarget {
-		public OuterPortTarget(ArrayList<MatOfPoint> target) {
-			retroTarget = target;
-		}
-		private ArrayList<MatOfPoint> retroTarget = null;
-
-		public void drawOn(Mat img) {
-			drawOn(img, new Scalar(255,255,255));
-		}
-		public void drawOn(Mat img, Scalar color) {
-			LinkedList<MatOfPoint> targets = new LinkedList<>();
-			for (int i = 0; i < retroTarget.size(); i++) {
-				targets.add(retroTarget.get(i));
-			}
-			Imgproc.drawContours(img, targets, -1, color);
-		}
+	public static class OuterPortTargetInImage {
+		double widthPx;
+		double xPx, yPx;
+	}
+	public static class OuterPortTargetRelRobot {
+		/** Horizontal in */
+		double rangeInches;
+		/** Degrees in azimuth relative to camera boresight. Positive is to the left, negative is to the right. */
+		double bearingDegrees;
 	}
 
 	//Outputs
@@ -48,7 +40,8 @@ public class GripPipelineLinesFromTarget {
 	private Mat hsvThresholdOutput = new Mat();
 	private ArrayList<Line> findLinesOutput = new ArrayList<Line>();
 	private ArrayList<Line> filterLinesOutput = new ArrayList<Line>();
-	private List<OuterPortTarget> detectedTargets = new LinkedList<>();
+	private OuterPortTargetInImage detectedTargetInImage = null;
+	private OuterPortTargetRelRobot detectedTargetRelRobot = null;
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -81,6 +74,11 @@ public class GripPipelineLinesFromTarget {
 		double[] filterLinesAngle = {0, 360};
 		filterLines(filterLinesLines, filterLinesMinLength, filterLinesAngle, filterLinesOutput);
 
+		// Find targets
+		detectedTargetInImage = findTarget(filterLinesOutput);
+
+		// Compute where the target lies relative to the robot
+		// TODO
 	}
 
 	/**
@@ -158,7 +156,7 @@ public class GripPipelineLinesFromTarget {
 	 * @param doubleRadius The radius for the blur.
 	 * @param output The image in which to store the output.
 	 */
-	private void blur(Mat input, BlurType type, double doubleRadius,
+	private static void blur(Mat input, BlurType type, double doubleRadius,
 		Mat output) {
 		int radius = (int)(doubleRadius + 0.5);
 		int kernelSize;
@@ -220,7 +218,7 @@ public class GripPipelineLinesFromTarget {
 	 * @param input The image on which to perform the find lines.
 	 * @param lineList The output where the lines are stored.
 	 */
-	private void findLines(Mat input, ArrayList<Line> lineList) {
+	private static void findLines(Mat input, ArrayList<Line> lineList) {
 		final LineSegmentDetector lsd = Imgproc.createLineSegmentDetector();
 		final Mat lines = new Mat();
 		lineList.clear();
@@ -246,8 +244,9 @@ public class GripPipelineLinesFromTarget {
 	 * @param angle The minimum and maximum angle of a line to be kept.
 	 * @param outputs The output lines after the filter.
 	 */
-	private void filterLines(List<Line> inputs,double minLength,double[] angle,
+	private static void filterLines(List<Line> inputs,double minLength,double[] angle,
 		List<Line> outputs) {
+			// TODO: we don't care about angle here
 		outputs = inputs.stream()
 				.filter(line -> line.lengthSquared() >= Math.pow(minLength,2))
 				.filter(line -> (line.angle() >= angle[0] && line.angle() <= angle[1])
@@ -255,9 +254,61 @@ public class GripPipelineLinesFromTarget {
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * Check if the lines describe a target, and if so return information on it
+	 * @param lines
+	 * @return null if no target found, else the target
+	 */
+	private static OuterPortTargetInImage findTarget(List<Line> lines) {
+		OuterPortTargetInImage target = new OuterPortTargetInImage();
 
-	public List<OuterPortTarget> getDetectedTargets() {
-		return detectedTargets;
+		if(lines.size() < 6) {
+			// Takes at least 6 lines to describe an outer port target
+			return null;
+		}
+
+		// Sort lines by length
+		Collections.sort(lines, new Comparator<Line>() {
+			@Override
+			public int compare(Line arg0, Line arg1) {
+				double ls0 = arg0.lengthSquared();
+				double ls1 = arg1.lengthSquared();
+				if(ls0 < ls1) {
+					return -1;
+				} else if(ls0 > ls1) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		});
+
+		// Hypothesize that the longest 6 lines describe the target
+		List<Line> targetLines = lines.subList(0, 6);
+
+		// Find pairs of lines describing the three bars of reflective tape
+		// Each of these pairs must be pretty close to parallel, or else this isn't the upper target.
+		// If you can't find these pairs, say we have detected no target
+
+		// Find the width of the target in pixels
+		// -- > where should we measure from?  Furthest outer tips?  Would prefer not to be sensitive to brightness and blur level.
+		// WE could probably find the centerpoint of each "elbow", and measure the distance between those two.  That'd be insensitive to the above.
+
+		return null;
+	}
+
+	private static OuterPortTargetRelRobot computeTargetLocation(OuterPortTargetInImage target) {
+		// TODO
+		// Will likely need some physical properties too, such as the field of view in each axis
+		return null;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public OuterPortTargetRelRobot getDetectedTarget() {
+		return detectedTargetRelRobot;
 	}
 
 	public static void main(String[] args) {
@@ -288,9 +339,6 @@ public class GripPipelineLinesFromTarget {
 			Mat img = Imgcodecs.imread(file);
 			processor.process(img);
 
-			for(OuterPortTarget opt : processor.getDetectedTargets()) {
-				opt.drawOn(img);
-			}
 
 			HighGui.imshow(file, img);
 		}
