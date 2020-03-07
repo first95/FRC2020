@@ -6,7 +6,7 @@
       <property name="path[8]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\BlueGoal-228in-ProtectedZone.jpg"/>
       <property name="path[12]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\RedLoading-030in-Down.jpg"/>
       <property name="path[15]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\RedLoading-060in.jpg"/>
-      <property name="index" value="14"/>
+      <property name="index" value="7"/>
       <property name="path[0]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\BlueGoal-060in-Center.jpg"/>
       <property name="path[3]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\BlueGoal-132in-Center.jpg"/>
       <property name="path[6]" value="C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\test_images\2020SampleVisionImages\BlueGoal-180in-Center.jpg"/>
@@ -103,9 +103,9 @@
   </settings>
   <codeGenerationSettings>
     <language>Java</language>
-    <className>GripPipelineContoursFromTarget</className>
-    <implementWpilibPipeline>true</implementWpilibPipeline>
-    <saveDir>C:\Users\spami\git\first95\FRC2019\VisionCoprocessor\src\main\java</saveDir>
+    <className>GripPipelineLinesFromTarget</className>
+    <implementWpilibPipeline>false</implementWpilibPipeline>
+    <saveDir>C:\Users\spami\git\first95\FRC2020\VisionCoprocessor\src\main\java</saveDir>
     <packageName></packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
