@@ -71,17 +71,17 @@ public class OI {
 		new JoystickPovButton(driverController, 270).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.CONTROL_PANEL_MACHINE));
 		// cameraViewSwitcher.close(); // Don't need this one anymore?
 
-		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		// JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		// driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
 		
-		JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		// JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		// driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
 		
-		JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+		// JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
+		// weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
 		
-		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
+		// JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		// weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
