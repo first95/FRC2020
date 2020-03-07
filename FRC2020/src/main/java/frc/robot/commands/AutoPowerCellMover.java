@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.PowerCellMover;
@@ -360,7 +358,7 @@ public class AutoPowerCellMover extends Command {
         // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
         current_speed = SLOW_RUN_SPEED_SHOOTER;
       }
-      Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
+      Robot.powerCellMover.runShooterOpen(current_speed);
 
       if (time >= 35) {
         Robot.powerCellMover.runIndexer(1);
@@ -378,7 +376,7 @@ public class AutoPowerCellMover extends Command {
       } else {
         current_speed = current_speed * MANUAL_RUN_SPEED_SHOOTER;
       }
-      Robot.powerCellMover.runShooterClosed(1000, ControlType.kVelocity);
+      Robot.powerCellMover.runShooterOpen(current_speed);
     }
   }
 

@@ -73,8 +73,8 @@ public class DrivePodSpark {
 		leaderPidController = this.leader.getPIDController();
 		followerPidController = this.follower.getPIDController();
 
-		// leader.restoreFactoryDefaults();
-		// follower.restoreFactoryDefaults();
+		leader.restoreFactoryDefaults();
+		follower.restoreFactoryDefaults();
 
 		// Tell the followers to follow the leader
 		follower.follow(leader);
@@ -90,17 +90,17 @@ public class DrivePodSpark {
 
 		// Set PID coefficients
 		leaderPidController.setP(kP);
-		// followerPidController.setP(kP);
+		followerPidController.setP(kP);
 		leaderPidController.setI(kI);
-		// followerPidController.setI(kI);
+		followerPidController.setI(kI);
 		leaderPidController.setD(kD);
-		// followerPidController.setD(kD);
+		followerPidController.setD(kD);
 		leaderPidController.setIZone(kIz);
-		// followerPidController.setIZone(kIz);
+		followerPidController.setIZone(kIz);
 		leaderPidController.setFF(kFF);
-		// followerPidController.setFF(kFF);
+		followerPidController.setFF(kFF);
 		leaderPidController.setOutputRange(kMinOutput, kMaxOutput);
-		// followerPidController.setOutputRange(kMinOutput, kMaxOutput);
+		followerPidController.setOutputRange(kMinOutput, kMaxOutput);
 
 		// Leaders have quadrature encoders connected to their inputs
 		
