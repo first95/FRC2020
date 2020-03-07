@@ -289,10 +289,18 @@ public class GripPipelineLinesFromTarget {
 		// Find pairs of lines describing the three bars of reflective tape
 		// Each of these pairs must be pretty close to parallel, or else this isn't the upper target.
 		// If you can't find these pairs, say we have detected no target
+		double horizontalMaxAngleDeg = 10;
+		double horizontalMinAngleDeg = -10;
+		List<Line> horizontals = targetLines.stream()
+			.filter(line -> (line.angle() >= horizontalMinAngleDeg && line.angle() <= horizontalMaxAngleDeg))
+			.collect(Collectors.toList());
+		if(horizontals.size() != 2) {
+			return null;
+		}
 
 		// Find the width of the target in pixels
 		// -- > where should we measure from?  Furthest outer tips?  Would prefer not to be sensitive to brightness and blur level.
-		// WE could probably find the centerpoint of each "elbow", and measure the distance between those two.  That'd be insensitive to the above.
+		// We could probably find the centerpoint of each "elbow", and measure the distance between those two.  That'd be insensitive to the above.
 
 		return null;
 	}
