@@ -23,7 +23,7 @@ public class AutoMoves extends CommandGroup {
     Robot.PSAutoDriveSpeed = SmartDashboard.getNumber("Pre-Shoot Automode Drive speed", 0.3);
 
     addSequential(new AutoDrive(3000, -Robot.PSAutoDriveSpeed));
-    addSequential(new AutoShoot(4000));
+    addSequential(new AutoShoot(8000));
     addSequential(new AutoDrive(3000, -Robot.AutoDriveSpeed));
   }
 

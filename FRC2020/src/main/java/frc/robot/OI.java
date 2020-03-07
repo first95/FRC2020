@@ -31,7 +31,6 @@ public class OI {
 	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
 	// public static final int GREEN_RING_LIGHT_BUTTON = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BACKWARDS_BUTTON = XBox360Controller.Button.RIGHT_BUMPER.Number();
-	public static final int DEJAM_SHOOT_BUTTON = XBox360Controller.Button.START.Number();
 
 
 	// Buttons on drive controller
@@ -190,10 +189,6 @@ public class OI {
 	
 	public boolean getBackwardsButtonPressed() {
 		return weaponsController.getRawButton(BACKWARDS_BUTTON);
-	}
-
-	public boolean getDejamShootButton() {
-		return weaponsController.getRawButton(DEJAM_SHOOT_BUTTON);
 	}
 
 	/**
