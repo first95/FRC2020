@@ -30,7 +30,9 @@ public class AutoPowerCellMover extends Command {
 
   public static boolean dummy = false;
 
-  public int time = 0;
+  public int idx2singulatorDelayCount = 0;
+  public int spinupDelayCount = 0;
+  public boolean shooterSpunUp = false;
   public static double INDEXER_RUN_SPEED = 0.5;
   public static double INDEXER_SHOOTING_RUN_SPEED = 1;
 
@@ -39,12 +41,13 @@ public class AutoPowerCellMover extends Command {
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
   public static double RUN_TOLERANCE_SHOOTER = 50; // tolerance range for shooter speed
-  public static double MAINTAIN_RUN_SPEED_SHOOTER = 0.38; // want this to roughly hold target RPM
+  public static double MAINTAIN_RUN_SPEED_SHOOTER = 0.35; // want this to roughly hold target RPM
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
   private double current_speed = 0;
+  
 
   public enum State {
     IDLE, SINGULATOR, INDEXER_ENTRANCE, INDEXER_LOADED_A, INDEXER_LOADED_B
@@ -200,20 +203,23 @@ public class AutoPowerCellMover extends Command {
       }
       Robot.powerCellMover.runShooterOpen(current_speed);
 
-      if (actual_speed > (TARGET_RUN_SPEED_SHOOTER - (RUN_TOLERANCE_SHOOTER * 4)) ) {
+      if (spinupDelayCount > 35 ) {
         Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
-        if (time >= 5) {
+        shooterSpunUp = true;
+        if (idx2singulatorDelayCount >= 5) {
            Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
         } else {
-          time++;
+          idx2singulatorDelayCount++;
         }
       } else {
         Robot.powerCellMover.runIndexer(0);
         Robot.powerCellMover.setSingulatorSpeed(0);
-
+        spinupDelayCount++;
       }
     } else {
-      time = 0;
+      idx2singulatorDelayCount = 0;
+      spinupDelayCount = 0;
+      shooterSpunUp = false;
       // Slowing down motor and don't want to do it too fast
       if (current_speed < MIN_RUN_SPEED) {
         current_speed = 0;
