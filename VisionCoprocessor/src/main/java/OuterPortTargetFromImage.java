@@ -30,20 +30,20 @@ import org.opencv.core.MatOfPoint;
 public class OuterPortTargetFromImage implements VisionPipeline {
 
 	public static class OuterPortTarget {
-		public OuterPortTarget(ArrayList<MatOfPoint> target) {
+		public OuterPortTarget(MatOfPoint target) {
 			retroTarget = target;
 		}
-		private ArrayList<MatOfPoint> retroTarget = null;
+		private MatOfPoint retroTarget = null;
 
 		public void drawOn(Mat img) {
 			drawOn(img, new Scalar(255,255,255));
 		}
 		public void drawOn(Mat img, Scalar color) {
 			LinkedList<MatOfPoint> targets = new LinkedList<>();
-			for (int i = 0; i < retroTarget.size(); i++) {
-				targets.add(retroTarget.get(i));
+			if (retroTarget!=null && retroTarget.toArray().length>0) {
+				targets.add(retroTarget);
+				Imgproc.drawContours(img, targets, -1, color);
 			}
-			Imgproc.drawContours(img, targets, -1, color);
 		}
 	}
 
@@ -51,8 +51,8 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 	private Mat blurOutput = new Mat();
 	private Mat hsvThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
-	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
-	private List<OuterPortTarget> detectedTargets = new LinkedList<>();
+	private MatOfPoint filterContoursOutput = new MatOfPoint();
+	private OuterPortTarget detectedTarget;
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -83,7 +83,7 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		// Filter contours
 		filterContours(findContoursOutput(), filterContoursOutput);
 
-		detectedTargets = findTargets(filterContoursOutput());
+		detectedTarget = findTarget(filterContoursOutput());
 
 	}
 
@@ -115,12 +115,12 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 	 * This method is a generated getter for the output of Filter_Contours.
 	 * @return ArrayList<MatOfPoint> output from Filter_Contours.
 	 */
-	public ArrayList<MatOfPoint> filterContoursOutput() {
+	public MatOfPoint filterContoursOutput() {
 		return filterContoursOutput;
 	}
 
-	public List<OuterPortTarget> getDetectedTargets() {
-		return detectedTargets;
+	public OuterPortTarget getDetectedTarget() {
+		return detectedTarget;
 	}
 
 	/**
@@ -229,14 +229,13 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 /**
 	 * Filter contours based on certain parameters
 	 */
-	private void filterContours(List<MatOfPoint> contours, List<MatOfPoint> filterContoursOutput) {
+	private void filterContours(List<MatOfPoint> contours, MatOfPoint filterContoursOutput) {
 		double arcLength;
 		double contourArea;
 		double lengthAreaRatio;
 		Moments moments = new Moments();
 		double rotInertia;
 		int count = 0;
-		filterContoursOutput.clear();
 		for(MatOfPoint contour : contours) {
 			
 			// Calculate some properties of the contour
@@ -247,23 +246,23 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 			rotInertia = moments.get_nu02() + moments.get_nu20();
 
 			// Then choose whether to keep contour based on its properties
-			if (lengthAreaRatio>0.1 && contourArea > 0 && rotInertia > 0.5) {
+			if (lengthAreaRatio>0.1 && contourArea > 100 && rotInertia > 0.75) {
 				count ++;
-				filterContoursOutput.add(contour);
+				if (count > 1) {
+					System.out.println("Warning: more than 1 viable contour found. Ignoring past first");
+				} else {
+					System.out.println(rotInertia);
+					// the to/from array below seems silly, but it works whereas filterContoursOutput = contour doesn't
+					filterContoursOutput.fromArray(contour.toArray()); // only keep first applicable contour found for each
+				}
 			}
-		}
-		if (count > 1) {
-			System.out.println("Warning: more than 1 viable contour found.");
 		}
 	}
 
-	public static List<OuterPortTarget> findTargets(ArrayList<MatOfPoint> targetRegions) {
-		LinkedList<OuterPortTarget> targets = new LinkedList<OuterPortTarget>();
+	public static OuterPortTarget findTarget(MatOfPoint targetRegion) {
 
-		OuterPortTarget opt = new OuterPortTarget(targetRegions);
-		targets.add(opt);
-
-		return targets;
+		OuterPortTarget target = new OuterPortTarget(targetRegion);
+		return target;
 	}
 
 	public static void main(String[] args) {
@@ -294,9 +293,7 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 			Mat img = Imgcodecs.imread(file);
 			processor.process(img);
 
-			for(OuterPortTarget opt : processor.getDetectedTargets()) {
-				opt.drawOn(img);
-			}
+			processor.getDetectedTarget().drawOn(img);
 
 			HighGui.imshow(file, img);
 		}
