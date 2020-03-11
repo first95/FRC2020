@@ -51,6 +51,7 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 	private Mat blurOutput = new Mat();
 	private Mat hsvThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 	private List<OuterPortTarget> detectedTargets = new LinkedList<>();
 
 	static {
@@ -79,7 +80,10 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		boolean findContoursExternalOnly = false;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
-		detectedTargets = findTargets(findContoursOutput());
+		// Filter contours
+		filterContours(findContoursOutput(), filterContoursOutput);
+
+		detectedTargets = findTargets(filterContoursOutput());
 
 	}
 
@@ -105,6 +109,14 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 	 */
 	public ArrayList<MatOfPoint> findContoursOutput() {
 		return findContoursOutput;
+	}
+
+	/**
+	 * This method is a generated getter for the output of Filter_Contours.
+	 * @return ArrayList<MatOfPoint> output from Filter_Contours.
+	 */
+	public ArrayList<MatOfPoint> filterContoursOutput() {
+		return filterContoursOutput;
 	}
 
 	public List<OuterPortTarget> getDetectedTargets() {
@@ -212,6 +224,37 @@ public class OuterPortTargetFromImage implements VisionPipeline {
 		}
 		int method = Imgproc.CHAIN_APPROX_SIMPLE;
 		Imgproc.findContours(input, contours, hierarchy, mode, method);
+	}
+
+/**
+	 * Filter contours based on certain parameters
+	 */
+	private void filterContours(List<MatOfPoint> contours, List<MatOfPoint> filterContoursOutput) {
+		double arcLength;
+		double contourArea;
+		double lengthAreaRatio;
+		Moments moments = new Moments();
+		double rotInertia;
+		int count = 0;
+		filterContoursOutput.clear();
+		for(MatOfPoint contour : contours) {
+			
+			// Calculate some properties of the contour
+			arcLength = Imgproc.arcLength(new MatOfPoint2f(contour.toArray()),false);
+			contourArea = Imgproc.contourArea(new MatOfPoint2f(contour.toArray()),false);
+			lengthAreaRatio = Math.abs(arcLength/contourArea);
+			moments = Imgproc.moments(contour);
+			rotInertia = moments.get_nu02() + moments.get_nu20();
+
+			// Then choose whether to keep contour based on its properties
+			if (lengthAreaRatio>0.1 && contourArea > 0 && rotInertia > 0.5) {
+				count ++;
+				filterContoursOutput.add(contour);
+			}
+		}
+		if (count > 1) {
+			System.out.println("Warning: more than 1 viable contour found.");
+		}
 	}
 
 	public static List<OuterPortTarget> findTargets(ArrayList<MatOfPoint> targetRegions) {
