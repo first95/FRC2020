@@ -41,8 +41,7 @@ public class Constants
 		public static final int CLIMBER_SOLENOID_NUM = 2;
 		
 		// Drive base
-		public static final int SUCKER_1 = 1;
-		public static final int SUCKER_2 = 3;
+		public static final int SUCKER = 5;
 		// Indices for SparkMaxes
 		public static final int LEFT_LEAD = 7;
 		public static final int LEFT_F = 6;

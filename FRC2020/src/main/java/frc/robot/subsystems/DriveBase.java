@@ -22,7 +22,7 @@ public class DriveBase extends Subsystem {
 	private DrivePodSpark leftPod, rightPod;
 	private Solenoid shifter;
 
-	private TalonSRX sucker1, sucker2;
+	private TalonSRX sucker;
 
 	private double leftSpeed;
 	private double rightSpeed;
@@ -48,8 +48,7 @@ public class DriveBase extends Subsystem {
 		rightPod = new DrivePodSpark("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F, true);
 		shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
 
-		sucker1 = new TalonSRX(Constants.SUCKER_1);
-		sucker2 = new TalonSRX(Constants.SUCKER_2);
+		sucker = new TalonSRX(Constants.SUCKER);
 	}
 
 	/**
@@ -297,7 +296,6 @@ public class DriveBase extends Subsystem {
 	 * @param power 0 for off, 1 for full on
 	 */
 	public void SetSuckerPower(double power) {
-		sucker1.set(ControlMode.PercentOutput, power);
-		sucker2.set(ControlMode.PercentOutput, power);
+		sucker.set(ControlMode.PercentOutput, power);
 	}
 }
