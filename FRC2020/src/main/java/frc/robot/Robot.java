@@ -5,11 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
-// import frc.robot.subsystems.GroundPickUp;
-// import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
-// import frc.robot.subsystems.Singulator;
-// import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.VisionProcessor;
 import frc.robot.Constants;
@@ -31,11 +27,7 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static VisionProcessor vision;
-	// public static GroundPickUp groundPickUp;
-	// public static Indexer indexer;
-	// public static Singulator singulator;
 	public static PowerCellMover powerCellMover;
-	// public static Shooter shooter;
 	public static Climber climber;
 	public static double AutoDriveSpeed = 0;
 	public static double PSAutoDriveSpeed = 0.2;
@@ -53,11 +45,7 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionProcessor();
 		oi = new OI();
-		// groundPickUp = new GroundPickUp();
-		// indexer = new Indexer();
-		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
-		// shooter = new Shooter();
 		climber = new Climber();
 
 		// Show what command your subsystem is running on the SmartDashboard
@@ -69,8 +57,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
 		SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
 
-		// Disable brakes on talons to make it
-		// easier to push
+		// Disable brakes on drivebase to make it easier to push
 		drivebase.brake(false);
 
 	}

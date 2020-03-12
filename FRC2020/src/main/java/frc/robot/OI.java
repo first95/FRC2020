@@ -82,7 +82,6 @@ public class OI {
 		// weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
-		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 		
 	}
 
