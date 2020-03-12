@@ -296,6 +296,12 @@ public class DriveBase extends Subsystem {
 	 * @param power 0 for off, 1 for full on
 	 */
 	public void SetSuckerPower(double power) {
+		// true for high gear, false for low gear
+		if (getGear()) {
+			// if in high gear, set power to 0
+			System.out.println("Nuh uh - can't use sucker in high gear!");
+			power = 0;
+		}
 		sucker.set(ControlMode.PercentOutput, power);
 	}
 }
