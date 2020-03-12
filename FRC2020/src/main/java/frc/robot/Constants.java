@@ -7,9 +7,29 @@ public class Constants
 		public static double joystickDeadbandV = 0.07;
 		public static double joystickDeadbandH = 0.05;
 		
+		// PCM Device ID
+		public static final int PCM_NUM = 0;
+
+		// Ground Pick-up IDs
+		public static final int GROUND_PICK_UP_TALON_ID = 1;
+		public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
+
+		// Singulator IDs
+		public static final int INNER_SINGULATOR_TALON_ID = 3;
+
+		// Singulator intake IDs
+		public static final int SINGULATOR_INTAKE_TALON_ID = 2;
+
+		// Ring Light controller IDs
+		public static final int TARGET_CAM_GREEN_RINGLIGHT_TALON_ID = 4;
+
+		// Shooter IDs
+		public static final int LEADER_SHOOT = 12;
+		public static final int FOLLOWER_SHOOT = 13;
+
 		// Speed Shifter Values
-		public static final double SPEED_TO_SHIFT_UP = 5.5; // ft per sec
-		public static final double SPEED_TO_SHIFT_DOWN = 5.0; // ft per sec
+		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec
+		public static final double SPEED_TO_SHIFT_DOWN = 3.0; // ft per sec
 
 		// Used with Talons
 		public static final int PID_IDX = 0; // The Talons support up to 2 PID loops, with indexes 0 and 1.  We only use 0.
@@ -18,6 +38,7 @@ public class Constants
 		
 		// Indices for solenoids
 		public static final int SHIFTER_SOLENOID_NUM  = 0;
+		public static final int CLIMBER_SOLENOID_NUM = 2;
 		
 		// Drive base
 		public static final int SUCKER_1 = 1;
@@ -29,5 +50,17 @@ public class Constants
 		public static final int RIGHT_LEAD = 9;
 		public static final int RIGHT_F = 8;
 		// public static final int RIGHT_F2 = 22;
+		public static final int INDEXER_BELT_MOTOR_ID = 10;
+
 		
+		// Drivebase constants
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
+		public static final double LOW_GEAR_RATIO = 20.83;
+		public static final double HIGH_GEAR_RATIO = 9.17;
+
+		// Digital I/O pin names
+		public static final int SINGULATOR_SENSOR = 0;
+		public static final int INDEXER_ENTRANCE_SENSOR = 1;
+		public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
+		public static final int SHOOTER_LOADED_SENSOR = 3;
 	}

@@ -11,6 +11,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.components.DrivePodSpark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The DriveBase subsystem incorporates the sensors and actuators attached to
@@ -119,18 +120,28 @@ public class DriveBase extends Subsystem {
 	 * 
 	 * @return instantaneous speed of the left side drive pod, in feet per second
 	 */
-	// public double getLeftSpeed() {
-	// 	return leftPod.getEncoderVelocityFeetPerSecond();
-	// }
+	public double getLeftSpeed() {
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.HIGH_GEAR_RATIO;
+		} else {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.LOW_GEAR_RATIO;
+		}
+	}
 
 	/**
 	 * Get the instantaneous speed of the right side drive pod, in feet per second
 	 * 
 	 * @return instantaneous speed of the right side drive pod, in feet per second
 	 */
-	// public double getRightSpeed() {
-	// 	return rightPod.getEncoderVelocityFeetPerSecond();
-	// }
+	public double getRightSpeed() {
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.HIGH_GEAR_RATIO;
+		} else {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear()/Constants.LOW_GEAR_RATIO;
+		}
+	}
 
 	/**
 	 * Get the driven distance of the left drive pod in ticks
@@ -180,87 +191,106 @@ public class DriveBase extends Subsystem {
 	 * Apply the correct gear for the speed of the drivebase right now. Should only
 	 * be called when the gear shift mode permits auto shifting.
 	 */
-	// private void autoShift() {
-	// 	leftSpeed = Math.abs(Robot.drivebase.getLeftSpeed());
-	// 	rightSpeed = Math.abs(Robot.drivebase.getRightSpeed());
+	private void autoShift() {
+		leftSpeed = Math.abs(getLeftSpeed());
+		rightSpeed = Math.abs(getRightSpeed());
 
-	// 	// Autoshift framework based off speed
-	// 	if (allowShift) {
-	// 		if (((leftSpeed < Constants.SPEED_TO_SHIFT_DOWN) && (rightSpeed < Constants.SPEED_TO_SHIFT_DOWN))) {
-	// 			setGear(false);
-	// 			// System.out.println(elevatorIsTooHighToShift + " case 1");
+		// Autoshift framework based off speed
+		if (allowShift) {
+			if (((leftSpeed < Constants.SPEED_TO_SHIFT_DOWN) && (rightSpeed < Constants.SPEED_TO_SHIFT_DOWN))) {
+				setGear(false);
+				// System.out.println(elevatorIsTooHighToShift + " case 1");
 
-	// 			if (hasAlreadyShifted) {
-	// 				allowDeshift = true;
-	// 				hasAlreadyShifted = false;
-	// 			}
+				if (hasAlreadyShifted) {
+					allowDeshift = true;
+					hasAlreadyShifted = false;
+				}
 
-	// 		} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
-	// 			if (allowDeshift) {
-	// 				shiftTimer.reset();
-	// 				shiftTimer.start();
-	// 				allowShift = false;
-	// 				setGear(true);
-	// 				// System.out.println(elevatorIsTooHighToShift + " case 2");
-	// 			}
-	// 		}
-	// 	} else if (shiftTimer.get() > 1.0) {
-	// 		allowShift = true;
-	// 		shiftTimer.stop();
-	// 		shiftTimer.reset();
-	// 		allowDeshift = false;
-	// 		hasAlreadyShifted = true;
-	// 	}
-	// }
+			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) && ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
+				if (allowDeshift) {
+					shiftTimer.reset();
+					shiftTimer.start();
+					allowShift = false;
+					setGear(true);
+					// System.out.println(elevatorIsTooHighToShift + " case 2");
+				}
+			}
+		} else if (shiftTimer.get() > 1.0) {
+			allowShift = true;
+			shiftTimer.stop();
+			shiftTimer.reset();
+			allowDeshift = false;
+			hasAlreadyShifted = true;
+		}
+	}
 
-	// /**
-	//  * Ask if an autonomous move has asked the robot to remain in a particular gear
-	//  */
-	// public GearShiftMode getShiftMode() {
-	// 	return gearShiftMode;
-	// }
+	/**
+	 * Ask if an autonomous move has asked the robot to remain in a particular gear
+	 */
+	public GearShiftMode getShiftMode() {
+		return gearShiftMode;
+	}
 
-	// /**
-	//  * To be called by an auto mode, to keep the drivebase in a certain gear or let
-	//  * it run free.
-	//  * 
-	//  * Can be overridden by the driver via the OI.
-	//  * 
-	//  * @param shiftMode
-	//  */
-	// public void setShiftMode(GearShiftMode shiftMode) {
-	// 	gearShiftMode = shiftMode;
-	// }
+	/**
+	 * To be called by an auto mode, to keep the drivebase in a certain gear or let
+	 * it run free.
+	 * 
+	 * Can be overridden by the driver via the OI.
+	 * 
+	 * @param shiftMode
+	 */
+	public void setShiftMode(GearShiftMode shiftMode) {
+		gearShiftMode = shiftMode;
+	}
 
 	public void visit() {
-		// handleGear();
+		handleGear();
+		SmartDashboard.putNumber("Left velocity (ftps)", getLeftSpeed());
+		SmartDashboard.putNumber("Right velocity (ftps)", getRightSpeed());
+		applyPositionPidConsts();
 	}
 
 	/**
 	 * Enact whichever shift mode is appropriate
 	 */
-	// private void handleGear() {
-	// 	// Driver commanded override?
-	// 	if (Robot.oi.getHighGear()) {
-	// 		setGear(true);
-	// 	} else if (Robot.oi.getLowGear()) {
-	// 		setGear(false);
-	// 	} else {
-	// 		// No override from driver. Auto move commanded override?
-	// 		switch (gearShiftMode) {
-	// 		case LOCK_HIGH_GEAR:
-	// 			setGear(true);
-	// 			break;
-	// 		case LOCK_LOW_GEAR:
-	// 			setGear(false);
-	// 			break;
-	// 		// No override commanded; handle automatic gear shifting.
-	// 		case AUTOSHIFT:
-	// 			autoShift();
-	// 			break;
-	// 		}
-	// 	}
-	// }
+	private void handleGear() {
+		// Driver commanded override?
+		if (Robot.oi.getHighGear()) {
+			setGear(true);
+		} else if (Robot.oi.getLowGear()) {
+			setGear(false);
+		} else {
+			// No override from driver. Auto move commanded override?
+			switch (gearShiftMode) {
+			case LOCK_HIGH_GEAR:
+				setGear(true);
+				break;
+			case LOCK_LOW_GEAR:
+				setGear(false);
+				break;
+			// No override commanded; handle automatic gear shifting.
+			case AUTOSHIFT:
+				autoShift();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Apply position control PID values
+	 */
+	public void applyPositionPidConsts(){
+		leftPod.applyPositionPidConsts();
+		rightPod.applyPositionPidConsts();
+	}
+
+	/**
+	 * Apply set point for position control
+	 */
+	public void travleDistance(double rotations) {
+		leftPod.travleDistance(rotations);
+		rightPod.travleDistance(rotations);
+	}
 
 	/**
 	 * Set the power on the sucker
