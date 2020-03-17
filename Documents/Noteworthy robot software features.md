@@ -31,7 +31,12 @@ Kepler had a series of optical proximity sensors in its maw.  We had an effectiv
 
 # 2016 (Kovaka, FIRST Stronghold)
 
+This year had a noteworthy near miss, safety-wise.  The "cannon" was controlled in elevation as a closed-loop position control system.  It was very heavy, so the motors driving it were very strong (I think it was several CIMs in parallel).  We had a working encoder reporting the current position, but no indexing sensor.  This builds an implicit assumption into the software: whatever position the arm is at when the robot is powered on is zero degrees (or whatever angle).  The robot looked vaguely front-back symmetric.  I don't remember the precise setup, but somehow, a student tried to command the canoon to point straight upward, and the cannon instead tried to seek a position straight downward, with quite some force.  The student hit the disable button shortly after the cannon slammed into the floor, hard enough to be felt through the whole classroom.  Nobody was hurt, because everyone was doing a good job of staying clear from the robot while it was being debugged.  The robot escaped damage too.  I call it a near miss because of the sheer force imparted by the robot, and how badly things could have been if someone was too close.
+
+Things that have been done to reduce this class of problem since:
+- Indexing sensors (such as the one on Kepler and Ceclia's elevators)
+- Absolute encoders where applicable
+- Making sure students look around the robot before enabling, and yelling "enabling" (I think we were doing this already, but this incident underscores its importance to me)
+
 # 2015 (Ada Lovelace, Recycle Rush)
-
-
 
