@@ -62,4 +62,20 @@ public class Constants
 		public static final int INDEXER_ENTRANCE_SENSOR = 1;
 		public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
 		public static final int SHOOTER_LOADED_SENSOR = 3;
+
+		//For vision aiming
+		public static final double VISION_CAM_FOV_Y_DEG = 49.7;
+		public static final double VISION_CAM_FOV_X_DEG = 59.6;
+		public static final double VISION_CAM_Y_PIXELS = 240;
+		public static final double DEGREES_PER_PIXEL = VISION_CAM_FOV_Y_DEG / VISION_CAM_Y_PIXELS;
+
+		public static final double TARGET_TALLNESS_INCHES = 17;
+		public static final double CAM_HEIGHT_INCHES = 41.25;
+		public static final double TARGET_HEIGHT_INCHES = 98.25;
+		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
+
+		public static final double VISION_HEADING_TOLERANCE_DEG = 1;
+
+		public static final double VISION_HEADING_MAX_SPEED_PERCENT = 0.75;
+		public static final double VISION_HEADING_MIN_SPEED_PERCENT = 0.05;
 	}
