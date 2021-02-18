@@ -75,7 +75,10 @@ public class Constants
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		public static final double VISION_HEADING_TOLERANCE_DEG = 1;
+		public static final double VISION_RANGE_TOLERANCE_INCH = 3;
 
 		public static final double VISION_HEADING_MAX_SPEED_PERCENT = 0.75;
 		public static final double VISION_HEADING_MIN_SPEED_PERCENT = 0.05;
+		public static final double VISION_RANGE_MAX_SPEED_PERCENT = 1;
+		public static final double VISION_RANGE_MIN_SPEED_PERCENT = 0.1;
 	}

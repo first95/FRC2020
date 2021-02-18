@@ -55,13 +55,13 @@ public class Robot extends TimedRobot {
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionProcessor();
 		limelight = new LimeLight();
-		oi = new OI();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
 		// shooter = new Shooter();
 		climber = new Climber();
+		oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

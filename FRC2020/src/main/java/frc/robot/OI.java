@@ -20,6 +20,8 @@ import frc.robot.subsystems.VisionProcessor;
  */
 public class OI {
 
+	public static boolean auto_shooting = false;
+
 	// Controllers
 	private Joystick driverController = new Joystick(0);
 	private Joystick weaponsController = new Joystick(1);
@@ -185,7 +187,12 @@ public class OI {
 	// }
 
 	public boolean getShooterButton() {
-		return weaponsController.getRawButton(SHOOTER_BUTTON);
+		if (auto_shooting) {
+			return true;
+		}
+		else {
+			return weaponsController.getRawButton(SHOOTER_BUTTON);
+		}
 	}
 	
 	public boolean getBackwardsButtonPressed() {

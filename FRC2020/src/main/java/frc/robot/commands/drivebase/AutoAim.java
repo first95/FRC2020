@@ -12,6 +12,8 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.OI.Controller;
+import frc.robot.OI;
+
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
@@ -24,6 +26,7 @@ public class AutoAim extends Command {
   private double rangeLastError = 0;
   private double rangeIntegral = 0;
   private double desiredDistance = 81;
+  private boolean onTarget = false;
 
   public AutoAim(double desiredDistance) {
     requires(Robot.drivebase);
@@ -50,7 +53,6 @@ public class AutoAim extends Command {
 
     boolean headingOnTarget = false;
     boolean rangeOnTarget = false;
-    boolean onTarget = false;
 
     double headingError = Robot.limelight.getTX();
     double rangeError = Robot.limelight.getFloorDistanceToTarg() - desiredDistance;
@@ -70,7 +72,7 @@ public class AutoAim extends Command {
     double rangeki = SmartDashboard.getNumber("Vision range Ki", 0);
     double rangekd = SmartDashboard.getNumber("Vision range Kd", 0);
 
-    if (targetValid == 1) {
+    if (targetValid == 1 && !onTarget) {
       if (Math.abs(headingError) > Constants.VISION_HEADING_TOLERANCE_DEG) {
         headingErrorPercent = (headingError / Constants.VISION_CAM_FOV_X_DEG);
         headingProportional = headingErrorPercent;
@@ -91,11 +93,35 @@ public class AutoAim extends Command {
         headingRight = 0;
         headingOnTarget = true;
       }
+      if (Math.abs(rangeError) > Constants.VISION_RANGE_TOLERANCE_INCH) {
+        rangeErrorPercent = (rangeError / desiredDistance);
+        rangeProportional = -rangeErrorPercent;
+        rangeIntegral = rangeErrorPercent + rangeIntegral;
+        rangeDerivitive = rangeErrorPercent - rangeLastError;
+        rangeRawCorrection = Math.max(Math.min((rangeProportional * rangekp) + (rangeIntegral * rangeki) + (rangeDerivitive * rangekd), Constants.VISION_RANGE_MAX_SPEED_PERCENT), -Constants.VISION_RANGE_MAX_SPEED_PERCENT);
+        if (Math.abs(rangeRawCorrection) < Constants.VISION_RANGE_MIN_SPEED_PERCENT) {
+          rangeRight = Math.copySign(Constants.VISION_RANGE_MIN_SPEED_PERCENT, rangeRawCorrection);
+        }
+        else {
+          rangeRight = rangeRawCorrection;
+        }
+        rangeLeft = rangeRight;
+        rangeOnTarget = false;
+      }
+      else {
+        rangeLeft = 0;
+        rangeRight = 0;
+        rangeOnTarget = true;
+      }
+    }
+    else if (onTarget) {
+      OI.auto_shooting = true;
     }
     else {
       Robot.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.5);
     }
 
+    onTarget = headingOnTarget && rangeOnTarget;
     left = headingLeft + rangeLeft;
     right = headingRight + rangeRight;
     headingLastError = headingErrorPercent;
@@ -112,11 +138,18 @@ public class AutoAim extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivebase.driveWithTankControls(0, 0);
+    OI.auto_shooting = false;
+    onTarget = false;
+    
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drivebase.driveWithTankControls(0, 0);
+    OI.auto_shooting = false;
+    onTarget = false;
   }
 }
