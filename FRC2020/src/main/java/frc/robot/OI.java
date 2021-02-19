@@ -123,12 +123,6 @@ public class OI {
 		if(Timer.getFPGATimestamp() > weaponsRightRumbleStopTime) {
 			weaponsController.setRumble(RumbleType.kRightRumble, 0);
 		}
-		if (driverController.getRawButton(XBox360Controller.Button.START.Number())) {
-			Robot.powerCellMover.runShooterOpen(SmartDashboard.getNumber("Shooter Speed", 0));
-			SmartDashboard.putNumber("ProcessVariable", Robot.powerCellMover.leaderEncoder.getVelocity());
-		} else {
-			Robot.powerCellMover.runShooterOpen(0);
-		}
 	}
 
     /**

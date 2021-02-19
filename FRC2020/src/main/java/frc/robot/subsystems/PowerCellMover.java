@@ -35,7 +35,7 @@ public class PowerCellMover extends Subsystem {
   DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
   private CANSparkMax beltMotor, leader, follower;
-  public CANEncoder leaderEncoder;
+  private CANEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   public Solenoid deploy;
