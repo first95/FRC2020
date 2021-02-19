@@ -68,9 +68,9 @@ public class AutoAim extends Command {
     double rangeProportional = 0;
     double rangeDerivitive = 0;
     double rangeRawCorrection = 0;
-    double rangekp = SmartDashboard.getNumber("Vision range Kp", 1);
+    double rangekp = SmartDashboard.getNumber("Vision range Kp", 2.5);
     double rangeki = SmartDashboard.getNumber("Vision range Ki", 0);
-    double rangekd = SmartDashboard.getNumber("Vision range Kd", 0);
+    double rangekd = SmartDashboard.getNumber("Vision range Kd", 5);
 
     if (targetValid == 1 && !onTarget) {
       if (Math.abs(headingError) > Constants.VISION_HEADING_TOLERANCE_DEG) {
@@ -116,9 +116,11 @@ public class AutoAim extends Command {
     }
     else if (onTarget) {
       OI.auto_shooting = true;
+      headingOnTarget = true;
+      rangeOnTarget = true;
     }
     else {
-      Robot.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.5);
+      Robot.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
     onTarget = headingOnTarget && rangeOnTarget;

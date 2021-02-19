@@ -42,14 +42,17 @@ public class OI {
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
 	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
-	public static final int BUTTON_VISION_AIM = XBox360Controller.Button.Y.Number();
+	public static final int BUTTON_VISION_AIM_A = XBox360Controller.Button.Y.Number();
+	public static final int BUTTON_VISION_AIM_B = XBox360Controller.Button.B.Number();
+	public static final int BUTTON_VISION_AIM_C = XBox360Controller.Button.A.Number();
+	public static final int BUTTON_VISION_AIM_D = XBox360Controller.Button.X.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
 	
 	// Axes on weapons controller
-	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
+	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
 	public static final int HUMAN_PLAYER_PICKUP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
 
 	/** Describes which of the controlleres you're referring to */
@@ -88,8 +91,17 @@ public class OI {
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 
-		JoystickButton visionAim = new JoystickButton(driverController, BUTTON_VISION_AIM);
-		visionAim.whileHeld(new AutoAim(81));
+		JoystickButton visionAimRangeA = new JoystickButton(driverController, BUTTON_VISION_AIM_A);
+		visionAimRangeA.whileHeld(new AutoAim(Constants.VISION_RANGE_A_INCH));
+
+		JoystickButton visionAimRangeB = new JoystickButton(driverController, BUTTON_VISION_AIM_B);
+		visionAimRangeB.whileHeld(new AutoAim(Constants.VISION_RANGE_B_INCH));
+
+		JoystickButton visionAimRangeC = new JoystickButton(driverController, BUTTON_VISION_AIM_C);
+		visionAimRangeC.whileHeld(new AutoAim(Constants.VISION_RANGE_C_INCH));
+
+		JoystickButton visionAimRangeD = new JoystickButton(driverController, BUTTON_VISION_AIM_D);
+		visionAimRangeD.whileHeld(new AutoAim(Constants.VISION_RANGE_D_INCH));
 
 		
 	}
@@ -149,7 +161,7 @@ public class OI {
      * @return -1 for full speed backward, +1 for full speed forward
      */
 	public double getGroundPickUpRollerAxis() {
-		return weaponsController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+		return driverController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
 	}
 	public double getHumanPlayerStationPickUpRollerAxis() {
 		return weaponsController.getRawAxis(HUMAN_PLAYER_PICKUP_ROLLER_AXIS);
@@ -169,7 +181,8 @@ public class OI {
 	 * @return
 	 */
 	public boolean getClimberDeployed() {
-		return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
+		//return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
+		return false;
 	}
 
 	/**

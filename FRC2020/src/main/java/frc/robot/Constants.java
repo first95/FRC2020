@@ -80,5 +80,10 @@ public class Constants
 		public static final double VISION_HEADING_MAX_SPEED_PERCENT = 0.75;
 		public static final double VISION_HEADING_MIN_SPEED_PERCENT = 0.05;
 		public static final double VISION_RANGE_MAX_SPEED_PERCENT = 1;
-		public static final double VISION_RANGE_MIN_SPEED_PERCENT = 0.1;
+		public static final double VISION_RANGE_MIN_SPEED_PERCENT = 0.05;
+
+		public static final double VISION_RANGE_A_INCH = 81;
+		public static final double VISION_RANGE_B_INCH = 141;
+		public static final double VISION_RANGE_C_INCH = 186;
+		public static final double VISION_RANGE_D_INCH = 246;
 	}
