@@ -30,7 +30,8 @@ public class Shooter extends Subsystem {
 
 	private void init() {
 		leader.restoreFactoryDefaults();
-		follower.restoreFactoryDefaults();
+        follower.restoreFactoryDefaults();
+        follower.follow(leader, true); //true inverts the follower from the leader
 	}
 
     @Override
@@ -46,6 +47,5 @@ public class Shooter extends Subsystem {
     public void runShooterOpen(double speed) {
         //System.out.println("Setting shooter speed to " + speed);
         leader.set(speed);
-        follower.set(-1 * speed);
     }
 }

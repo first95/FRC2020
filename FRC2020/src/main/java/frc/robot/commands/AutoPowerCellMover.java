@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.PowerCellMover;
 
@@ -47,6 +48,15 @@ public class AutoPowerCellMover extends Command {
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
   private double current_speed = 0;
+  private double speedError = 0;
+  private double speedErrorPercent = 0;
+  private double lastSpeedErrorPercent = 0;
+  private double speedProportional, speedIntegral, speedDerivative;
+  private double correction = 0;
+  private double cappedCorrection = 0;
+  private double shooterkp = 4;
+  private double shooterki = 0;
+  private double shooterkd = 4;
   
 
   public enum State {
@@ -191,17 +201,29 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
+      shooterkp = SmartDashboard.getNumber("Shooter kp", 4);
+      shooterki = SmartDashboard.getNumber("Shooter ki", 0);
+      shooterkd = SmartDashboard.getNumber("Shooter kd", 4);
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
-      if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
+      SmartDashboard.putNumber("ProcessVariable", actual_speed);
+      /*if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
         current_speed = 1.0; // speed up as quickly as possible
       } else if (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
         current_speed = MAINTAIN_RUN_SPEED_SHOOTER;
       } else {
         // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
         current_speed = SLOW_RUN_SPEED_SHOOTER;
-      }
-      Robot.powerCellMover.runShooterOpen(current_speed);
+      }*/
+      speedError = TARGET_RUN_SPEED_SHOOTER - actual_speed;
+      speedErrorPercent = speedError / TARGET_RUN_SPEED_SHOOTER;
+      speedProportional = speedErrorPercent;
+      speedIntegral = speedIntegral + speedErrorPercent;
+      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
+      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER;
+      cappedCorrection = Math.max(Math.min(correction, 1.0), SLOW_RUN_SPEED_SHOOTER);
+      Robot.powerCellMover.runShooterOpen(cappedCorrection);
+      lastSpeedErrorPercent = speedErrorPercent;
 
       if (spinupDelayCount > 35 ) {
         Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
