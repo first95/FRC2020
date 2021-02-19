@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.vision.SetVisionMode;
@@ -121,6 +122,12 @@ public class OI {
 		}
 		if(Timer.getFPGATimestamp() > weaponsRightRumbleStopTime) {
 			weaponsController.setRumble(RumbleType.kRightRumble, 0);
+		}
+		if (driverController.getRawButton(XBox360Controller.Button.START.Number())) {
+			Robot.powerCellMover.runShooterOpen(SmartDashboard.getNumber("Shooter Speed", 0));
+			SmartDashboard.putNumber("ProcessVariable", Robot.powerCellMover.leaderEncoder.getVelocity());
+		} else {
+			Robot.powerCellMover.runShooterOpen(0);
 		}
 	}
 

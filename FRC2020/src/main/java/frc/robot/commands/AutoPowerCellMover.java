@@ -54,9 +54,9 @@ public class AutoPowerCellMover extends Command {
   private double speedProportional, speedIntegral, speedDerivative;
   private double correction = 0;
   private double cappedCorrection = 0;
-  private double shooterkp = 4;
-  private double shooterki = 0;
-  private double shooterkd = 4;
+  private double shooterkp = 3;
+  private double shooterki = 0.00002;
+  private double shooterkd = 16;
   
 
   public enum State {
@@ -201,9 +201,9 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
-      shooterkp = SmartDashboard.getNumber("Shooter kp", 4);
-      shooterki = SmartDashboard.getNumber("Shooter ki", 0);
-      shooterkd = SmartDashboard.getNumber("Shooter kd", 4);
+      shooterkp = SmartDashboard.getNumber("Shooter kp", 3);
+      shooterki = SmartDashboard.getNumber("Shooter ki", 0.00002);
+      shooterkd = SmartDashboard.getNumber("Shooter kd", 16);
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
