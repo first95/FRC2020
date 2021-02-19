@@ -127,11 +127,21 @@ public class PowerCellMover extends Subsystem {
   */
   public void setRollerSpeed(double speed)
   {
+    if (deploy.get()) { 
       rollers.set(ControlMode.PercentOutput, speed);
       // System.out.println("rollers have a command");
+    } else {
+      rollers.set(ControlMode.PercentOutput, 0);
+      System.out.println("Can't run ground pickup when not deployed");
+    }
   }
   public void setSingulatorIntakeSpeed(double speed) {
-    SingulatorIntake.set(ControlMode.PercentOutput, -speed);
+    if (deploy.get()) {
+      SingulatorIntake.set(ControlMode.PercentOutput, -speed);
+    } else {
+      SingulatorIntake.set(ControlMode.PercentOutput, 0);
+      System.out.println("Can't run ground pickup when not deployed");
+    }
   }
     
   /**  
