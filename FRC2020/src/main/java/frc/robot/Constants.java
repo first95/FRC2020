@@ -86,4 +86,7 @@ public class Constants
 		public static final double VISION_RANGE_B_INCH = 141;
 		public static final double VISION_RANGE_C_INCH = 186;
 		public static final double VISION_RANGE_D_INCH = 246;
+
+		//For Shooting
+		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
 	}

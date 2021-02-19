@@ -22,6 +22,7 @@ import frc.robot.subsystems.VisionProcessor;
 public class OI {
 
 	public static boolean auto_shooting = false;
+	public static double auto_shooting_speed = 2100;
 
 	// Controllers
 	private Joystick driverController = new Joystick(0);

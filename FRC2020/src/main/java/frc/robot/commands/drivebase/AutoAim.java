@@ -115,6 +115,18 @@ public class AutoAim extends Command {
       }
     }
     else if (onTarget) {
+      if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
+        OI.auto_shooting_speed = 2100;
+      }
+      else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
+        OI.auto_shooting_speed = 2300;
+      }
+      else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
+        OI.auto_shooting_speed = 2650;
+      }
+      else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
+        OI.auto_shooting_speed = 2800;
+      }
       OI.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
