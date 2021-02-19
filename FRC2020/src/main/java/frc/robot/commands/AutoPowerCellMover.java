@@ -8,6 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.PowerCellMover;
 
@@ -41,12 +44,21 @@ public class AutoPowerCellMover extends Command {
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
   public static double RUN_TOLERANCE_SHOOTER = 50; // tolerance range for shooter speed
-  public static double MAINTAIN_RUN_SPEED_SHOOTER = 0.35; // want this to roughly hold target RPM
+  public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION; // want this to roughly hold target RPM
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
   private double current_speed = 0;
+  private double speedError = 0;
+  private double speedErrorPercent = 0;
+  private double lastSpeedErrorPercent = 0;
+  private double speedProportional, speedIntegral, speedDerivative;
+  private double correction = 0;
+  private double cappedCorrection = 0;
+  private double shooterkp = 3;
+  private double shooterki = 0.00002;
+  private double shooterkd = 16;
   
 
   public enum State {
@@ -191,17 +203,33 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
+      shooterkp = SmartDashboard.getNumber("Shooter kp", 3);
+      shooterki = SmartDashboard.getNumber("Shooter ki", 0.00002);
+      shooterkd = SmartDashboard.getNumber("Shooter kd", 16);
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
-      if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
+      SmartDashboard.putNumber("ProcessVariable", actual_speed);
+      /*if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
         current_speed = 1.0; // speed up as quickly as possible
       } else if (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
         current_speed = MAINTAIN_RUN_SPEED_SHOOTER;
       } else {
         // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
         current_speed = SLOW_RUN_SPEED_SHOOTER;
+      }*/
+      if (OI.auto_shooting) {
+        TARGET_RUN_SPEED_SHOOTER = OI.auto_shooting_speed;
+        MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
       }
-      Robot.powerCellMover.runShooterOpen(current_speed);
+      speedError = TARGET_RUN_SPEED_SHOOTER - actual_speed;
+      speedErrorPercent = speedError / TARGET_RUN_SPEED_SHOOTER;
+      speedProportional = speedErrorPercent;
+      speedIntegral = speedIntegral + speedErrorPercent;
+      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
+      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER;
+      cappedCorrection = Math.max(Math.min(correction, 1.0), SLOW_RUN_SPEED_SHOOTER);
+      Robot.powerCellMover.runShooterOpen(cappedCorrection);
+      lastSpeedErrorPercent = speedErrorPercent;
 
       if (spinupDelayCount > 35 ) {
         Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);

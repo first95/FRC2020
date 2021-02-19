@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.LimeLight;
 // import frc.robot.subsystems.GroundPickUp;
 // import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
 	// Components of the robot
 	public static DriveBase drivebase;
 	public static Compressor compressor;
+	public static LimeLight limelight;
 	public static OI oi;
 	public static VisionProcessor vision;
 	// public static GroundPickUp groundPickUp;
@@ -52,13 +54,14 @@ public class Robot extends TimedRobot {
 		drivebase = new DriveBase();
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionProcessor();
-		oi = new OI();
+		limelight = new LimeLight();
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
 		// singulator = new Singulator();
 		powerCellMover = new PowerCellMover();
 		// shooter = new Shooter();
 		climber = new Climber();
+		oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivebase);

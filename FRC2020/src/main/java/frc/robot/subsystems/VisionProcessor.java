@@ -59,11 +59,11 @@ public class VisionProcessor extends Subsystem {
 
     public VisionProcessor() {
         super();
-        upperPortCam = new UsbCamera("Upper port cam", UPPER_PORT_CAM_PATH);
-        upperPortCam.setResolution(320, 240);
-        upperPortCam.setFPS(20);
-        fpsViewServer = new MjpegServer("First person view", 1181);
-        fpsViewServer.setSource(upperPortCam);
+        //upperPortCam = new UsbCamera("Upper port cam", UPPER_PORT_CAM_PATH);
+        //upperPortCam.setResolution(320, 240);
+        //upperPortCam.setFPS(20);
+        //fpsViewServer = new MjpegServer("First person view", 1181);
+        //fpsViewServer.setSource(upperPortCam);
         lookupCam = new UsbCamera("Upward-facing cam", LOOKUP_CAM_PATH);
         lookupCam.setResolution(800, 600);
         lookupCam.setFPS(24);
@@ -108,7 +108,7 @@ public class VisionProcessor extends Subsystem {
         System.out.println("Setting vision mode to: " + mode);
         switch (mode) {
         default:
-        case UPPER_PORT_HUMAN:
+        /*case UPPER_PORT_HUMAN:
             SetLightMode(LightMode.OFF);
             fpsViewServer.setSource(upperPortCam);
             // TODO: adjust exposure
@@ -117,7 +117,7 @@ public class VisionProcessor extends Subsystem {
             SetLightMode(LightMode.GREEN);
             fpsViewServer.setSource(upperPortCam);
             // TODO: adjust exposure
-            break;
+            break;*/
         case SWITCH_HUMAN:
             SetLightMode(LightMode.OFF);
             fpsViewServer.setSource(lookupCam);

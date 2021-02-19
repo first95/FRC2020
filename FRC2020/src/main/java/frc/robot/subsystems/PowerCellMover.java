@@ -83,6 +83,7 @@ public class PowerCellMover extends Subsystem {
   private void init() {
 		leader.restoreFactoryDefaults();
     follower.restoreFactoryDefaults();
+    follower.follow(leader, true); //true inverts the follower from the leader
     
     leaderEncoder = leader.getEncoder();
   }
@@ -94,7 +95,6 @@ public class PowerCellMover extends Subsystem {
     public void runShooterOpen(double speed) {
       //System.out.println("Setting shooter speed to " + speed);
       leader.set(speed);
-      follower.set(-1 * speed);
   }
 
    /**
