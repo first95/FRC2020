@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.vision.SetVisionMode;
 import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.JoystickPovButton;
@@ -23,6 +24,7 @@ public class OI {
 
 	public static boolean auto_shooting = false;
 	public static double auto_shooting_speed = 2100;
+	public static double auto_collect_speed = 0;
 
 	// Controllers
 	private Joystick driverController = new Joystick(0);
@@ -48,6 +50,7 @@ public class OI {
 	public static final int BUTTON_VISION_AIM_B = XBox360Controller.Button.B.Number();
 	public static final int BUTTON_VISION_AIM_C = XBox360Controller.Button.A.Number();
 	public static final int BUTTON_VISION_AIM_D = XBox360Controller.Button.X.Number();
+	public static final int BUTTON_AUTO_COLLECT = XBox360Controller.Button.START.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
@@ -104,6 +107,9 @@ public class OI {
 
 		JoystickButton visionAimRangeD = new JoystickButton(driverController, BUTTON_VISION_AIM_D);
 		visionAimRangeD.whileHeld(new AutoAim(Constants.VISION_RANGE_D_INCH));
+
+		JoystickButton autocollect = new JoystickButton(driverController, BUTTON_AUTO_COLLECT);
+		autocollect.whileHeld(new AutoCollect());
 
 		
 	}
@@ -163,7 +169,11 @@ public class OI {
      * @return -1 for full speed backward, +1 for full speed forward
      */
 	public double getGroundPickUpRollerAxis() {
-		return driverController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+		if (auto_collect_speed == 0) {
+			return driverController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+		} else {
+			return auto_collect_speed;
+		}
 	}
 	public double getHumanPlayerStationPickUpRollerAxis() {
 		return weaponsController.getRawAxis(HUMAN_PLAYER_PICKUP_ROLLER_AXIS);

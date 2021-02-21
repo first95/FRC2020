@@ -14,24 +14,22 @@ import frc.robot.Constants;
 import frc.robot.OI.Controller;
 import frc.robot.OI;
 
+import org.ietf.jgss.Oid;
+
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class AutoAim extends Command {
+public class AutoCollect extends Command {
 
   private double headingLastError = 0;
   private double headingIntegral = 0;
-  private double rangeLastError = 0;
-  private double rangeIntegral = 0;
-  private double desiredDistance = 81;
   private boolean onTarget = false;
 
-  public AutoAim(double desiredDistance) {
+  public AutoCollect() {
     requires(Robot.drivebase);
-    requires(Robot.limelightport);
-    this.desiredDistance = desiredDistance;
+    requires(Robot.limelightcell);
   }
 
   // Called just before this Command runs the first time
@@ -44,19 +42,15 @@ public class AutoAim extends Command {
   protected void execute() {
     double headingLeft = 0;
     double headingRight = 0;
-    double rangeLeft = 0;
-    double rangeRight = 0;
     double left = 0;
     double right = 0;
+    double backupSpeed = 0;
     double headingErrorPercent = 0;
-    double rangeErrorPercent = 0;
 
     boolean headingOnTarget = false;
-    boolean rangeOnTarget = false;
 
-    double headingError = Robot.limelightport.getTX();
-    double rangeError = Robot.limelightport.getFloorDistanceToTarg() - desiredDistance;
-    double targetValid = Robot.limelightport.getTV();
+    double headingError = Robot.limelightcell.getTX();
+    double targetValid = Robot.limelightcell.getTV();
 
     double headingProportional = 0;
     double headingDerivitive = 0;
@@ -65,14 +59,7 @@ public class AutoAim extends Command {
     double headingki = SmartDashboard.getNumber("Vision heading Ki", 0);
     double headingkd = SmartDashboard.getNumber("Vision heading Kd", 0);
 
-    double rangeProportional = 0;
-    double rangeDerivitive = 0;
-    double rangeRawCorrection = 0;
-    double rangekp = SmartDashboard.getNumber("Vision range Kp", 2.5);
-    double rangeki = SmartDashboard.getNumber("Vision range Ki", 0);
-    double rangekd = SmartDashboard.getNumber("Vision range Kd", 5);
-
-    if (targetValid == 1 && !onTarget) {
+    if (targetValid == 1) {
       if (Math.abs(headingError) > Constants.VISION_HEADING_TOLERANCE_DEG) {
         headingErrorPercent = (headingError / Constants.VISION_CAM_FOV_X_DEG);
         headingProportional = headingErrorPercent;
@@ -93,53 +80,19 @@ public class AutoAim extends Command {
         headingRight = 0;
         headingOnTarget = true;
       }
-      if (Math.abs(rangeError) > Constants.VISION_RANGE_TOLERANCE_INCH) {
-        rangeErrorPercent = (rangeError / desiredDistance);
-        rangeProportional = -rangeErrorPercent;
-        rangeIntegral = rangeErrorPercent + rangeIntegral;
-        rangeDerivitive = rangeErrorPercent - rangeLastError;
-        rangeRawCorrection = Math.max(Math.min((rangeProportional * rangekp) + (rangeIntegral * rangeki) + (rangeDerivitive * rangekd), Constants.VISION_RANGE_MAX_SPEED_PERCENT), -Constants.VISION_RANGE_MAX_SPEED_PERCENT);
-        if (Math.abs(rangeRawCorrection) < Constants.VISION_RANGE_MIN_SPEED_PERCENT) {
-          rangeRight = Math.copySign(Constants.VISION_RANGE_MIN_SPEED_PERCENT, rangeRawCorrection);
-        }
-        else {
-          rangeRight = rangeRawCorrection;
-        }
-        rangeLeft = rangeRight;
-        rangeOnTarget = false;
+      if (headingOnTarget || onTarget) {
+        onTarget = true;
+        backupSpeed = 0.3;
+        OI.auto_collect_speed = 1;
       }
-      else {
-        rangeLeft = 0;
-        rangeRight = 0;
-        rangeOnTarget = true;
-      }
-    }
-    else if (onTarget) {
-      if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
-        OI.auto_shooting_speed = 2100;
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
-        OI.auto_shooting_speed = 2300;
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
-        OI.auto_shooting_speed = 2650;
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
-        OI.auto_shooting_speed = 2800;
-      }
-      OI.auto_shooting = true;
-      headingOnTarget = true;
-      rangeOnTarget = true;
     }
     else {
       Robot.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
-    onTarget = headingOnTarget && rangeOnTarget;
-    left = headingLeft + rangeLeft;
-    right = headingRight + rangeRight;
-    headingLastError = headingErrorPercent;
-    rangeLastError = rangeErrorPercent; 
+    left = headingLeft + backupSpeed;
+    right = headingRight + backupSpeed;
+    headingLastError = headingErrorPercent; 
     Robot.drivebase.driveWithTankControls(left, right);
   }
 
@@ -153,8 +106,8 @@ public class AutoAim extends Command {
   @Override
   protected void end() {
     Robot.drivebase.driveWithTankControls(0, 0);
-    OI.auto_shooting = false;
     onTarget = false;
+    OI.auto_collect_speed = 0;
     
   }
 
@@ -163,7 +116,7 @@ public class AutoAim extends Command {
   @Override
   protected void interrupted() {
     Robot.drivebase.driveWithTankControls(0, 0);
-    OI.auto_shooting = false;
     onTarget = false;
+    OI.auto_collect_speed = 0;
   }
 }

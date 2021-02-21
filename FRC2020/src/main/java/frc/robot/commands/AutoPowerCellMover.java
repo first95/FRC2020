@@ -43,7 +43,7 @@ public class AutoPowerCellMover extends Command {
 
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
-  public static double RUN_TOLERANCE_SHOOTER = 50; // tolerance range for shooter speed
+  public static double RUN_TOLERANCE_SHOOTER = 25; // tolerance range for shooter speed
   public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION; // want this to roughly hold target RPM
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
   public static double MANUAL_REDUCTION = 0.2;
@@ -56,9 +56,9 @@ public class AutoPowerCellMover extends Command {
   private double speedProportional, speedIntegral, speedDerivative;
   private double correction = 0;
   private double cappedCorrection = 0;
-  private double shooterkp = 3;
-  private double shooterki = 0.00002;
-  private double shooterkd = 16;
+  private double shooterkp = 0;
+  private double shooterki = 0;
+  private double shooterkd = 0;
   
 
   public enum State {
@@ -203,12 +203,13 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
-      shooterkp = SmartDashboard.getNumber("Shooter kp", 3);
-      shooterki = SmartDashboard.getNumber("Shooter ki", 0.00002);
-      shooterkd = SmartDashboard.getNumber("Shooter kd", 16);
+      shooterkp = SmartDashboard.getNumber("Shooter Kp", 0);
+      shooterki = SmartDashboard.getNumber("Shooter ki", 0);
+      shooterkd = SmartDashboard.getNumber("Shooter kd", 0);
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
+      System.out.println(actual_speed);
       /*if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
         current_speed = 1.0; // speed up as quickly as possible
       } else if (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
@@ -231,7 +232,7 @@ public class AutoPowerCellMover extends Command {
       Robot.powerCellMover.runShooterOpen(cappedCorrection);
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if (spinupDelayCount > 35 ) {
+      if (((actual_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) && (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER)) || shooterSpunUp) {
         Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
         shooterSpunUp = true;
         if (idx2singulatorDelayCount >= 5) {

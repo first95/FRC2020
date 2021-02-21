@@ -30,7 +30,8 @@ public class Robot extends TimedRobot {
 	// Components of the robot
 	public static DriveBase drivebase;
 	public static Compressor compressor;
-	public static LimeLight limelight;
+	public static LimeLight limelightport;
+	public static LimeLight limelightcell;
 	public static OI oi;
 	public static VisionProcessor vision;
 	// public static GroundPickUp groundPickUp;
@@ -54,7 +55,8 @@ public class Robot extends TimedRobot {
 		drivebase = new DriveBase();
 		compressor = new Compressor(Constants.PCM_NUM);
 		vision = new VisionProcessor();
-		limelight = new LimeLight();
+		limelightport = new LimeLight("port");
+		limelightcell = new LimeLight("cell");
 		// groundPickUp = new GroundPickUp();
 		// indexer = new Indexer();
 		// singulator = new Singulator();

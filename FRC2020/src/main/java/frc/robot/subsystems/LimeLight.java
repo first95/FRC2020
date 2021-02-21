@@ -20,8 +20,8 @@ public class LimeLight extends Subsystem {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tvert;
 
-  public LimeLight() {
-    limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight");
+  public LimeLight(String hostname) {
+    limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
   }
 
   @Override
