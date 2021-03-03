@@ -9,6 +9,7 @@ import frc.robot.subsystems.LimeLight;
 // import frc.robot.subsystems.GroundPickUp;
 // import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.PowerCellMover;
+import frc.robot.subsystems.Telemetry;
 // import frc.robot.subsystems.Singulator;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor;
 	public static LimeLight limelightport;
 	public static LimeLight limelightcell;
+	public static Telemetry telemetry;
 	public static OI oi;
 	public static VisionProcessor vision;
 	// public static GroundPickUp groundPickUp;
@@ -63,6 +65,7 @@ public class Robot extends TimedRobot {
 		powerCellMover = new PowerCellMover();
 		// shooter = new Shooter();
 		climber = new Climber();
+		telemetry = new Telemetry();
 		oi = new OI();
 
 		// Show what command your subsystem is running on the SmartDashboard
