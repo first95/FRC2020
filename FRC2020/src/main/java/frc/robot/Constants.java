@@ -39,6 +39,7 @@ public class Constants
 		// Indices for solenoids
 		public static final int SHIFTER_SOLENOID_NUM  = 0;
 		public static final int CLIMBER_SOLENOID_NUM = 2;
+		public static final int SHOOTER_HOOD_SOLENOID_ID = 3;
 		
 		// Drive base
 		public static final int SUCKER = 5;

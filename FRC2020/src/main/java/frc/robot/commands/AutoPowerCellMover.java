@@ -82,6 +82,12 @@ public class AutoPowerCellMover extends Command {
     indexerLoadedSensor = Robot.powerCellMover.getIndexerLoadedSensor();
     indexerEntranceSensor = Robot.powerCellMover.getIndexerEntranceSensor();
     singulatorSensor = Robot.powerCellMover.getSingulatorSensor();
+    OI.shooter_hood_state = Robot.powerCellMover.getShooterHood();
+
+    if (OI.toggle_shooter_hood) {
+      OI.toggle_shooter_hood = false;
+      Robot.powerCellMover.toggleShooterHood();
+    }
 
     if (Robot.oi.getBackwardsButtonPressed() == false) {
       if (shooterSensor == false) {

@@ -39,6 +39,7 @@ public class PowerCellMover extends Subsystem {
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   public Solenoid deploy;
+  private Solenoid shooterHood;
 
   public PowerCellMover() {
     super();
@@ -56,6 +57,7 @@ public class PowerCellMover extends Subsystem {
 
     // Solenoid initialization
     deploy = new Solenoid(Constants.GROUND_PICK_UP_SOLENOID_ID);
+    shooterHood = new Solenoid(Constants.SHOOTER_HOOD_SOLENOID_ID);
 
     init();
   }
@@ -152,6 +154,13 @@ public class PowerCellMover extends Subsystem {
         deploy.set(!deploy.get());
         // System.out.println("it has been deployed");
     }
+
+  public void toggleShooterHood() {
+    shooterHood.set(!shooterHood.get());
+  }
+  public boolean getShooterHood() {
+    return shooterHood.get();
+  }
 
   @Override
   public void initDefaultCommand() {

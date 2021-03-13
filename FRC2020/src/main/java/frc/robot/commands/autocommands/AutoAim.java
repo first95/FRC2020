@@ -5,16 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivebase;
+package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.OI.Controller;
 import frc.robot.OI;
-
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -27,6 +24,7 @@ public class AutoAim extends Command {
   private double rangeIntegral = 0;
   private double desiredDistance = 81;
   private boolean onTarget = false;
+  private long targetAquiredtime = 0;
 
   public AutoAim(double desiredDistance) {
     requires(Robot.drivebase);
@@ -117,34 +115,22 @@ public class AutoAim extends Command {
     else if (onTarget) {
       if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
         OI.auto_shooting_speed = 2100;
-        if (OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
       }
       else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
         OI.auto_shooting_speed = 2300;
-        if (OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
       }
       else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
         OI.auto_shooting_speed = 2650;
-        if (!OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
       }
       else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
-        OI.auto_shooting_speed = 3100;
-        if (!OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
+        OI.auto_shooting_speed = 2800;
+      }
+      if (targetAquiredtime == 0) {
+        targetAquiredtime = System.currentTimeMillis();
       }
       OI.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
-    }
-    else {
-      Robot.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
     onTarget = headingOnTarget && rangeOnTarget;
@@ -158,7 +144,12 @@ public class AutoAim extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if (targetAquiredtime != 0) {
+      return (System.currentTimeMillis() > (3000 + targetAquiredtime));
+    }
+    else {
+      return false;
+    }
   }
 
   // Called once after isFinished returns true

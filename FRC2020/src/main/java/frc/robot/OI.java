@@ -23,8 +23,11 @@ import frc.robot.subsystems.VisionProcessor;
 public class OI {
 
 	public static boolean auto_shooting = false;
+	public static boolean auto_collector_deploy = false;
 	public static double auto_shooting_speed = 2100;
 	public static double auto_collect_speed = 0;
+	public static boolean toggle_shooter_hood = false;
+	public static boolean shooter_hood_state = false;
 
 	// Controllers
 	private Joystick driverController = new Joystick(0);
@@ -185,7 +188,12 @@ public class OI {
 	 */
 	public boolean getGroundPickUpDeployed() {
 		// System.out.println("button has been pressed");
-		return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
+		if (auto_collector_deploy) {
+			auto_collector_deploy = false;
+			return true;
+		} else {
+			return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
+		}
 	}
 
 	/**
