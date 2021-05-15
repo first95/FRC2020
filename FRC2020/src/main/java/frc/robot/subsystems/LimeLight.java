@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,9 +20,14 @@ import frc.robot.Constants;
 public class LimeLight extends Subsystem {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tvert;
+  private Solenoid shooterHood;
 
   public LimeLight(String hostname) {
     limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
+
+    if (hostname.equals("port")) {
+      shooterHood = new Solenoid(Constants.SHOOTER_HOOD_SOLENOID_ID);
+    }
   }
 
   @Override
@@ -55,6 +61,13 @@ public class LimeLight extends Subsystem {
   }
   public double getFloorDistanceToTarg() {
     return floorDistance;
+  }
+
+  public void setHoodShort() {
+    shooterHood.set(false);
+  }
+  public void setHoodLong() {
+    shooterHood.set(true);
   }
 
   @Override

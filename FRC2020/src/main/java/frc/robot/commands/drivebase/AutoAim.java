@@ -117,27 +117,19 @@ public class AutoAim extends Command {
     else if (onTarget) {
       if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
         OI.auto_shooting_speed = 2100;
-        if (OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
+        Robot.limelightport.setHoodShort();
       }
       else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
         OI.auto_shooting_speed = 2300;
-        if (OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
+        Robot.limelightport.setHoodShort();
       }
       else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
         OI.auto_shooting_speed = 2650;
-        if (!OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
+        Robot.limelightport.setHoodLong();
       }
       else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
         OI.auto_shooting_speed = 3100;
-        if (!OI.shooter_hood_state) {
-          OI.toggle_shooter_hood = true;
-        }
+        Robot.limelightport.setHoodLong();
       }
       OI.auto_shooting = true;
       headingOnTarget = true;
