@@ -68,6 +68,7 @@ public class AutoAim extends Command {
     double rangeProportional = 0;
     double rangeDerivitive = 0;
     double rangeRawCorrection = 0;
+    double activeRangeToleranceInch;
     double rangekp = SmartDashboard.getNumber("Vision range Kp", 2.5);
     double rangeki = SmartDashboard.getNumber("Vision range Ki", 0);
     double rangekd = SmartDashboard.getNumber("Vision range Kd", 5);
@@ -93,7 +94,13 @@ public class AutoAim extends Command {
         headingRight = 0;
         headingOnTarget = true;
       }
-      if (Math.abs(rangeError) > Constants.VISION_RANGE_TOLERANCE_INCH) {
+      if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
+        activeRangeToleranceInch = Constants.VISION_RANGE_TOLERANCE_INCH + 4;
+      }
+      else {
+        activeRangeToleranceInch = Constants.VISION_RANGE_TOLERANCE_INCH;
+      }
+      if (Math.abs(rangeError) > activeRangeToleranceInch) {
         rangeErrorPercent = (rangeError / desiredDistance);
         rangeProportional = -rangeErrorPercent;
         rangeIntegral = rangeErrorPercent + rangeIntegral;
@@ -124,7 +131,7 @@ public class AutoAim extends Command {
         Robot.limelightport.setHoodShort();
       }
       else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
-        OI.auto_shooting_speed = 2650;
+        OI.auto_shooting_speed = 2900;
         Robot.limelightport.setHoodLong();
       }
       else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {

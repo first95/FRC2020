@@ -203,9 +203,9 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
-      shooterkp = SmartDashboard.getNumber("Shooter Kp", 0);
-      shooterki = SmartDashboard.getNumber("Shooter ki", 0);
-      shooterkd = SmartDashboard.getNumber("Shooter kd", 0);
+      shooterkp = SmartDashboard.getNumber("Shooter Kp", 2.4);
+      shooterki = SmartDashboard.getNumber("Shooter ki", 0.164759);
+      shooterkd = SmartDashboard.getNumber("Shooter kd", 8.74);
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
@@ -225,7 +225,9 @@ public class AutoPowerCellMover extends Command {
       speedError = TARGET_RUN_SPEED_SHOOTER - actual_speed;
       speedErrorPercent = speedError / TARGET_RUN_SPEED_SHOOTER;
       speedProportional = speedErrorPercent;
-      speedIntegral = speedIntegral + speedErrorPercent;
+      if (Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <=200) {
+        speedIntegral = speedIntegral + speedErrorPercent;
+      }
       speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
       correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER;
       cappedCorrection = Math.max(Math.min(correction, 1.0), SLOW_RUN_SPEED_SHOOTER);

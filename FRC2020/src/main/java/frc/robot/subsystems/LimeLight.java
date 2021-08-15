@@ -21,6 +21,7 @@ public class LimeLight extends Subsystem {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tvert;
   private Solenoid shooterHood;
+  private String hostname;
 
   public LimeLight(String hostname) {
     limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
@@ -28,6 +29,8 @@ public class LimeLight extends Subsystem {
     if (hostname.equals("port")) {
       shooterHood = new Solenoid(Constants.SHOOTER_HOOD_SOLENOID_ID);
     }
+    limelight_target_data.getEntry("pipeline").setNumber(0);
+
   }
 
   @Override
@@ -40,11 +43,11 @@ public class LimeLight extends Subsystem {
     distance = (Constants.TARGET_TALLNESS_INCHES / 2) / Math.tan(Math.toRadians(tvert * Constants.DEGREES_PER_PIXEL) / 2);
     floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Constants.HEIGHT_DIFFERENCE, 2));
 
-    SmartDashboard.putNumber("Bearing", tx);
-    SmartDashboard.putNumber("LimelightY", ty);
-    SmartDashboard.putNumber("Target Valid?", tv);
-    SmartDashboard.putNumber("Range (in)", distance);
-    SmartDashboard.putNumber("Horiz. Range", floorDistance);
+    SmartDashboard.putNumber(hostname + "-Bearing", tx);
+    SmartDashboard.putNumber(hostname + "-LimelightY", ty);
+    SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
+    SmartDashboard.putNumber(hostname + "-Range (in)", distance);
+    SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
   }
 
   public double getTX() {
@@ -68,6 +71,14 @@ public class LimeLight extends Subsystem {
   }
   public void setHoodLong() {
     shooterHood.set(true);
+  }
+
+  public void setCamShort() {
+    limelight_target_data.getEntry("pipeline").setNumber(0);
+  }
+
+  public void setCamLong() {
+    limelight_target_data.getEntry("pipeline").setNumber(0);
   }
 
   @Override
