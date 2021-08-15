@@ -72,6 +72,7 @@ public class Constants
 
 		public static final double TARGET_TALLNESS_INCHES = 17;
 		public static final double CAM_HEIGHT_INCHES = 41.25;
+		public static final double CAM_TILT_DEGREES = 31.93;
 		public static final double TARGET_HEIGHT_INCHES = 98.25;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
@@ -90,4 +91,7 @@ public class Constants
 
 		//For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
+		public static final double SHOOTER_KP = 2.4; //Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
+		public static final double SHOOTER_KI = 0.164759;
+		public static final double SHOOTER_KD = 8.74;
 	}

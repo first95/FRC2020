@@ -76,6 +76,10 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
 		SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
+		SmartDashboard.putNumber("Range 1 Power", 2100);
+		SmartDashboard.putNumber("Range 2 Power", 2300);		
+		SmartDashboard.putNumber("Range 3 Power", 2900);
+		SmartDashboard.putNumber("Range 4 Power", 3100);
 
 		// Disable brakes on talons to make it
 		// easier to push

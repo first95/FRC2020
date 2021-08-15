@@ -123,19 +123,19 @@ public class AutoAim extends Command {
     }
     else if (onTarget) {
       if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
-        OI.auto_shooting_speed = 2100;
+        OI.auto_shooting_speed = SmartDashboard.getNumber("Range 1 Power", 2100);
         Robot.limelightport.setHoodShort();
       }
       else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
-        OI.auto_shooting_speed = 2300;
+        OI.auto_shooting_speed = SmartDashboard.getNumber("Range 2 Power", 2300);
         Robot.limelightport.setHoodShort();
       }
       else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
-        OI.auto_shooting_speed = 2900;
+        OI.auto_shooting_speed = SmartDashboard.getNumber("Range 3 Power", 2900);
         Robot.limelightport.setHoodLong();
       }
       else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
-        OI.auto_shooting_speed = 3100;
+        OI.auto_shooting_speed = SmartDashboard.getNumber("Range 4 Power", 3100);
         Robot.limelightport.setHoodLong();
       }
       OI.auto_shooting = true;

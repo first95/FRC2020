@@ -44,7 +44,7 @@ public class AutoPowerCellMover extends Command {
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
   public static double RUN_TOLERANCE_SHOOTER = 25; // tolerance range for shooter speed
-  public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION; // want this to roughly hold target RPM
+  public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
@@ -203,9 +203,9 @@ public class AutoPowerCellMover extends Command {
 
   public void AutoPowerCellMoverShooter() {
     if (Robot.oi.getShooterButton()) {
-      shooterkp = SmartDashboard.getNumber("Shooter Kp", 2.4);
-      shooterki = SmartDashboard.getNumber("Shooter ki", 0.164759);
-      shooterkd = SmartDashboard.getNumber("Shooter kd", 8.74);
+      shooterkp = Constants.SHOOTER_KP;
+      shooterki = Constants.SHOOTER_KI;
+      shooterkd = Constants.SHOOTER_KD;
       // Get actual speed
       actual_speed = Robot.powerCellMover.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
@@ -222,16 +222,21 @@ public class AutoPowerCellMover extends Command {
         TARGET_RUN_SPEED_SHOOTER = OI.auto_shooting_speed;
         MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
       }
+
       speedError = TARGET_RUN_SPEED_SHOOTER - actual_speed;
       speedErrorPercent = speedError / TARGET_RUN_SPEED_SHOOTER;
+      
       speedProportional = speedErrorPercent;
-      if (Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <=200) {
+      if (Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <=200) { // Anti-Windup
         speedIntegral = speedIntegral + speedErrorPercent;
       }
       speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
-      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER;
+
+      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER; //PIDF controller output
       cappedCorrection = Math.max(Math.min(correction, 1.0), SLOW_RUN_SPEED_SHOOTER);
+
       Robot.powerCellMover.runShooterOpen(cappedCorrection);
+
       lastSpeedErrorPercent = speedErrorPercent;
 
       if (((actual_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) && (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER)) || shooterSpunUp) {

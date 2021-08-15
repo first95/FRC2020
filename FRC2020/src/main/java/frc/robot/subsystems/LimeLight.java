@@ -19,11 +19,12 @@ import frc.robot.Constants;
  */
 public class LimeLight extends Subsystem {
   private final NetworkTable limelight_target_data;
-  private double tv, tx, ty, distance, floorDistance, tvert;
+  private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
   private Solenoid shooterHood;
   private String hostname;
 
   public LimeLight(String hostname) {
+    this.hostname = hostname;
     limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
 
     if (hostname.equals("port")) {
@@ -38,10 +39,12 @@ public class LimeLight extends Subsystem {
     tv = limelight_target_data.getEntry("tv").getDouble(0.0);
     tx = limelight_target_data.getEntry("tx").getDouble(0.0);
     ty = limelight_target_data.getEntry("ty").getDouble(0.0);
-    tvert = limelight_target_data.getEntry("tvert").getDouble(0.0);
+    tshort = limelight_target_data.getEntry("tshort").getDouble(0.0);
+    angularHeight = tshort * Constants.DEGREES_PER_PIXEL;
+    correctedAngle = Constants.CAM_TILT_DEGREES + ty;
 
-    distance = (Constants.TARGET_TALLNESS_INCHES / 2) / Math.tan(Math.toRadians(tvert * Constants.DEGREES_PER_PIXEL) / 2);
-    floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Constants.HEIGHT_DIFFERENCE, 2));
+    distance = (Constants.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight))) / Math.sin(Math.toRadians(angularHeight));
+    floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Constants.HEIGHT_DIFFERENCE + Constants.TARGET_TALLNESS_INCHES, 2));
 
     SmartDashboard.putNumber(hostname + "-Bearing", tx);
     SmartDashboard.putNumber(hostname + "-LimelightY", ty);
