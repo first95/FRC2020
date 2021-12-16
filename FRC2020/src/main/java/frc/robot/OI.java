@@ -4,15 +4,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
-import frc.robot.commands.vision.SetVisionMode;
-import frc.robot.oi.JoystickAxisButton;
-import frc.robot.oi.JoystickPovButton;
 import frc.robot.oi.XBox360Controller;
-import frc.robot.subsystems.VisionProcessor;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -39,25 +33,23 @@ public class OI {
 	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
 	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
 	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
-	// public static final int GREEN_RING_LIGHT_BUTTON = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BACKWARDS_BUTTON = XBox360Controller.Button.RIGHT_BUMPER.Number();
 
 
 	// Buttons on drive controller
 	//public static final int CLIMB_SKIDS_BUTTON = 0;// XBox360Controller.Button.LEFT_BUMPER.Number();
-	public static final int SWITCH_CAM_VIEW_BUTTON = XBox360Controller.Button.START.Number();
+	public static final int AUTO_COLLECT_BUTTON = XBox360Controller.Button.START.Number();
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
-	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
+	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.X.Number();
 	public static final int BUTTON_VISION_AIM_A = XBox360Controller.Button.Y.Number();
 	public static final int BUTTON_VISION_AIM_B = XBox360Controller.Button.B.Number();
 	public static final int BUTTON_VISION_AIM_C = XBox360Controller.Button.A.Number();
-	public static final int BUTTON_VISION_AIM_D = XBox360Controller.Button.X.Number();
-	public static final int BUTTON_AUTO_COLLECT = XBox360Controller.Button.START.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
+	public static final int SUCKER_AXIS = XBox360Controller.Axis.RIGHT_TRIGGER.Number();
 	
 	// Axes on weapons controller
 	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
@@ -78,26 +70,8 @@ public class OI {
 	public OI() {
 
 		// // Create some buttons
-		new JoystickPovButton(driverController,   0).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_HUMAN));
-		new JoystickPovButton(driverController,  90).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.UPPER_PORT_MACHINE));
-		new JoystickPovButton(driverController, 180).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.SWITCH_HUMAN));
-		new JoystickPovButton(driverController, 270).whenPressed(new SetVisionMode(VisionProcessor.VisionMode.CONTROL_PANEL_MACHINE));
-		// cameraViewSwitcher.close(); // Don't need this one anymore?
-
-		// JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		// driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
-		
-		// JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		// driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
-		
-		// JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		// weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
-		
-		// JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController, XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		// weaponsRumblerRight.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
 
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
-		// groundPickUpDeploy = new JoystickButton(weaponsController, XBox360Controller.Button.X.Number());
 
 		JoystickButton visionAimRangeA = new JoystickButton(driverController, BUTTON_VISION_AIM_A);
 		visionAimRangeA.whileHeld(new AutoAim(Constants.VISION_RANGE_A_INCH));
@@ -108,10 +82,7 @@ public class OI {
 		JoystickButton visionAimRangeC = new JoystickButton(driverController, BUTTON_VISION_AIM_C);
 		visionAimRangeC.whileHeld(new AutoAim(Constants.VISION_RANGE_C_INCH));
 
-		JoystickButton visionAimRangeD = new JoystickButton(driverController, BUTTON_VISION_AIM_D);
-		visionAimRangeD.whileHeld(new AutoAim(Constants.VISION_RANGE_D_INCH));
-
-		JoystickButton autocollect = new JoystickButton(driverController, BUTTON_AUTO_COLLECT);
+		JoystickButton autocollect = new JoystickButton(driverController, AUTO_COLLECT_BUTTON);
 		autocollect.whileHeld(new AutoCollect());
 
 		
@@ -173,7 +144,7 @@ public class OI {
      */
 	public double getGroundPickUpRollerAxis() {
 		if (auto_collect_speed == 0) {
-			return driverController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+			return weaponsController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
 		} else {
 			return auto_collect_speed;
 		}
@@ -201,8 +172,7 @@ public class OI {
 	 * @return
 	 */
 	public boolean getClimberDeployed() {
-		//return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
-		return false;
+		return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
 	}
 
 	/**
@@ -215,9 +185,6 @@ public class OI {
 	public boolean getSingulatorButton() {
 		return weaponsController.getRawButton(SINGULATOR_BUTTON);
 	}
-	// public boolean getGreenRingLightButton() {
-	// 	return weaponsController.getRawButton(GREEN_RING_LIGHT_BUTTON);
-	// }
 
 	public boolean getShooterButton() {
 		if (auto_shooting) {
@@ -303,6 +270,6 @@ public class OI {
 	 * @return 0 for off, 1 for full power
 	 */
 	public double getSuckerAxis() {
-		return driverController.getRawAxis(XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+		return driverController.getRawAxis(SUCKER_AXIS);
 	}
 }

@@ -31,5 +31,4 @@ public class AutoMoves extends CommandGroup {
     addSequential(new AutoCollect(Robot.AutoDriveSpeed));
     addSequential(new AutoAim(141));
   }
-
 }

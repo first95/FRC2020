@@ -43,7 +43,7 @@ public class AutoPowerCellMover extends Command {
 
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
-  public static double RUN_TOLERANCE_SHOOTER = 25; // tolerance range for shooter speed
+  public static double RUN_TOLERANCE_SHOOTER = 12.5; // tolerance range for shooter speed
   public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
   public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
   public static double MANUAL_REDUCTION = 0.2;
@@ -239,9 +239,13 @@ public class AutoPowerCellMover extends Command {
 
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if (((actual_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) && (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER)) || shooterSpunUp) {
-        Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
+      if ((Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <= RUN_TOLERANCE_SHOOTER) || shooterSpunUp) {
+        spinupDelayCount++;
         shooterSpunUp = true;
+      }
+      
+      if (spinupDelayCount >= 10) {
+        Robot.powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
         if (idx2singulatorDelayCount >= 5) {
            Robot.powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
         } else {
@@ -250,7 +254,6 @@ public class AutoPowerCellMover extends Command {
       } else {
         Robot.powerCellMover.runIndexer(0);
         Robot.powerCellMover.setSingulatorSpeed(0);
-        spinupDelayCount++;
       }
     } else {
       idx2singulatorDelayCount = 0;

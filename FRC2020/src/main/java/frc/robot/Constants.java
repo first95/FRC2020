@@ -46,10 +46,8 @@ public class Constants
 		// Indices for SparkMaxes
 		public static final int LEFT_LEAD = 7;
 		public static final int LEFT_F = 6;
-		// public static final int LEFT_F2 = 12;
 		public static final int RIGHT_LEAD = 9;
 		public static final int RIGHT_F = 8;
-		// public static final int RIGHT_F2 = 22;
 		public static final int INDEXER_BELT_MOTOR_ID = 10;
 
 		
