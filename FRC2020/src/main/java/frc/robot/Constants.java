@@ -27,6 +27,9 @@ public class Constants
 		public static final int LEADER_SHOOT = 12;
 		public static final int FOLLOWER_SHOOT = 13;
 
+		//Pigeon ID
+		public static final int PIGEON_IMU_ID = 30;
+
 		// Speed Shifter Values
 		public static final double SPEED_TO_SHIFT_UP = 5.0; // ft per sec
 		public static final double SPEED_TO_SHIFT_DOWN = 3.0; // ft per sec

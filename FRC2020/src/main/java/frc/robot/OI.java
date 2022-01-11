@@ -172,7 +172,8 @@ public class OI {
 	 * @return
 	 */
 	public boolean getClimberDeployed() {
-		return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
+		return false;
+		//return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
 	}
 
 	/**

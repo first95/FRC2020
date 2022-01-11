@@ -1,0 +1,45 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.subsystems;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix.sensors.PigeonIMU;
+import frc.robot.Constants;
+
+/**
+ * An example subsystem.  You can replace me with your own Subsystem.
+ */
+public class Gyro extends Subsystem {
+  private double [] ypr = new double [3];
+  PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
+  PigeonIMU imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
+  
+  public Gyro() {
+    imu.setYaw(0);
+  }
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
+
+  @Override
+  public void periodic() {
+    imu.getGeneralStatus(status);
+  }
+
+  @Override
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public double getYaw() {
+    imu.getYawPitchRoll(ypr);
+    return ypr[0];
+  }
+}
