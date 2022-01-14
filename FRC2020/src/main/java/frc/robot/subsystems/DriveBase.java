@@ -3,10 +3,17 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
@@ -17,9 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * The DriveBase subsystem incorporates the sensors and actuators attached to
  * the robot's chassis. These include two 3-motor drive pods.
  */
-public class DriveBase extends Subsystem {
+public class DriveBase extends SubsystemBase {
 
 	private DrivePodSpark leftPod, rightPod;
+	private DifferentialDrive differentialDrive;
 	private Solenoid shifter;
 
 	private TalonSRX sucker;
@@ -38,6 +46,11 @@ public class DriveBase extends Subsystem {
 	private boolean allowShift = true;
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
+	private final DifferentialDriveOdometry odometry;
+
+	private double [] ypr = new double [3];
+	PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
+	PigeonIMU imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
 
 	public DriveBase() {
 		super();
@@ -46,17 +59,20 @@ public class DriveBase extends Subsystem {
 		// rotationally symmetrical
 		leftPod = new DrivePodSpark("Left", Constants.LEFT_LEAD, Constants.LEFT_F, false);
 		rightPod = new DrivePodSpark("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F, true);
+		differentialDrive = new DifferentialDrive(leftPod.group(), rightPod.group());
 		shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
+		odometry = new DifferentialDriveOdometry(getYaw());
 
 		sucker = new TalonSRX(Constants.SUCKER);
+
+		imu.setYaw(0);
 	}
 
 	/**
 	 * When no other command is running let the operator drive around using the PS3
 	 * joystick.
 	 */
-	@Override
-	public void initDefaultCommand() {
+	public void initDefaultCommand(CommandBase defaultCommand) {
 		setDefaultCommand(new ManuallyControlDrivebase());
 	}
 
@@ -68,6 +84,15 @@ public class DriveBase extends Subsystem {
 	public void brake(boolean isEnabled) {
 		leftPod.enableBrakeMode(isEnabled);
 		rightPod.enableBrakeMode(isEnabled);
+	}
+
+	/**
+	 * Returns a Rotation2d object of the current heading
+	 */
+	public Rotation2d getYaw() {
+		imu.getYawPitchRoll(ypr);
+		Rotation2d heading = new Rotation2d(Math.toRadians(ypr[0]));
+		return heading;
 	}
 
 	/**
@@ -303,5 +328,32 @@ public class DriveBase extends Subsystem {
 			power = 0;
 		}
 		sucker.set(ControlMode.PercentOutput, power);
+	}
+
+	public Pose2d getPose() {
+		return odometry.getPoseMeters();
+	}
+
+	public void tankDriveVolts(double leftVolts, double rightVolts) {
+		leftPod.setVoltage(leftVolts);
+		rightPod.setVoltage(rightVolts);
+		differentialDrive.feed();
+	}
+
+	public void resetOdometry(Pose2d pose) {
+		leftPod.resetEncoder();
+		rightPod.resetEncoder();
+		odometry.resetPosition(pose, getYaw());
+	}
+
+	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+		return new DifferentialDriveWheelSpeeds(leftPod.getVelocityMetersPerSecond(), rightPod.getVelocityMetersPerSecond());
+	} 
+
+
+	@Override
+	public void periodic() {
+		imu.getGeneralStatus(status);
+		odometry.update(getYaw(), leftPod.getPositionMeters(), rightPod.getPositionMeters());
 	}
 }

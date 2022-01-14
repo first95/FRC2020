@@ -7,17 +7,20 @@
 
 package frc.robot.commands.autocommands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.OI;
 
+import java.util.Set;
+
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class AutoCollect extends Command {
+public class AutoCollect extends CommandBase {
 
   private double headingLastError = 0;
   private double headingIntegral = 0;
@@ -27,19 +30,21 @@ public class AutoCollect extends Command {
   private double drivespeed;
 
   public AutoCollect(double drivespeed) {
-    requires(Robot.drivebase);
-    requires(Robot.limelightcell);
+    Set<Subsystem> subsystems;
+    subsystems.add(Robot.drivebase);
+    subsystems.add(Robot.limelightcell);
+    addRequirements(subsystems);
     this.drivespeed = drivespeed;
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double headingLeft = 0;
     double headingRight = 0;
     double left = 0;
@@ -99,7 +104,7 @@ public class AutoCollect extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     if (targetLostTime != 0) {
       return (System.currentTimeMillis() > (targetLostTime + 5000));
     } else {
@@ -109,7 +114,7 @@ public class AutoCollect extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.drivebase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;
@@ -118,8 +123,7 @@ public class AutoCollect extends Command {
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void interrupted() {
     Robot.drivebase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;

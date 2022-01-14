@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+
 public class Constants
 	{
 	
@@ -56,8 +58,21 @@ public class Constants
 		
 		// Drivebase constants
 		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
+		public static final double METERS_PER_INCH = 0.0254;
 		public static final double LOW_GEAR_RATIO = 20.83;
 		public static final double HIGH_GEAR_RATIO = 9.17;
+		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * METERS_PER_INCH) / (LOW_GEAR_RATIO);
+		// For Pathfinding  (currently all placeholders, except B and Zeta)
+		public static final double KS = 0;
+		public static final double KV = 0;
+		public static final double KA = 0;
+		public static final double KP = 0;
+		public static final double EMPIRICAL_TRACKWIDTH_M = 1;
+		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(EMPIRICAL_TRACKWIDTH_M);
+		public static final double MAX_SPEED_MPS = 5;
+		public static final double MAX_ACCELERATION_MPSPS = 5;
+		public static final double RAMSETE_B = 2;
+		public static final double RAMSETE_ZETA = 0.7;
 
 		// Digital I/O pin names
 		public static final int SINGULATOR_SENSOR = 0;

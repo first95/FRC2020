@@ -7,13 +7,13 @@
 
 package frc.robot.commands.autocommands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 /**
  * Auto Drice for specified number of miliseconds at specified percent speed
  */
-public class AutoDrive extends Command {
+public class AutoDrive extends CommandBase {
   private long startTime;
   private long timeOutMs;
   private double speed;
@@ -22,36 +22,35 @@ public class AutoDrive extends Command {
     this.timeOutMs = timeOutMs;
     this.speed = speed;
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivebase);
+    addRequirements(Robot.drivebase);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     Robot.drivebase.driveWithTankControls(speed, speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return ((startTime + timeOutMs) < System.currentTimeMillis() );
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.drivebase.driveWithTankControls(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void interrupted() {
   }
 }

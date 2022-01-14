@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.AlternateEncoderType;
@@ -36,7 +37,7 @@ public class DrivePodSpark {
 
 	private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
 	private static final int kCPR = 1024;
-	// private CANEncoder leaderEncoder, followerEncoder;
+	private CANEncoder leaderEncoder, followerEncoder;
 
 	private CANPIDController leaderPidController, followerPidController;
 
@@ -66,8 +67,10 @@ public class DrivePodSpark {
 		//m_alternateEncoder = this.leader.getAlternateEncoder(kAltEncType, kCPR);
 
 	    // Create the default encoder associated with the leader
-		// leaderEncoder = this.leader.getEncoder();
-		// followerEncoder = this.follower.getEncoder();
+		leaderEncoder = this.leader.getEncoder();
+		followerEncoder = this.follower.getEncoder();
+		leaderEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);
+		leaderEncoder.setVelocityConversionFactor(Constants.METERS_PER_ROTATION / 60); //RPM to m/s
 
 		// Create the default PID controller associated with the leader
 		leaderPidController = this.leader.getPIDController();
@@ -115,22 +118,23 @@ public class DrivePodSpark {
 
 	}
 
-	/*
-	public double getPositionInches() {
-		return leader.getSelectedSensorPosition(Constants.PID_IDX) / ENCODER_TICKS_PER_INCH;
+	
+	public double getPositionMeters() {
+		return leaderEncoder.getPosition();
 	}
-	*/
+	
+	public double getVelocityMetersPerSecond() {
+		return leaderEncoder.getVelocity();
+	}
 
-	/*
-	public double getTargetVelocityInchesPerSecond() {
-		if (getControlMode() == ControlMode.Velocity) {
-			double speedTicksPer100ms = leader.getClosedLoopTarget(Constants.PID_IDX);
-			return (speedTicksPer100ms / ENCODER_TICKS_PER_INCH) * 10.0;
-		} else {
-			return 0;
-		}
+	public void resetEncoder() {
+		leaderEncoder.setPosition(0);
 	}
-*/
+
+	public SpeedControllerGroup group() {
+		return new SpeedControllerGroup(leader, follower);
+	}
+
 
 	// Possibly no way to eplicitly set mode for SparkMax controller
 	// private ControlMode getControlMode() {
@@ -175,6 +179,14 @@ public class DrivePodSpark {
 			// follower.set(throttle);
 		}
 		// followers follow
+	}
+
+	public void setVoltage(double volts) {
+		if (inverse) {
+			leader.setVoltage(-1 * volts);
+		} else {
+			leader.setVoltage(volts);
+		}
 	}
 
 	// Max speed back and forward, always make this number positve when setting it.
