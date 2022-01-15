@@ -7,28 +7,15 @@
 
 package frc.robot.commands.autocommands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.OI;
 
 /**
  * An example command. You can replace me with your own command.
  */
-public class AutoMoves extends CommandGroup {
+public class AutoMoves extends SequentialCommandGroup {
   public AutoMoves() {
-    // Use requires() here to declare subsystem dependencies
-    // requires(Robot.m_subsystem);
-    // addSequential(new AutoSpinUpShooter(1000));
-    Robot.AutoDriveSpeed = SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", 0.3);
-    Robot.PSAutoDriveSpeed = SmartDashboard.getNumber("Pre-Shoot Automode Drive speed", 0.3);
-
-    //addSequential(new AutoDrive(3000, -Robot.PSAutoDriveSpeed));
-    //addSequential(new AutoShoot(8000));
-    //addSequential(new AutoDrive(3000, -Robot.AutoDriveSpeed));
-    OI.auto_collector_deploy = true;
-    addSequential(new AutoAim(81));
-    addSequential(new AutoCollect(Robot.AutoDriveSpeed));
-    addSequential(new AutoAim(141));
+    addCommands(new FollowTrajectory());
   }
 }

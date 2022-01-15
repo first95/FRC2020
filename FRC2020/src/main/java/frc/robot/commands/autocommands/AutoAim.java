@@ -7,16 +7,17 @@
 
 package frc.robot.commands.autocommands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.OI;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class AutoAim extends Command {
+public class AutoAim extends CommandBase {
 
   private double headingLastError = 0;
   private double headingIntegral = 0;
@@ -27,19 +28,21 @@ public class AutoAim extends Command {
   private long targetAquiredtime = 0;
 
   public AutoAim(double desiredDistance) {
-    requires(Robot.drivebase);
-    requires(Robot.limelightport);
+    Subsystem[] subsystems = new Subsystem[2];
+    subsystems[0] = Robot.drivebase;
+    subsystems[1] = Robot.limelightport;
+    addRequirements(subsystems);
     this.desiredDistance = desiredDistance;
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double headingLeft = 0;
     double headingRight = 0;
     double rangeLeft = 0;
@@ -143,7 +146,7 @@ public class AutoAim extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     if (targetAquiredtime != 0) {
       return (System.currentTimeMillis() > (3000 + targetAquiredtime));
     }
@@ -154,7 +157,7 @@ public class AutoAim extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.drivebase.driveWithTankControls(0, 0);
     OI.auto_shooting = false;
     onTarget = false;
@@ -163,7 +166,6 @@ public class AutoAim extends Command {
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
   protected void interrupted() {
     Robot.drivebase.driveWithTankControls(0, 0);
     OI.auto_shooting = false;

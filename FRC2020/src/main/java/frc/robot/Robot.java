@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		var commandgroup = new AutoMoves();
-		Scheduler.getInstance().add(commandgroup);
+		CommandScheduler.getInstance().schedule(commandgroup);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+		CommandScheduler.getInstance().run();
 
 	}
 
@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotPeriodic() {
-		Scheduler.getInstance().run(); // Runs all active commands
+		CommandScheduler.getInstance().run(); // Runs all active commands
 		oi.visit();
 		drivebase.visit();
 

@@ -7,7 +7,7 @@
 
 package frc.robot.commands.drivebase;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -19,25 +19,25 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class AutoCollect extends Command {
+public class AutoCollect extends CommandBase {
 
   private double headingLastError = 0;
   private double headingIntegral = 0;
   private boolean onTarget = false;
 
   public AutoCollect() {
-    requires(Robot.drivebase);
-    requires(Robot.limelightcell);
+    addRequirements(Robot.drivebase);
+    addRequirements(Robot.limelightcell);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double headingLeft = 0;
     double headingRight = 0;
     double left = 0;
@@ -96,13 +96,13 @@ public class AutoCollect extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.drivebase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;
@@ -111,8 +111,7 @@ public class AutoCollect extends Command {
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void interrupted() {
     Robot.drivebase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;

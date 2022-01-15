@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +17,7 @@ import frc.robot.Constants;
 /**
  * Gets numbers from and allows for control of the limelight
  */
-public class LimeLight extends Subsystem {
+public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
   private Solenoid shooterHood;
@@ -84,7 +84,6 @@ public class LimeLight extends Subsystem {
     limelight_target_data.getEntry("pipeline").setNumber(0);
   }
 
-  @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());

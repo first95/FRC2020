@@ -7,7 +7,7 @@
 
 package frc.robot.commands.drivebase;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class AutoAim extends Command {
+public class AutoAim extends CommandBase {
 
   private double headingLastError = 0;
   private double headingIntegral = 0;
@@ -29,19 +29,19 @@ public class AutoAim extends Command {
   private boolean onTarget = false;
 
   public AutoAim(double desiredDistance) {
-    requires(Robot.drivebase);
-    requires(Robot.limelightport);
+    addRequirements(Robot.drivebase);
+    addRequirements(Robot.limelightport);
     this.desiredDistance = desiredDistance;
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double headingLeft = 0;
     double headingRight = 0;
     double rangeLeft = 0;
@@ -156,13 +156,13 @@ public class AutoAim extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.drivebase.driveWithTankControls(0, 0);
     OI.auto_shooting = false;
     onTarget = false;
@@ -171,8 +171,7 @@ public class AutoAim extends Command {
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void interrupted() {
     Robot.drivebase.driveWithTankControls(0, 0);
     OI.auto_shooting = false;
     onTarget = false;

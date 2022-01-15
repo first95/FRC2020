@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.oi.XBox360Controller;
@@ -74,16 +74,16 @@ public class OI {
 		runIndexer = new JoystickButton(weaponsController, XBox360Controller.Button.B.Number());
 
 		JoystickButton visionAimRangeA = new JoystickButton(driverController, BUTTON_VISION_AIM_A);
-		visionAimRangeA.whileHeld(new AutoAim(Constants.VISION_RANGE_A_INCH));
+		visionAimRangeA.whenHeld(new AutoAim(Constants.VISION_RANGE_A_INCH));
 
 		JoystickButton visionAimRangeB = new JoystickButton(driverController, BUTTON_VISION_AIM_B);
-		visionAimRangeB.whileHeld(new AutoAim(Constants.VISION_RANGE_B_INCH));
+		visionAimRangeB.whenHeld(new AutoAim(Constants.VISION_RANGE_B_INCH));
 
 		JoystickButton visionAimRangeC = new JoystickButton(driverController, BUTTON_VISION_AIM_C);
-		visionAimRangeC.whileHeld(new AutoAim(Constants.VISION_RANGE_C_INCH));
+		visionAimRangeC.whenHeld(new AutoAim(Constants.VISION_RANGE_C_INCH));
 
 		JoystickButton autocollect = new JoystickButton(driverController, AUTO_COLLECT_BUTTON);
-		autocollect.whileHeld(new AutoCollect());
+		autocollect.whenHeld(new AutoCollect());
 
 		
 	}

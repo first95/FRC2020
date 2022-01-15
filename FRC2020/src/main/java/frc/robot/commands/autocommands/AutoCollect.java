@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.OI;
 
-import java.util.Set;
 
 
 /**
@@ -30,9 +29,9 @@ public class AutoCollect extends CommandBase {
   private double drivespeed;
 
   public AutoCollect(double drivespeed) {
-    Set<Subsystem> subsystems;
-    subsystems.add(Robot.drivebase);
-    subsystems.add(Robot.limelightcell);
+    Subsystem[] subsystems = new Subsystem[2];
+    subsystems[0] = Robot.drivebase;
+    subsystems[1] = Robot.limelightcell;
     addRequirements(subsystems);
     this.drivespeed = drivespeed;
   }

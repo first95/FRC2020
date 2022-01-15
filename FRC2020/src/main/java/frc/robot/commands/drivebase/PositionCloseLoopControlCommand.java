@@ -9,20 +9,18 @@ package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class PositionCloseLoopControlCommand extends Command {
+public class PositionCloseLoopControlCommand extends CommandBase {
   public PositionCloseLoopControlCommand() {
-      requires(Robot.drivebase);
+      addRequirements(Robot.drivebase);
   }
 
-  @Override
   public void start() {
-        super.start();
 
         // Read Set Rotations from SmartDashboard
         double rotations = SmartDashboard.getNumber("SetPoint", 0);
@@ -35,23 +33,22 @@ public class PositionCloseLoopControlCommand extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void interrupted() {
   }
 }

@@ -64,6 +64,7 @@ public class DriveBase extends SubsystemBase {
 		odometry = new DifferentialDriveOdometry(getYaw());
 
 		sucker = new TalonSRX(Constants.SUCKER);
+		differentialDrive.setSafetyEnabled(false);
 
 		imu.setYaw(0);
 	}
@@ -332,6 +333,10 @@ public class DriveBase extends SubsystemBase {
 
 	public Pose2d getPose() {
 		return odometry.getPoseMeters();
+	}
+
+	public void resetGyro() {
+		imu.setYaw(0);
 	}
 
 	public void tankDriveVolts(double leftVolts, double rightVolts) {

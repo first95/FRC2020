@@ -9,7 +9,7 @@ package frc.robot.commands.autocommands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -27,14 +27,10 @@ import frc.robot.Robot;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class FollowTrajectory extends Command {
+public class FollowTrajectory extends SequentialCommandGroup {
   public FollowTrajectory() {
-    requires(Robot.drivebase);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
+    addRequirements(Robot.drivebase);
+  
     var autoVoltageConstraint =
       new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(Constants.KS, Constants.KV), Constants.DRIVE_KINEMATICS, 10);
@@ -64,30 +60,10 @@ public class FollowTrajectory extends Command {
         Robot.drivebase::tankDriveVolts,
         Robot.drivebase);
 
-
     // Set robot starting position:
     Robot.drivebase.resetOdometry(exampleTrajectory.getInitialPose());
+
+    addCommands(ramseteCommand);
   }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
 }
