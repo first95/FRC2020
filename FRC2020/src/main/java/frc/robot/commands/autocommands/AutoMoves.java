@@ -16,6 +16,7 @@ import frc.robot.OI;
  */
 public class AutoMoves extends SequentialCommandGroup {
   public AutoMoves() {
+    Robot.drivebase.resetGyro();
     addCommands(new FollowTrajectory());
   }
 }

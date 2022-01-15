@@ -119,6 +119,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("ShooterLoaded",Robot.powerCellMover.getShooterLoadedSensor());
 		
 		SmartDashboard.putBoolean("dummy", AutoPowerCellMover.dummy);
+		SmartDashboard.putNumber("Yaw", Robot.drivebase.getYaw().getDegrees());
 	}
 
 	@Override
@@ -138,6 +139,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is in indexer", AutoPowerCellMover.isInIdexer);
 
 		SmartDashboard.putNumber("Shooter speed (RPM)", powerCellMover.getShooterSpeed());
+
+		SmartDashboard.putNumber("Yaw", Robot.drivebase.getYaw().getDegrees());
 
 		// SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
 		// SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);

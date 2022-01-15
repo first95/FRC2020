@@ -33,18 +33,19 @@ public class FollowTrajectory extends SequentialCommandGroup {
   
     var autoVoltageConstraint =
       new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.KS, Constants.KV), Constants.DRIVE_KINEMATICS, 10);
+        new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA), Constants.DRIVE_KINEMATICS, 10);
     //Generate trajectory config
     TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_SPEED_MPS, Constants.MAX_ACCELERATION_MPSPS)
         .setKinematics(Constants.DRIVE_KINEMATICS)
-        .addConstraint(autoVoltageConstraint);
+        .addConstraint(autoVoltageConstraint)
+        .setReversed(true);
     
     //Generate a trajectory (replace with import)
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-      new Pose2d(3, 0, new Rotation2d(0)), 
+      List.of(),
+      new Pose2d(2, 2, new Rotation2d(0)), 
       config);
 
     //Create Ramsete follower:
