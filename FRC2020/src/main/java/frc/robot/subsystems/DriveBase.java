@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,6 +48,7 @@ public class DriveBase extends SubsystemBase {
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
 	private final DifferentialDriveOdometry odometry;
+	private SpeedControllerGroup leftGroup, rightGroup;
 
 	private double [] ypr = new double [3];
 	PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
@@ -59,8 +61,12 @@ public class DriveBase extends SubsystemBase {
 		// rotationally symmetrical
 		leftPod = new DrivePodSpark("Left", Constants.LEFT_LEAD, Constants.LEFT_F, false);
 		rightPod = new DrivePodSpark("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F, true);
-		differentialDrive = new DifferentialDrive(leftPod.group(), rightPod.group());
+		leftGroup = leftPod.group();
+		rightGroup = rightPod.group();
+		differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
 		shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM);
+		leftPod.resetEncoder();
+		rightPod.resetEncoder();
 		odometry = new DifferentialDriveOdometry(getYaw());
 
 		sucker = new TalonSRX(Constants.SUCKER);
@@ -103,8 +109,8 @@ public class DriveBase extends SubsystemBase {
 	 * @param rightThrottle between -1 and +1
 	 */
 	public void driveWithTankControls(double leftThrottle, double rightThrottle) {
-		leftPod.setThrottle(leftThrottle);
-		rightPod.setThrottle(rightThrottle);
+		leftPod.setThrottle(rightThrottle);
+		rightPod.setThrottle(leftThrottle);
 	}
 
 	/**
@@ -340,8 +346,8 @@ public class DriveBase extends SubsystemBase {
 	}
 
 	public void tankDriveVolts(double leftVolts, double rightVolts) {
-		leftPod.setVoltage(leftVolts);
-		rightPod.setVoltage(rightVolts);
+		leftPod.setVoltage(-1 * leftVolts);
+		rightPod.setVoltage(-1 * rightVolts);
 		differentialDrive.feed();
 	}
 
@@ -359,6 +365,15 @@ public class DriveBase extends SubsystemBase {
 	@Override
 	public void periodic() {
 		imu.getGeneralStatus(status);
-		odometry.update(getYaw(), leftPod.getPositionMeters(), rightPod.getPositionMeters());
+		odometry.update(getYaw(), (-1 * leftPod.getPositionMeters()), rightPod.getPositionMeters());
+
+		var translation = odometry.getPoseMeters().getTranslation();
+		SmartDashboard.putNumber("X", translation.getX());
+		SmartDashboard.putNumber("Y", translation.getY());
+		SmartDashboard.putNumber("LeftM", leftPod.getPositionMeters());
+		SmartDashboard.putNumber("RightM", rightPod.getPositionMeters());
+		SmartDashboard.putNumber("left", leftPod.getPosition());
+		SmartDashboard.putNumber("right", rightPod.getPosition());
+
 	}
 }

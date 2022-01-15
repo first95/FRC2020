@@ -69,8 +69,8 @@ public class DrivePodSpark {
 	    // Create the default encoder associated with the leader
 		leaderEncoder = this.leader.getEncoder();
 		followerEncoder = this.follower.getEncoder();
-		leaderEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);
-		leaderEncoder.setVelocityConversionFactor(Constants.METERS_PER_ROTATION / 60); //RPM to m/s
+		//leaderEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);
+		//leaderEncoder.setVelocityConversionFactor(Constants.METERS_PER_ROTATION / 60); //RPM to m/s
 
 		// Create the default PID controller associated with the leader
 		leaderPidController = this.leader.getPIDController();
@@ -120,11 +120,15 @@ public class DrivePodSpark {
 
 	
 	public double getPositionMeters() {
+		return (leaderEncoder.getPosition() * Constants.METERS_PER_ROTATION);
+	}
+
+	public double getPosition() {
 		return leaderEncoder.getPosition();
 	}
 	
 	public double getVelocityMetersPerSecond() {
-		return leaderEncoder.getVelocity();
+		return ((leaderEncoder.getVelocity() * Constants.METERS_PER_ROTATION) / 60);
 	}
 
 	public void resetEncoder() {

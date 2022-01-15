@@ -38,14 +38,13 @@ public class FollowTrajectory extends SequentialCommandGroup {
     TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_SPEED_MPS, Constants.MAX_ACCELERATION_MPSPS)
         .setKinematics(Constants.DRIVE_KINEMATICS)
-        .addConstraint(autoVoltageConstraint)
-        .setReversed(true);
+        .addConstraint(autoVoltageConstraint);
     
     //Generate a trajectory (replace with import)
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(),
-      new Pose2d(2, 2, new Rotation2d(0)), 
+      new Pose2d(2, 1, new Rotation2d(-90)), 
       config);
 
     //Create Ramsete follower:
